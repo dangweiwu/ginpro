@@ -2,12 +2,12 @@ package main
 
 import (
 	"fmt"
-	"gs/gscli"
+	"gs/cli"
 	"os"
 )
 
 func main() {
-	if err := gscli.Cmd.Execute(); err != nil {
+	if err := cli.Cmd.Execute(); err != nil {
 		fmt.Println(err)
 		os.Exit(1)
 	}
