@@ -20,7 +20,7 @@ func New{{.AppName}}Put(ctx *gin.Context,serCtx *serctx.ServerContext) *{{.AppNa
 func (this *{{.AppName}}Put) Put(po *{{.ModelPackage}}.{{.ModelName}}) error {
     db := this.serctx.Db
 	tmpPo := &{{.ModelPackage}}.{{.ModelName}}{}
-	if r := db.Model(tmpPo).Take(tmpPo); r.Error != nil {
+	if r := db.Model(tmpPo).Take(po); r.Error != nil {
 		if r.Error == gorm.ErrRecordNotFound {
 			return errors.New("记录不存在")
 		} else {

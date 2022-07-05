@@ -1,6 +1,7 @@
 package cli
 
 import (
+	"gs/cli/internal/admintpl"
 	"gs/cli/internal/apptpl"
 	"gs/cli/internal/initproject"
 
@@ -16,5 +17,5 @@ var Cmd = &cobra.Command{
 func init() {
 	Cmd.AddCommand(initproject.Cmd)
 	Cmd.AddCommand(apptpl.Cmd)
-
+	Cmd.AddCommand(admintpl.Cmd)
 }

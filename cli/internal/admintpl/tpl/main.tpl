@@ -1,13 +1,14 @@
 package main
 
 import (
-	"flag"
-	"{{.Module}}/internal/config"
-	"{{.Module}}/internal/serctx"
 	"{{.Module}}/internal/app"
+	"{{.Module}}/internal/config"
+	"{{.Module}}/internal/middler"
 	"{{.Module}}/internal/router"
-	"gs/pkg/yamconfig"
+	"{{.Module}}/internal/serctx"
+	"flag"
 	"gs/api/apiserver"
+	"gs/pkg/yamconfig"
 )
 
 var configFile = flag.String("f", "./config/config.yaml", "the config file")
@@ -23,11 +24,10 @@ func main() {
 		panic(err)
 	}
 
-	//服务 NewApiServer 可用配置
-	// apiserver.WithMiddle(),// 中间件
-	// apiserver.WithStatic(),//静态资源
-	// apiserver.WithStopEvent(), //结束事件
-	server := apiserver.NewApiServer(c.Api, ctx.Log.Logger)
+	//服务
+	server := apiserver.NewApiServer(c.Api, ctx.Log.Logger,
+		apiserver.WithMiddle(middler.RegMiddler(ctx)...),
+	)
 
 	//注册路由
 	app.RegisterRoute(router.NewRouter(server.GetEngine(), ctx), ctx)

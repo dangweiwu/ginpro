@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"fmt"
 	"os"
 	"text/template"
 )
@@ -16,6 +17,9 @@ func GenTpl(tpl string, value interface{}, file string) error {
 	}
 	//渲染输出
 	if err := tpl_obj.Execute(f, value); err != nil {
+		fmt.Println("模板渲染失败:", file)
+		fmt.Println(tpl)
+		fmt.Println(value)
 		return err
 	}
 	return nil

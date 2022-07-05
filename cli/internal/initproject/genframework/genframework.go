@@ -3,7 +3,6 @@ package genframework
 import (
 	_ "embed"
 	"errors"
-	"fmt"
 	"gs/cli/internal/initproject/genframework/tpl"
 	"gs/pkg/utils"
 	"io/fs"
@@ -73,6 +72,10 @@ func (this *GenFramework) genFrameworkDir() error {
 	if err := os.MkdirAll(configFile, chmod); err != nil {
 		return err
 	}
+	log := path.Join(pt, "log")
+	if err := os.MkdirAll(log, chmod); err != nil {
+		return err
+	}
 	internal := path.Join(pt, "internal")
 	if err := os.MkdirAll(internal, chmod); err != nil {
 		return err
@@ -110,7 +113,7 @@ func (this *GenFramework) genFrameworkDir() error {
 }
 
 //创建go文件
-func (this *GenFramework) genGoFile() error {
+func (this *GenFramework) GenGoFile() error {
 	root := path.Join(this.pwd, this.RootFile)
 	vl := tpl.ModuleValue{Module: this.RootFile}
 
@@ -166,9 +169,9 @@ func (this *GenFramework) Do() error {
 	if err := this.genFrameworkDir(); err != nil {
 		return err
 	}
-	if err := this.genGoFile(); err != nil {
+	if err := this.GenGoFile(); err != nil {
 		return err
 	}
-	fmt.Println(this.RootFile + "已生成")
+
 	return nil
 }

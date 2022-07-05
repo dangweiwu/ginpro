@@ -1,10 +1,11 @@
-package {{.AppPackage}}
+package app
 
 import (
 	"{{.Module}}/internal/router"
 	"{{.Module}}/internal/serctx"
+	"{{.Module}}/internal/app/admin"
 )
 
 func RegisterRoute(r *router.Router, sc *serctx.ServerContext) {
-	//demo.Route(r, sc)
+	admin.Route(r, sc)
 }

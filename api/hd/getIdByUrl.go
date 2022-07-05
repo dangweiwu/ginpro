@@ -7,7 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func GetId(ctx *gin.Context) (uint, error) {
+func GetId(ctx *gin.Context) (int64, error) {
 	_id, has := ctx.Params.Get("id")
 	if !has {
 		return 0, errors.New("缺少ID")
@@ -16,5 +16,5 @@ func GetId(ctx *gin.Context) (uint, error) {
 	if err != nil {
 		return 0, errors.New("无效ID")
 	}
-	return uint(id), nil
+	return int64(id), nil
 }

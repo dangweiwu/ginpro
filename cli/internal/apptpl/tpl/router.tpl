@@ -1,4 +1,4 @@
-package userapp
+package {{.AppPackage}}
 
 import (
 	"{{.Module}}/internal/app/{{.AppPackage}}/handler"

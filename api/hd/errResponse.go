@@ -8,18 +8,19 @@ const (
 )
 
 type ErrResponse struct {
-	Kind ErrKind `json:"kind"`
-	Data string  `json:"data"`
+	Kind ErrKind
+	Data string
+	Msg  string
 }
 
 func (this ErrResponse) Error() string {
 	return this.Data
 }
 
-func ErrCode(data string) ErrResponse {
-	return ErrResponse{CODE, data}
+func ErrCode(data string, msg string) ErrResponse {
+	return ErrResponse{CODE, data, msg}
 }
 
-func ErrMsg(data string) ErrResponse {
-	return ErrResponse{MSG, data}
+func ErrMsg(data string, msg string) ErrResponse {
+	return ErrResponse{MSG, data, msg}
 }

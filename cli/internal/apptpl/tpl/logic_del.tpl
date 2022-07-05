@@ -17,7 +17,7 @@ func New{{.AppName}}Del(ctx *gin.Context,serCtx *serctx.ServerContext) *{{.AppNa
 	return &{{.AppName}}Del{ctx, serCtx}
 }
 
-func (this *{{.AppName}}Del) Delete(id uint) error {
+func (this *{{.AppName}}Del) Delete(id int64) error {
 	db := this.serctx.Db
 	po := &{{.ModelPackage}}.{{.ModelName}}{}
 	po.ID = id
