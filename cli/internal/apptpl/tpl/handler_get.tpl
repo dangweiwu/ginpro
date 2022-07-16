@@ -2,18 +2,41 @@ package handler
 
 import (
 	"github.com/gin-gonic/gin"
-	"{{.Module}}/internal/serctx"
-    "{{.Module}}/internal/app/{{.AppPackage}}/logic"
 	"gs/api/hd"
+	"gs/api/query"
+	"{{.Module}}/internal/serctx"
+	"{{.Module}}/internal/app/{{.AppPackage}}/{{.ModelPackage}}"
+	"{{.Module}}/internal/router/irouter"	
 )
 
-func Get(ctx *gin.Context,serCtx *serctx.ServerContext) error {
-	a := logic.New{{.AppName}}Get(ctx,serCtx)
-	data,err := a.Query()
+
+type {{.AppName}}Get struct {
+    ctx    *gin.Context
+	serctx *serctx.ServerContext
+}
+
+func New{{.AppName}}Get(ctx *gin.Context,serCtx *serctx.ServerContext) irouter.IHandler {
+	return &{{.AppName}}Get{ctx, serCtx}
+}
+
+func (this *{{.AppName}}Get) Do() error {
+
+	data,err := this.Query()
 	if err != nil {
 		return err
 	} else {
-		hd.Rep(ctx, data)
+		hd.Rep(this.ctx, data)
 		return nil
 	}
+}
+
+var QueryRule = map[string]string{
+	key:"like" or ""
+}
+
+func (this *{{.AppName}}Get) Query() (interface{}, error) {
+	po := &{{.ModelPackage}}.{{.ModelName}}{}
+	pos := []{{.ModelPackage}}.{{.ModelName}}{}
+	q := query.NewQuery(this.ctx, this.serctx.Db, QueryRule, po, &pos)
+	return q.Do()
 }

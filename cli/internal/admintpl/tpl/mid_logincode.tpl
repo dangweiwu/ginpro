@@ -10,12 +10,13 @@ import (
 	"{{.Module}}/internal/serctx"
 	"gs/api/hd"
 	"strconv"
+
 	"github.com/gin-gonic/gin"
 	"github.com/go-redis/redis"
 )
 
 func LoginCodeErrResponse(ctx *gin.Context) {
-	ctx.JSON(401, hd.ErrMsg("已在其他地方登陆", ""))
+	ctx.JSON(401, hd.ErrMsg("鉴权已失效", ""))
 	ctx.Abort()
 }
 
@@ -25,7 +26,7 @@ func LoginCodeErrResponse1(ctx *gin.Context, msg string) {
 }
 
 func LoginCodeErrResponse2(ctx *gin.Context) {
-	ctx.JSON(401, hd.ErrMsg("该账号已被下线", ""))
+	ctx.JSON(401, hd.ErrMsg("该账号已下线", ""))
 	ctx.Abort()
 }
 
@@ -42,30 +43,20 @@ func LoginCode(serCtx *serctx.ServerContext) gin.HandlerFunc {
 			return
 		}
 
-		r, err := serCtx.Redis.HMGet(adminmodel.RedisPre+strconv.Itoa(int(uid)), adminmodel.RedisLoginCode).Result()
+		logincode, err := serCtx.Redis.Get(adminmodel.RedisPre + strconv.Itoa(int(uid))).Result()
 		if err != nil {
 			if err == redis.Nil {
-				LoginCodeErrResponse2(c)
+				LoginCodeErrResponse(c)
 			} else {
 				LoginCodeErrResponse1(c, err.Error())
 			}
 			return
 		}
-		if len(r) == 0 {
-			LoginCodeErrResponse1(c, "redis result len == 0")
-			return
-		}
 
-		logincode, ok := r[0].(string)
-		if !ok {
-			LoginCodeErrResponse1(c, "redis result type not string")
-			return
-		}
 		if logincode != code {
 			LoginCodeErrResponse(c)
 			return
 		}
 		c.Next()
-
 	}
 }

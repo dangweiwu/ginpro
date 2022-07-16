@@ -19,8 +19,14 @@ func WithMiddle(midf ...gin.HandlerFunc) ApiOpt {
 func WithStatic(relativePath string, root string) ApiOpt {
 	return func(as *ApiServer) {
 		as.app.Static(relativePath, root)
+		as.app.GET("/", func(c *gin.Context) {
+			//重定向到主页面
+			c.Request.URL.Path = relativePath
+			as.app.HandleContext(c)
+		})
 	}
 }
+
 
 //注册结束事件
 func WithStopEvent(name string, f func() error) ApiOpt {

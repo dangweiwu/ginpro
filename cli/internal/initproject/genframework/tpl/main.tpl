@@ -24,10 +24,9 @@ func main() {
 	}
 
 	//服务 NewApiServer 可用配置
-	// apiserver.WithMiddle(),// 中间件
-	// apiserver.WithStatic(),//静态资源
-	// apiserver.WithStopEvent(), //结束事件
-	server := apiserver.NewApiServer(c.Api, ctx.Log.Logger)
+	server := apiserver.NewApiServer(c.Api, ctx.Log.Logger,
+		apiserver.WithStatic("/view", c.Api.StaticDir),
+	)
 
 	//注册路由
 	app.RegisterRoute(router.NewRouter(server.GetEngine(), ctx), ctx)

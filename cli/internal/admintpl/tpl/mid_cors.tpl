@@ -1,7 +1,6 @@
 package middler
 
 import (
-	"{{.Module}}/internal/serctx"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"time"

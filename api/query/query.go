@@ -43,49 +43,65 @@ import (
 const ORDER = "od"
 
 type QueryResult struct {
-	Page *Page
-	Data interface{}
+	Page *Page       
+	Data interface{} 
 }
 
 type QueryAllResult struct {
 	Data interface{}
 }
 
+type DbCallBack func(db *gorm.DB) (r *gorm.DB)
+
 type Query struct {
-	ctx  *gin.Context
-	db   *gorm.DB
-	Po   interface{} //库po
-	Pos  interface{} //库&pos
-	Page *Page
+	db       *gorm.DB
+	LikeData map[string]string //模糊查询参数
+	QData    map[string]string //查询参数
+	Po       interface{}       //库po
+	Pos      interface{}       //库&pos
+	OrderStr string
+	OrderF   DbCallBack
+	WhereF   DbCallBack
+	Page     *Page
 }
 
-func NewQuery(ctx *gin.Context, db *gorm.DB, po interface{}, pos interface{}) *Query {
-
+func NewQuery(ctx *gin.Context, db *gorm.DB, rule map[string]string, po interface{}, pos interface{}) *Query {
 	a := &Query{}
-	a.ctx = ctx
 	a.Pos = pos
-	a.db = db.Model(po)
+	a.db = db
 	a.Po = po
-
+	a.Page = ParsePage(ctx)
+	a.LikeData, a.QData = ParseQuery(ctx, rule)
+	a.OrderStr = ctx.Query("od")
 	return a
 }
 
-func (this *Query) GetDb() *gorm.DB {
-	return this.db
+func (this *Query) ClearPage() {
+	this.Page = nil
+}
+
+//order 定制
+func (this *Query) SetOrder(f DbCallBack) {
+	this.OrderF = f
+}
+
+//where 订制
+func (this *Query) SetWhere(f DbCallBack) {
+	this.WhereF = f
 }
 
 //默认where
-func (this *Query) QueryWhere(rule map[string]string) {
-	LikeData, QData := ParseQuery(this.ctx, rule)
-	if len(QData) != 0 {
-		this.db = this.db.Where(QData)
+func (this *Query) Where(r *gorm.DB) *gorm.DB {
+	if len(this.QData) != 0 {
+		r = r.Where(this.QData)
 	}
-	for k, v := range LikeData {
-		this.db = this.db.Where(k+" like ?", "%"+v+"%")
+	for k, v := range this.LikeData {
+		r = r.Where(k+" like ?", "%"+v+"%")
 	}
+	return r
 }
 
-func (this *Query) getResult() interface{} {
+func (this *Query) GetResult() interface{} {
 	if this.Page == nil {
 		return &QueryAllResult{this.Pos}
 	} else {
@@ -93,32 +109,39 @@ func (this *Query) getResult() interface{} {
 	}
 }
 
-//带分页参数
-func (this *Query) GetPage() (interface{}, error) {
+func (this *Query) Do() (interface{}, error) {
 
-	this.Page = ParsePage(this.ctx)
-	count := int64(0)
-	this.db.Count(&count)
-	this.Page.Total = int(count)
-	offset := (this.Page.Current - 1) * this.Page.Limit
-	this.db = this.db.Offset(offset).Limit(this.Page.Limit)
+	//3.1 数据库查询
+	r := this.db.Model(this.Po)
 
-	r := this.db.Find(this.Pos)
-
-	if r.Error != nil {
-		return nil, r.Error
+	//where
+	if this.WhereF != nil {
+		//被定制则使用定制where
+		r = this.WhereF(r)
 	} else {
-		return this.getResult(), nil
+		r = this.Where(r)
 	}
-}
 
-//不带分页参数
-func (this *Query) GetData() (interface{}, error) {
-	r := this.db.Find(this.Pos)
-
+	//order
+	if this.OrderF != nil {
+		r = this.OrderF(r)
+	} else if this.OrderStr != "" {
+		r = r.Order(this.OrderStr)
+	} else {
+		r = r.Order("created_at desc")
+	}
+	//3.2 配合page
+	if this.Page != nil {
+		count := int64(0)
+		r.Count(&count)
+		this.Page.Total = int(count)
+		offset := (this.Page.Current - 1) * this.Page.Limit
+		r = r.Offset(offset).Limit(this.Page.Limit)
+	}
+	r = r.Find(this.Pos)
 	if r.Error != nil {
 		return nil, r.Error
 	} else {
-		return this.getResult(), nil
+		return this.GetResult(), nil
 	}
 }

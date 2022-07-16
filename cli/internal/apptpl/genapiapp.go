@@ -40,7 +40,10 @@ func NewApiApp(cfg tpl.AppTplConfig) (*ApiApp, error) {
 //创建所有文件夹
 func (this *ApiApp) Mkdirs() error {
 	// root := path.Join(this.root, this.cfg.AppPackage)
-	name := []string{"handler", "logic", this.cfg.ModelPackage}
+	name := []string{"handler"}
+	if len(this.cfg.TableName) !=0{
+		name = append(name, this.cfg.ModelPackage)
+	}
 	for _, v := range name {
 		tmp := path.Join(this.root, v)
 		if _, err := utils.IsExistAndCreateDir(tmp); err != nil {
@@ -89,10 +92,10 @@ func (this *ApiApp) GenGet() error {
 		return errors.WithMessage(err, "gen get handlerTpl error: ")
 	}
 
-	logicName := path.Join(this.root, LogicName, "get.go")
-	if err := GenTpl(tpl.LogicGetTpl, this.cfg, logicName); err != nil {
-		return errors.WithMessage(err, "gen get logicTpl error: ")
-	}
+	// logicName := path.Join(this.root, LogicName, "get.go")
+	// if err := GenTpl(tpl.LogicGetTpl, this.cfg, logicName); err != nil {
+	// 	return errors.WithMessage(err, "gen get logicTpl error: ")
+	// }
 	return nil
 }
 
@@ -103,10 +106,10 @@ func (this *ApiApp) GenPost() error {
 		return errors.WithMessage(err, "gen post handlerTpl error: ")
 	}
 
-	logicName := path.Join(this.root, LogicName, "post.go")
-	if err := GenTpl(tpl.LogicPostTpl, this.cfg, logicName); err != nil {
-		return errors.WithMessage(err, "gen post logicTpl error: ")
-	}
+	// logicName := path.Join(this.root, LogicName, "post.go")
+	// if err := GenTpl(tpl.LogicPostTpl, this.cfg, logicName); err != nil {
+	// 	return errors.WithMessage(err, "gen post logicTpl error: ")
+	// }
 	return nil
 }
 
@@ -117,10 +120,10 @@ func (this *ApiApp) GenPut() error {
 		return errors.WithMessage(err, "gen put handlerTpl error: ")
 	}
 
-	logicName := path.Join(this.root, LogicName, "put.go")
-	if err := GenTpl(tpl.LogicPutTpl, this.cfg, logicName); err != nil {
-		return errors.WithMessage(err, "gen put logicTpl error: ")
-	}
+	// logicName := path.Join(this.root, LogicName, "put.go")
+	// if err := GenTpl(tpl.LogicPutTpl, this.cfg, logicName); err != nil {
+	// 	return errors.WithMessage(err, "gen put logicTpl error: ")
+	// }
 	return nil
 }
 
@@ -131,10 +134,10 @@ func (this *ApiApp) GenDelete() error {
 		return errors.WithMessage(err, "gen del handlerTpl error: ")
 	}
 
-	logicName := path.Join(this.root, LogicName, "del.go")
-	if err := GenTpl(tpl.LogicDelTpl, this.cfg, logicName); err != nil {
-		return errors.WithMessage(err, "gen del logicTpl error: ")
-	}
+	// logicName := path.Join(this.root, LogicName, "del.go")
+	// if err := GenTpl(tpl.LogicDelTpl, this.cfg, logicName); err != nil {
+	// 	return errors.WithMessage(err, "gen del logicTpl error: ")
+	// }
 	return nil
 }
 
@@ -149,10 +152,12 @@ func GenTemplate(name string, cfg tpl.AppTplConfig) error {
 	}
 	switch name {
 	case "all":
-
-		if err := a.GenModel(); err != nil {
-			return err
+		if len(a.cfg.TableName) != 0{
+			if err := a.GenModel(); err != nil {
+				return err
+			}
 		}
+
 		if err := a.GenGet(); err != nil {
 			return err
 		}

@@ -33,8 +33,8 @@ var (
 	//go:embed admin_model_const.tpl
 	AdminModelConstTpl string
 
-	//go:embed admin_model_logForm.tpl
-	AdminModelLogform string
+	// //go:embed admin_model_logForm.tpl
+	// AdminModelLogform string
 
 	//go:embed admin_model_model.tpl
 	AdminModelModel string
@@ -57,23 +57,23 @@ var (
 	//go:embed admin_handler_reflashToken.tpl
 	AdminHandlerReflashToken string
 
-	//go:embed admin_logic_del.tpl
-	AdminLogicDel string
+	// //go:embed admin_logic_del.tpl
+	// AdminLogicDel string
 
-	//go:embed admin_logic_get.tpl
-	AdminLogicGet string
+	// //go:embed admin_logic_get.tpl
+	// AdminLogicGet string
 
-	//go:embed admin_logic_login.tpl
-	AdminLogicLogin string
+	// //go:embed admin_logic_login.tpl
+	// AdminLogicLogin string
 
-	//go:embed admin_logic_post.tpl
-	AdminLogicPost string
+	// //go:embed admin_logic_post.tpl
+	// AdminLogicPost string
 
-	//go:embed admin_logic_put.tpl
-	AdminLogicPut string
+	// //go:embed admin_logic_put.tpl
+	// AdminLogicPut string
 
-	//go:embed admin_logic_reflashToken.tpl
-	AdminLogicReflashToken string
+	// //go:embed admin_logic_reflashToken.tpl
+	// AdminLogicReflashToken string
 
 	//go:embed admin_router.tpl
 	AdminRouter string
@@ -96,9 +96,47 @@ var (
 	//go:embed router_router.tpl
 	RouterRouter string
 
+	//go:embed router_irouter.tpl
+	RouterIRouter string
+
 	//go:embed main.tpl
 	Main string
 
 	//go:embed app_yaml.tpl
 	AppYaml string
+
+	//go:embed admin_config.tpl
+	AdminConfig string
+
+	//go:embed admin_handler_myget.tpl
+	AdminHandlerMyGet string
+
+	//go:embed admin_handler_myput.tpl
+	AdminHandlerMyPut string
+
+	//go:embed admin_handler_mysetpwd.tpl
+	AdminHandlerMySetpwd string
+
+	//go:embed admin_handler_resetpwd.tpl
+	AdminHandlerResetpwd string
+
+	// //go:embed admin_logic_myput.tpl
+	// AdminLogicMyPut string
+
+	// //go:embed admin_logic_mysetpwd.tpl
+	// AdminLogicMySetpwd string
+
+	//go:embed admin_handler_initadmin.tpl
+	AdminHandlerInitmain string
+
+
+	
+
+
+
+
+	
+
+
+	
 )

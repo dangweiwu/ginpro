@@ -3,9 +3,9 @@ package query
 import "github.com/gin-gonic/gin"
 
 const (
-	LIMIT   = "limit"
-	TOTAL   = "total"
-	CURRENT = "current"
+	LIMIT   = "Limit"
+	TOTAL   = "Total"
+	CURRENT = "Current"
 	//DB_ORDER     = "created_at desc"
 )
 
@@ -15,14 +15,14 @@ var (
 )
 
 type Page struct {
-	Limit   int `form:"limit"`   // 每页条数
-	Current int `form:"current"` //当前页数
-	Total   int //总数
+	Limit   int `form:"Limit"`   // 每页条数
+	Current int `form:"Current"` //当前页数
+	Total   int ``               //总数
 }
 
 type PageData struct {
-	Data interface{}
-	Page *Page
+	Data interface{} ``
+	Page *Page       ``
 }
 
 //解析page 选项

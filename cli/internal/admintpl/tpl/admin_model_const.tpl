@@ -1,6 +1,10 @@
 package adminmodel
+import "strconv"
 
 const (
 	RedisPre       string = "admin:"
-	RedisLoginCode string = "logincode"
 )
+
+func GetAdminId(id int) string {
+	return RedisPre + strconv.Itoa(id)
+}

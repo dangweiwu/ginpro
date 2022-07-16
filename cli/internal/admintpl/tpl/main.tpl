@@ -27,6 +27,7 @@ func main() {
 	//服务
 	server := apiserver.NewApiServer(c.Api, ctx.Log.Logger,
 		apiserver.WithMiddle(middler.RegMiddler(ctx)...),
+		apiserver.WithStatic("/view", c.Api.ViewDir),
 	)
 
 	//注册路由

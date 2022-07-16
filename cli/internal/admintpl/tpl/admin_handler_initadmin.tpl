@@ -12,24 +12,23 @@ import (
 	errs "github.com/pkg/errors"
 )
 
-type AdminPost struct {
+type InitAdmin struct {
 	ctx    *gin.Context
 	serctx *serctx.ServerContext
 }
 
-func NewAdminPost(ctx *gin.Context, serCtx *serctx.ServerContext) irouter.IHandler {
-	return &AdminPost{ctx, serCtx}
+func NewInitAdmin(ctx *gin.Context, serCtx *serctx.ServerContext) irouter.IHandler {
+	return &InitAdmin{ctx, serCtx}
 }
 
-func (this *AdminPost) Do() error {
+func (this *InitAdmin) Do() error {
 
 	//数据源
 	po := &adminmodel.AdminPo{}
-	err := hd.Bind(this.ctx, po)
-	if err != nil {
-		return err
-	}
-	err = this.Post(po)
+	po.Name = "超级管理员"
+	po.Account = "admin"
+	po.Password = this.serctx.Config.Admin.RawPassword
+	err := this.Create(po)
 	if err != nil {
 		return err
 	}
@@ -37,7 +36,7 @@ func (this *AdminPost) Do() error {
 	return nil
 }
 
-func (this *AdminPost) Post(po *adminmodel.AdminPo) error {
+func (this *InitAdmin) Create(po *adminmodel.AdminPo) error {
 	db := this.serctx.Db
 	//验证是否已创建 或者其他检查
 	if err := this.Valid(po); err != nil {
@@ -52,7 +51,7 @@ func (this *AdminPost) Post(po *adminmodel.AdminPo) error {
 	return nil
 }
 
-func (this *AdminPost) Valid(po *adminmodel.AdminPo) error {
+func (this *InitAdmin) Valid(po *adminmodel.AdminPo) error {
 	db := this.serctx.Db
 	var ct = int64(0)
 	if r := db.Model(po).Where("account = ?", po.Account).Count(&ct); r.Error != nil {
@@ -77,4 +76,5 @@ func (this *AdminPost) Valid(po *adminmodel.AdminPo) error {
 		}
 	}
 	return nil
+
 }

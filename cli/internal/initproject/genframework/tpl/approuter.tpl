@@ -1,4 +1,4 @@
-package {{.AppPackage}}
+package app
 
 import (
 	"{{.Module}}/internal/router"

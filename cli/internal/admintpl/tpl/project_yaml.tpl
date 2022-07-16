@@ -1,9 +1,14 @@
 Api:
   Host: 0.0.0.0:80
   OpenGinLog: true
+  ViewDir : ./view
+
+Admin:
+  RawPassword: a123456
+  InitAdmin: false
 
 Log:
-  LogName: ./log/dwsy.log
+  LogName: ./log/api.log
   Level: debug
   OutType: all
   Formatter: txt
@@ -12,7 +17,7 @@ Mysql:
   User: root	
   Password: "123456"
   Host: mysql:3306
-  DbName: dwsy
+  DbName: 
 
 Redis:
   Addr: redis:6379
@@ -20,6 +25,6 @@ Redis:
   Db: 0
 
 Jwt:
-  Secret: dwsy20220702@#
+  Secret: jwtsecret123#$
   # 过期时间 3天
   Exp: 259200

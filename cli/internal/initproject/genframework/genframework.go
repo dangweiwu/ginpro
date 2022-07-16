@@ -30,6 +30,9 @@ var (
 	//go:embed tpl/routerdo.tpl
 	DoTpl string
 
+	//go:embed tpl/routeri.tpl
+	RouterI string
+
 	//go:embed tpl/approuter.tpl
 	AppRouterTpl string
 
@@ -94,6 +97,11 @@ func (this *GenFramework) genFrameworkDir() error {
 		return err
 	}
 
+	routerI := path.Join(router, "irouter")
+	if err := os.MkdirAll(routerI, chmod); err != nil {
+		return err
+	}
+
 	serctx := path.Join(internal, "serctx")
 	if err := os.MkdirAll(serctx, chmod); err != nil {
 		return err
@@ -142,6 +150,11 @@ func (this *GenFramework) GenGoFile() error {
 		return err
 	}
 
+	routeri := path.Join(internal, "router","irouter", "irouter.go")
+	if err := utils.GenTpl(RouterI, vl, routeri); err != nil {
+		return err
+	}
+
 	approuter := path.Join(internal, "app", "regrouter.go")
 	if err := utils.GenTpl(AppRouterTpl, vl, approuter); err != nil {
 		return err
@@ -153,7 +166,7 @@ func (this *GenFramework) GenGoFile() error {
 	}
 
 	apicfg := path.Join(internal, "app", "tpl.yaml")
-	if err := utils.GenTpl(AppConfigTpl, nil, apicfg); err != nil {
+	if err := utils.GenTpl(AppConfigTpl, vl, apicfg); err != nil {
 		return err
 	}
 

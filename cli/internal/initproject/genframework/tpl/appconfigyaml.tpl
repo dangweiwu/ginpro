@@ -9,8 +9,8 @@ ModelName:
 TableName:
 
 # 路由配置
-# 路由类型 Jwt or base
-RouterType:
+# 路由类型 Jwt or Root
+RouterType: Jwt
 # 路由名称
 RouterUrl:
 

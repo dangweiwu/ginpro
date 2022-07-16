@@ -18,7 +18,7 @@ type Router struct {
 
 func NewRouter(g *gin.Engine, c *serctx.ServerContext) *Router {
 	return &Router{
-		Root: g.Group("/api"),
+		Root: g.Group("/"),
 		Jwt:  g.Group("/api", middler.TokenPase(c), middler.LoginCode(c)),
 	}
 }

@@ -160,6 +160,31 @@ func (this *AdminTpl) genPkg() error {
 }
 
 func (this *AdminTpl) genAdmin() error {
+	
+	tmp := path.Join(this.AdminFile, "router.go")
+	if err := utils.GenTpl(tpl.AdminRouter, this.Module, tmp); err != nil {
+		return err
+	}
+
+	//app router
+
+	appFile := path.Join(this.RootFile, "internal", "app")
+
+	tmp = path.Join(appFile, "regrouter.go")
+	if err := utils.GenTpl(tpl.AppRouter, this.Module, tmp); err != nil {
+		return err
+	}
+
+	tmp = path.Join(appFile, "regdb.go")
+	if err := utils.GenTpl(tpl.AppDb, this.Module, tmp); err != nil {
+		return err
+	}
+
+	tmp = path.Join(appFile, "tpl.yaml")
+	if err := utils.GenTpl(tpl.AppYaml, this.Module, tmp); err != nil {
+		return err
+	}
+
 	adminmodelFile := path.Join(this.AdminFile, "adminmodel")
 	if !utils.IsExists(adminmodelFile) {
 		if err := os.MkdirAll(adminmodelFile, chmod); err != nil {
@@ -174,23 +199,31 @@ func (this *AdminTpl) genAdmin() error {
 		}
 	}
 
-	logicFile := path.Join(this.AdminFile, "logic")
-	if !utils.IsExists(logicFile) {
-		if err := os.MkdirAll(logicFile, chmod); err != nil {
+
+	configFile := path.Join(this.AdminFile, "adminconfig")
+	if !utils.IsExists(configFile) {
+		if err := os.MkdirAll(configFile, chmod); err != nil {
 			return err
 		}
 	}
+	//config
+	tmp = path.Join(configFile, "config.go")
+	if err := utils.GenTpl(tpl.AdminConfig, this.Module, tmp); err != nil {
+		return err
+	}
+
+
 
 	//model
-	tmp := path.Join(adminmodelFile, "const.go")
+	tmp = path.Join(adminmodelFile, "const.go")
 	if err := utils.GenTpl(tpl.AdminModelConstTpl, this.Module, tmp); err != nil {
 		return err
 	}
 
-	tmp = path.Join(adminmodelFile, "logForm.go")
-	if err := utils.GenTpl(tpl.AdminModelLogform, this.Module, tmp); err != nil {
-		return err
-	}
+	// tmp = path.Join(adminmodelFile, "logForm.go")
+	// if err := utils.GenTpl(tpl.AdminModelLogform, this.Module, tmp); err != nil {
+	// 	return err
+	// }
 
 	tmp = path.Join(adminmodelFile, "model.go")
 	if err := utils.GenTpl(tpl.AdminModelModel, this.Module, tmp); err != nil {
@@ -228,62 +261,66 @@ func (this *AdminTpl) genAdmin() error {
 		return err
 	}
 
+	tmp = path.Join(handlerFile, "initadmin.go")
+	if err := utils.GenTpl(tpl.AdminHandlerInitmain, this.Module, tmp); err != nil {
+		return err
+	}
+
+	
+	tmp = path.Join(handlerFile, "resetPwd.go")
+	if err := utils.GenTpl(tpl.AdminHandlerResetpwd, this.Module, tmp); err != nil {
+		return err
+	}
+
+	tmp = path.Join(handlerFile, "myget.go")
+	if err := utils.GenTpl(tpl.AdminHandlerMyGet, this.Module, tmp); err != nil {
+		return err
+	}
+
+	tmp = path.Join(handlerFile, "myput.go")
+	if err := utils.GenTpl(tpl.AdminHandlerMyPut, this.Module, tmp); err != nil {
+		return err
+	}
+
+	tmp = path.Join(handlerFile, "mySetPwd.go")
+	if err := utils.GenTpl(tpl.AdminHandlerMySetpwd, this.Module, tmp); err != nil {
+		return err
+	}
+
+
 	//logic
-	tmp = path.Join(logicFile, "del.go")
-	if err := utils.GenTpl(tpl.AdminLogicDel, this.Module, tmp); err != nil {
-		return err
-	}
+	// tmp = path.Join(logicFile, "del.go")
+	// if err := utils.GenTpl(tpl.AdminLogicDel, this.Module, tmp); err != nil {
+	// 	return err
+	// }
 
-	tmp = path.Join(logicFile, "get.go")
-	if err := utils.GenTpl(tpl.AdminLogicGet, this.Module, tmp); err != nil {
-		return err
-	}
+	// tmp = path.Join(logicFile, "get.go")
+	// if err := utils.GenTpl(tpl.AdminLogicGet, this.Module, tmp); err != nil {
+	// 	return err
+	// }
 
-	tmp = path.Join(logicFile, "login.go")
-	if err := utils.GenTpl(tpl.AdminLogicLogin, this.Module, tmp); err != nil {
-		return err
-	}
+	// tmp = path.Join(logicFile, "login.go")
+	// if err := utils.GenTpl(tpl.AdminLogicLogin, this.Module, tmp); err != nil {
+	// 	return err
+	// }
 
-	tmp = path.Join(logicFile, "post.go")
-	if err := utils.GenTpl(tpl.AdminLogicPost, this.Module, tmp); err != nil {
-		return err
-	}
+	// tmp = path.Join(logicFile, "post.go")
+	// if err := utils.GenTpl(tpl.AdminLogicPost, this.Module, tmp); err != nil {
+	// 	return err
+	// }
 
-	tmp = path.Join(logicFile, "put.go")
-	if err := utils.GenTpl(tpl.AdminLogicPut, this.Module, tmp); err != nil {
-		return err
-	}
+	// tmp = path.Join(logicFile, "put.go")
+	// if err := utils.GenTpl(tpl.AdminLogicPut, this.Module, tmp); err != nil {
+	// 	return err
+	// }
 
-	tmp = path.Join(logicFile, "reflashToken.go")
-	if err := utils.GenTpl(tpl.AdminLogicReflashToken, this.Module, tmp); err != nil {
-		return err
-	}
+	// tmp = path.Join(logicFile, "reflashToken.go")
+	// if err := utils.GenTpl(tpl.AdminLogicReflashToken, this.Module, tmp); err != nil {
+	// 	return err
+	// }
 
 	// adminrouter
 
-	tmp = path.Join(this.AdminFile, "router.go")
-	if err := utils.GenTpl(tpl.AdminRouter, this.Module, tmp); err != nil {
-		return err
-	}
-
-	//app router
-
-	appFile := path.Join(this.RootFile, "internal", "app")
-
-	tmp = path.Join(appFile, "regrouter.go")
-	if err := utils.GenTpl(tpl.AppRouter, this.Module, tmp); err != nil {
-		return err
-	}
-
-	tmp = path.Join(appFile, "regdb.go")
-	if err := utils.GenTpl(tpl.AppDb, this.Module, tmp); err != nil {
-		return err
-	}
-
-	tmp = path.Join(appFile, "apptpl.yaml")
-	if err := utils.GenTpl(tpl.AppYaml, this.Module, tmp); err != nil {
-		return err
-	}
 
 	return nil
 }
@@ -307,6 +344,7 @@ func (this *AdminTpl) genConfig() error {
 //router
 func (this *AdminTpl) genRouter() error {
 
+
 	tmp := path.Join(this.RouterFile, "do.go")
 	if err := utils.GenTpl(tpl.RouterDo, this.Module, tmp); err != nil {
 		return err
@@ -316,6 +354,18 @@ func (this *AdminTpl) genRouter() error {
 	if err := utils.GenTpl(tpl.RouterRouter, this.Module, tmp); err != nil {
 		return err
 	}
+
+	irouter := path.Join(this.RouterFile,"irouter")	
+	if !utils.IsExists(irouter) {
+		if err := os.MkdirAll(irouter, chmod); err != nil {
+			return err
+		}
+	}
+	tmp = path.Join(irouter, "irouter.go")
+	if err := utils.GenTpl(tpl.RouterIRouter, this.Module, tmp); err != nil {
+		return err
+	}
+
 	return nil
 }
 
