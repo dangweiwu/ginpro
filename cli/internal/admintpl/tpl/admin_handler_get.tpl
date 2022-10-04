@@ -11,12 +11,14 @@ import (
 )
 
 type AdminGet struct {
-	ctx    *gin.Context
-	serctx *serctx.ServerContext
+	*hd.Hd
+	ctx *gin.Context
+	sc  *serctx.ServerContext
+
 }
 
-func NewAdminGet(ctx *gin.Context, serCtx *serctx.ServerContext) irouter.IHandler {
-	return &AdminGet{ctx, serCtx}
+func NewAdminGet(ctx *gin.Context, sc *serctx.ServerContext) irouter.IHandler {
+	return &AdminGet{hd.NewHd(ctx),ctx, sc}
 }
 
 func (this *AdminGet) Do() error {
@@ -24,7 +26,7 @@ func (this *AdminGet) Do() error {
 	if err != nil {
 		return err
 	} else {
-		hd.Rep(this.ctx, data)
+		this.Rep(data)
 		return nil
 	}
 }
@@ -39,6 +41,6 @@ var QueryRule = map[string]string{
 func (this *AdminGet) Query() (interface{}, error) {
 	po := &adminmodel.AdminPo1{}
 	pos := []adminmodel.AdminPo1{}
-	q := query.NewQuery(this.ctx, this.serctx.Db, QueryRule, po, &pos)
+	q := query.NewQuery(this.ctx, this.sc.Db, QueryRule, po, &pos)
 	return q.Do()
 }

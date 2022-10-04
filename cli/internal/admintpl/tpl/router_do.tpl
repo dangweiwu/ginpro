@@ -4,9 +4,7 @@ import (
 	"{{.Module}}/internal/serctx"
 	"fmt"
 	"gs/api/hd"
-
 	"{{.Module}}/internal/router/irouter"
-
 	"github.com/gin-gonic/gin"
 )
 

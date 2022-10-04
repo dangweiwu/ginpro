@@ -3,7 +3,7 @@ package middler
 import (
 	"{{.Module}}/internal/serctx"
 	"gs/api/hd"
-
+	"errors"
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v4"
 	"github.com/golang-jwt/jwt/v4/request"
@@ -21,7 +21,7 @@ const (
 )
 
 func RefuseResponse(ctx *gin.Context) {
-	ctx.JSON(403, hd.ErrMsg("鉴权失效", ""))
+	ctx.JSON(401, hd.ErrMsg("鉴权失效", ""))
 	ctx.Abort()
 }
 
@@ -32,14 +32,18 @@ func ErrToken(ctx *gin.Context, err string) {
 
 //token 中间件
 
-func TokenPase(serCtx *serctx.ServerContext) gin.HandlerFunc {
-	sec := serCtx.Config.Jwt.Secret
+func TokenPase(sc *serctx.ServerContext) gin.HandlerFunc {
+	sec := sc.Config.Jwt.Secret
 	return func(c *gin.Context) {
 		tk, err := request.ParseFromRequest(c.Request, request.AuthorizationHeaderExtractor, func(t *jwt.Token) (interface{}, error) {
 			return []byte(sec), nil
 		})
+
+		if errors.Is(err, jwt.ErrTokenExpired) {
+			RefuseResponse(c)
+			return
+		}
 		if err != nil {
-			// fmt.Println("@@", err)
 			ErrToken(c, err.Error())
 			return
 		}

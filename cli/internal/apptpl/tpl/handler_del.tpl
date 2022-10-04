@@ -13,30 +13,31 @@ import (
 
 
 type {{.AppName}}Del struct {
-    ctx    *gin.Context
-	serctx *serctx.ServerContext
+	*hd.Hd
+    ctx *gin.Context
+	sc  *serctx.ServerContext
 }
 
-func New{{.AppName}}Del (ctx *gin.Context,serCtx *serctx.ServerContext) irouter.IHandler {
-	return &{{.AppName}}Del{ctx, serCtx}
+func New{{.AppName}}Del (ctx *gin.Context,sc *serctx.ServerContext) irouter.IHandler {
+	return &{{.AppName}}Del{hd.NewHd(ctx),ctx, sc}
 }
 
 func (this *{{.AppName}}Del) Do() error {
 	var err error
-	id, err := hd.GetId(this.ctx)
+	id, err := this.GetId()
 	if err != nil {
 		return err
 	}
 	if err := this.Delete(id); err != nil {
 		return err
 	} else {
-		hd.RepOk(this.ctx)
+		this.RepOk()
 		return nil
 	}
 }
 
 func (this *{{.AppName}}Del) Delete(id int64) error {
-	db := this.serctx.Db
+	db := this.sc.Db
 	po := &{{.ModelPackage}}.{{.ModelName}}{}
 	po.ID = id
 	if r := db.Take(po); r.Error != nil {

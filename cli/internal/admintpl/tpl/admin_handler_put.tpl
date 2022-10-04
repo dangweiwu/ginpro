@@ -13,22 +13,24 @@ import (
 	"gorm.io/gorm"
 )
 
+
 type AdminPut struct {
-	ctx    *gin.Context
-	serctx *serctx.ServerContext
+	*hd.Hd
+	ctx *gin.Context
+	sc  *serctx.ServerContext
 }
 
-func NewAdminPut(ctx *gin.Context, serCtx *serctx.ServerContext) irouter.IHandler {
-	return &AdminPut{ctx, serCtx}
+func NewAdminPut(ctx *gin.Context, sc *serctx.ServerContext) irouter.IHandler {
+	return &AdminPut{hd.NewHd(ctx),ctx, sc}
 }
 func (this *AdminPut) Do() error {
 	var err error
-	id, err := hd.GetId(this.ctx)
+	id, err := this.GetId()
 	if err != nil {
 		return err
 	}
 	po := &adminmodel.AdminPo2{}
-	err = hd.Bind(this.ctx, po)
+	err = this.Bind(po)
 	if err != nil {
 		return err
 	}
@@ -37,11 +39,11 @@ func (this *AdminPut) Do() error {
 	if err != nil {
 		return err
 	}
-	hd.RepOk(this.ctx)
+	this.RepOk()
 	return nil
 }
 func (this *AdminPut) Put(po *adminmodel.AdminPo2) error {
-	db := this.serctx.Db
+	db := this.sc.Db
 	tmpPo := &adminmodel.AdminPo2{}
 	tmpPo.ID = po.ID
 	if r := db.Model(tmpPo).Take(tmpPo); r.Error != nil {
@@ -72,7 +74,7 @@ func (this *AdminPut) Put(po *adminmodel.AdminPo2) error {
 	}
 	//踢掉禁用人员
 	if tmpPo.Status == "1" && po.Status == "0" {
-		this.serctx.Redis.Del(adminmodel.GetAdminId(int(uid)))
+		this.sc.Redis.Del(adminmodel.GetAdminId(int(uid)))
 	}
 
 	return nil
@@ -81,7 +83,7 @@ func (this *AdminPut) Put(po *adminmodel.AdminPo2) error {
 func (this *AdminPut) Valid(po *adminmodel.AdminPo2) error {
 	var ct = int64(0)
 	if po.Phone != "" {
-		if r := this.serctx.Db.Model(po).Where("account = ?", po.Phone).Count(&ct); r.Error != nil {
+		if r := this.sc.Db.Model(po).Where("account = ?", po.Phone).Count(&ct); r.Error != nil {
 			return errs.WithMessage(r.Error, "校验失败")
 		} else if ct != 0 {
 			return errors.New("手机号已存在")
@@ -89,7 +91,7 @@ func (this *AdminPut) Valid(po *adminmodel.AdminPo2) error {
 	}
 
 	if po.Email != "" {
-		if r := this.serctx.Db.Model(po).Where("Email = ?", po.Email).Count(&ct); r.Error != nil {
+		if r := this.sc.Db.Model(po).Where("Email = ?", po.Email).Count(&ct); r.Error != nil {
 			return errs.WithMessage(r.Error, "校验失败")
 		} else if ct != 0 {
 			return errors.New("Email已存在")

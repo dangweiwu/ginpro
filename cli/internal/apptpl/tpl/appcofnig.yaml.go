@@ -1,9 +1,9 @@
 package tpl
 
 type AppTplConfig struct {
-	Module string `validate:"empty=false"`
+	Module string
 
-	AppName    string `validate:"empty=false"`
+	AppName    string
 	AppPackage string //自动生成
 
 	// ObjName      string `validate:"empty=false"`

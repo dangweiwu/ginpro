@@ -11,7 +11,6 @@ import (
 
 	"github.com/gin-gonic/gin"
 )
-
 /*
 修改我的密码
 */
@@ -21,12 +20,13 @@ type PasswordForm struct {
 }
 
 type MySetPwd struct {
-	ctx    *gin.Context
-	serctx *serctx.ServerContext
+	*hd.Hd
+	ctx *gin.Context
+	sc  *serctx.ServerContext
 }
 
-func NewMySetPwd(ctx *gin.Context, serCtx *serctx.ServerContext) irouter.IHandler {
-	return &MySetPwd{ctx, serCtx}
+func NewMySetPwd(ctx *gin.Context, sc *serctx.ServerContext) irouter.IHandler {
+	return &MySetPwd{hd.NewHd(ctx),ctx, sc}
 }
 func (this *MySetPwd) Do() error {
 	var err error
@@ -34,7 +34,7 @@ func (this *MySetPwd) Do() error {
 
 	po := &PasswordForm{}
 
-	err = hd.Bind(this.ctx, po)
+	err = this.Bind(po)
 	if err != nil {
 		return err
 	}
@@ -42,13 +42,13 @@ func (this *MySetPwd) Do() error {
 	if err != nil {
 		return err
 	}
-	hd.RepOk(this.ctx)
+	this.RepOk()
 	return nil
 }
 
 func (this *MySetPwd) SetPwd(form *PasswordForm, id int64) error {
 	po := &adminmodel.AdminPo{}
-	if r := this.serctx.Db.Model(po).Where("id=?", id).Take(po); r.Error != nil {
+	if r := this.sc.Db.Model(po).Where("id=?", id).Take(po); r.Error != nil {
 		return r.Error
 	}
 
@@ -57,8 +57,8 @@ func (this *MySetPwd) SetPwd(form *PasswordForm, id int64) error {
 		return errors.New("原密码错误")
 	}
 	po.Password = pkg.GetPassword(form.NewPassword)
-	r := this.serctx.Db.Model(po).Select("password").Updates(po)
+	r := this.sc.Db.Model(po).Select("password").Updates(po)
 
-	this.serctx.Redis.Del(adminmodel.GetAdminId(int(po.ID)))
+	this.sc.Redis.Del(adminmodel.GetAdminId(int(po.ID)))
 	return r.Error
 }

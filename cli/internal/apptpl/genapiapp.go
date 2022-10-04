@@ -28,8 +28,8 @@ func NewApiApp(cfg tpl.AppTplConfig) (*ApiApp, error) {
 	}
 	a := &ApiApp{}
 	cfg.AppPackage = strings.ToLower(cfg.AppName)
-	// a.root = path.Join(wd, cfg.AppPackage)
-	a.root = wd
+	a.root = path.Join(wd, cfg.AppPackage)
+	// a.root = wd
 	cfg.ModelPackage = strings.ToLower(cfg.ModelName) + "model"
 	cfg.ModelName = cfg.ModelName + "Po"
 
@@ -37,11 +37,10 @@ func NewApiApp(cfg tpl.AppTplConfig) (*ApiApp, error) {
 	return a, nil
 }
 
-//创建所有文件夹
+// 创建所有文件夹
 func (this *ApiApp) Mkdirs() error {
-	// root := path.Join(this.root, this.cfg.AppPackage)
 	name := []string{"handler"}
-	if len(this.cfg.TableName) !=0{
+	if len(this.cfg.TableName) != 0 {
 		name = append(name, this.cfg.ModelPackage)
 	}
 	for _, v := range name {
@@ -63,15 +62,15 @@ func GenTpl(tpl string, value interface{}, f string) error {
 	return nil
 }
 
-//创建文件
-//生成路由
+// 创建文件
+// 生成路由
 func (this *ApiApp) GenRouter() error {
 
 	f := path.Join(this.root, "router.go")
 	return GenTpl(tpl.RouterTpl, this.cfg, f)
 }
 
-//生成model 数据
+// 生成model 数据
 func (this *ApiApp) GenModel() error {
 
 	f := path.Join(this.root, this.cfg.ModelPackage)
@@ -152,7 +151,7 @@ func GenTemplate(name string, cfg tpl.AppTplConfig) error {
 	}
 	switch name {
 	case "all":
-		if len(a.cfg.TableName) != 0{
+		if len(a.cfg.TableName) != 0 {
 			if err := a.GenModel(); err != nil {
 				return err
 			}
@@ -173,7 +172,7 @@ func GenTemplate(name string, cfg tpl.AppTplConfig) error {
 		if err := a.GenRouter(); err != nil {
 			return err
 		}
-		fmt.Println("app 模板生成")
+		fmt.Printf("%s 生成\n", cfg.AppName)
 		return nil
 
 	case "model":

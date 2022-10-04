@@ -11,30 +11,32 @@ import (
     "{{.Module}}/internal/serctx"
 )
 
+
 type AdminDel struct {
-	ctx    *gin.Context
-	serctx *serctx.ServerContext
+	*hd.Hd
+	ctx *gin.Context
+	sc  *serctx.ServerContext
 }
 
-func NewAdminDel(ctx *gin.Context, serCtx *serctx.ServerContext) irouter.IHandler {
-	return &AdminDel{ctx, serCtx}
+func NewAdminDel(ctx *gin.Context, sc *serctx.ServerContext) irouter.IHandler {
+	return &AdminDel{hd.NewHd(ctx),ctx, sc}
 }
 func (this *AdminDel) Do() error {
 	var err error
-	id, err := hd.GetId(this.ctx)
+	id, err := this.GetId()
 	if err != nil {
 		return err
 	}
 	if err := this.Delete(id); err != nil {
 		return err
 	} else {
-		hd.RepOk(this.ctx)
+		this.RepOk()
 		return nil
 	}
 }
 
 func (this *AdminDel) Delete(id int64) error {
-	db := this.serctx.Db
+	db := this.sc.Db
 	po := &adminmodel.AdminPo{}
 	po.ID = id
 	if r := db.Take(po); r.Error != nil {

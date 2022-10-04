@@ -14,9 +14,9 @@ type Router struct {
 	Jwt  *gin.RouterGroup //jwt登陆
 }
 
-func NewRouter(g *gin.Engine, c *serctx.ServerContext) *Router {
+func NewRouter(g *gin.Engine, sc *serctx.ServerContext) *Router {
 	return &Router{
 		Root: g.Group("/api"),
-		//Jwt:  g.Group("/api", middler.JwtMiddle(c.Config.Jwt)),
+		//Jwt:  g.Group("/api", middler.JwtMiddle(sc.Config.Jwt)),
 	}
 }

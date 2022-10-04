@@ -13,23 +13,23 @@ import (
 	"gorm.io/gorm"
 )
 
+
 /*
 重置账号密码
 */
 
-//重置密码
 type ResetPassword struct {
-	ctx    *gin.Context
-	serctx *serctx.ServerContext
+	*hd.Hd
+	ctx *gin.Context
+	sc  *serctx.ServerContext
 }
 
-//
-func NewResetPassword(ctx *gin.Context, serCtx *serctx.ServerContext) irouter.IHandler {
-	return &ResetPassword{ctx, serCtx}
+func NewResetPassword(ctx *gin.Context, sc *serctx.ServerContext) irouter.IHandler {
+	return &ResetPassword{hd.NewHd(ctx),ctx, sc}
 }
 func (this *ResetPassword) Do() error {
 	var err error
-	id, err := hd.GetId(this.ctx)
+	id, err := this.GetId()
 	if err != nil {
 		return err
 	}
@@ -39,7 +39,7 @@ func (this *ResetPassword) Do() error {
 	if err != nil {
 		return err
 	}
-	hd.RepOk(this.ctx)
+	this.RepOk()
 	return nil
 }
 
@@ -54,7 +54,7 @@ func (this *ResetPassword) ResetPassword(rawPo *adminmodel.AdminPo) error {
 	}
 
 	po := &adminmodel.AdminPo{}
-	if r := this.serctx.Db.Model(po).Where("id=?", rawPo.ID).Take(po); r.Error != nil {
+	if r := this.sc.Db.Model(po).Where("id=?", rawPo.ID).Take(po); r.Error != nil {
 		if r.Error == gorm.ErrRecordNotFound {
 			return errors.New("记录不存在")
 		} else {
@@ -62,10 +62,10 @@ func (this *ResetPassword) ResetPassword(rawPo *adminmodel.AdminPo) error {
 		}
 	}
 
-	pwd := pkg.GetPassword(this.serctx.Config.Admin.RawPassword)
-	r := this.serctx.Db.Model(po).Update("password", pwd)
+	pwd := pkg.GetPassword(this.sc.Config.Admin.RawPassword)
+	r := this.sc.Db.Model(po).Update("password", pwd)
 
 	//踢出在线
-	this.serctx.Redis.Del(adminmodel.GetAdminId(int(po.ID)))
+	this.sc.Redis.Del(adminmodel.GetAdminId(int(po.ID)))
 	return r.Error
 }

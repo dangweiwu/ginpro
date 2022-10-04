@@ -101,6 +101,8 @@ func (this *Query) Where(r *gorm.DB) *gorm.DB {
 	return r
 }
 
+
+
 func (this *Query) GetResult() interface{} {
 	if this.Page == nil {
 		return &QueryAllResult{this.Pos}

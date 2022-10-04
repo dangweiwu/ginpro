@@ -13,6 +13,17 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+
+type ReflashToken struct {
+	*hd.Hd
+	ctx *gin.Context
+	sc  *serctx.ServerContext
+}
+
+func NewReflashToken(ctx *gin.Context, sc *serctx.ServerContext) irouter.IHandler {
+	return &ReflashToken{hd.NewHd(ctx),ctx, sc}
+}
+
 func (this *ReflashToken) Do() error {
 
 	//数据源
@@ -21,17 +32,8 @@ func (this *ReflashToken) Do() error {
 		return err
 	}
 
-	hd.Rep(this.ctx, data)
+	this.Rep(data)
 	return nil
-}
-
-type ReflashToken struct {
-	ctx    *gin.Context
-	serctx *serctx.ServerContext
-}
-
-func NewReflashToken(ctx *gin.Context, serCtx *serctx.ServerContext) irouter.IHandler {
-	return &ReflashToken{ctx, serCtx}
 }
 
 func (this *ReflashToken) ReflashToken() (interface{}, error) {
@@ -48,18 +50,18 @@ func (this *ReflashToken) ReflashToken() (interface{}, error) {
 
 	now := time.Now().Unix()
 	if token, err := jwtx.GenToken(
-		this.serctx.Config.Jwt.Secret,
-		now+this.serctx.Config.Jwt.Exp,
-		now+this.serctx.Config.Jwt.Exp/2,
+		this.sc.Config.Jwt.Secret,
+		now+this.sc.Config.Jwt.Exp,
+		now+this.sc.Config.Jwt.Exp/2,
 		uid, 
-		logincode
+		logincode,
 	); err != nil {
-		return nil, hd.ErrMsg("刷新失败", "jwt:"+err.Error())
+		return nil, this.ErrMsg("刷新失败", "jwt:"+err.Error())
 	} else {
 		// this.ctx.Header("Authorization", token)
 		return map[string]interface{}{
 			"Authorization": token,
-			"Fresh":         now + this.serctx.Config.Jwt.Exp/2,
+			"Fresh":         now + this.sc.Config.Jwt.Exp/2,
 		}, nil
 	}
 }

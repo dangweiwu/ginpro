@@ -13,12 +13,13 @@ import (
 )
 
 type InitAdmin struct {
-	ctx    *gin.Context
-	serctx *serctx.ServerContext
+	*hd.Hd
+	ctx *gin.Context
+	sc  *serctx.ServerContext
 }
 
-func NewInitAdmin(ctx *gin.Context, serCtx *serctx.ServerContext) irouter.IHandler {
-	return &InitAdmin{ctx, serCtx}
+func NewInitAdmin(ctx *gin.Context, sc *serctx.ServerContext) irouter.IHandler {
+	return &InitAdmin{hd.NewHd(ctx),ctx, sc}
 }
 
 func (this *InitAdmin) Do() error {
@@ -27,17 +28,18 @@ func (this *InitAdmin) Do() error {
 	po := &adminmodel.AdminPo{}
 	po.Name = "超级管理员"
 	po.Account = "admin"
-	po.Password = this.serctx.Config.Admin.RawPassword
+	po.Password = this.sc.Config.Admin.RawPassword
+	po.IsSuperAdmin = "1"
 	err := this.Create(po)
 	if err != nil {
 		return err
 	}
-	hd.RepOk(this.ctx)
+	this.RepOk()
 	return nil
 }
 
 func (this *InitAdmin) Create(po *adminmodel.AdminPo) error {
-	db := this.serctx.Db
+	db := this.sc.Db
 	//验证是否已创建 或者其他检查
 	if err := this.Valid(po); err != nil {
 		return err
@@ -52,7 +54,7 @@ func (this *InitAdmin) Create(po *adminmodel.AdminPo) error {
 }
 
 func (this *InitAdmin) Valid(po *adminmodel.AdminPo) error {
-	db := this.serctx.Db
+	db := this.sc.Db
 	var ct = int64(0)
 	if r := db.Model(po).Where("account = ?", po.Account).Count(&ct); r.Error != nil {
 		return errs.WithMessage(r.Error, "校验失败")

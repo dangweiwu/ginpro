@@ -30,7 +30,7 @@ func LoginCodeErrResponse2(ctx *gin.Context) {
 	ctx.Abort()
 }
 
-func LoginCode(serCtx *serctx.ServerContext) gin.HandlerFunc {
+func LoginCode(sc *serctx.ServerContext) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		code, err := jwtx.GetCode(c)
 		if err != nil {
@@ -43,7 +43,7 @@ func LoginCode(serCtx *serctx.ServerContext) gin.HandlerFunc {
 			return
 		}
 
-		logincode, err := serCtx.Redis.Get(adminmodel.RedisPre + strconv.Itoa(int(uid))).Result()
+		logincode, err := sc.Redis.Get(adminmodel.RedisPre + strconv.Itoa(int(uid))).Result()
 		if err != nil {
 			if err == redis.Nil {
 				LoginCodeErrResponse(c)

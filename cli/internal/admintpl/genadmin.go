@@ -126,6 +126,18 @@ func (this *AdminTpl) genMiddler() error {
 	if err := utils.GenTpl(tpl.MidTokenTpl, this.Module, tmp); err != nil {
 		return err
 	}
+
+	tmp = path.Join(this.MiddlerFile, "httplog.go")
+	if err := utils.GenTpl(tpl.MidHttplog, this.Module, tmp); err != nil {
+		return err
+	}
+
+	tmp = path.Join(this.MiddlerFile, "recover.go")
+	if err := utils.GenTpl(tpl.MidRecover, this.Module, tmp); err != nil {
+		return err
+	}
+
+
 	return nil
 }
 
@@ -180,10 +192,10 @@ func (this *AdminTpl) genAdmin() error {
 		return err
 	}
 
-	tmp = path.Join(appFile, "tpl.yaml")
-	if err := utils.GenTpl(tpl.AppYaml, this.Module, tmp); err != nil {
-		return err
-	}
+	// tmp = path.Join(appFile, "tpl.yaml")
+	// if err := utils.GenTpl(tpl.AppYaml, this.Module, tmp); err != nil {
+	// 	return err
+	// }
 
 	adminmodelFile := path.Join(this.AdminFile, "adminmodel")
 	if !utils.IsExists(adminmodelFile) {

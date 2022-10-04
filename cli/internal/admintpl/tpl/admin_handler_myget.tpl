@@ -18,12 +18,13 @@ import (
 获取我的信息
 */
 type MyInfo struct {
+	*hd.Hd
 	ctx    *gin.Context
-	serctx *serctx.ServerContext
+	sc *serctx.ServerContext
 }
 
-func NewMyInfo(ctx *gin.Context, serCtx *serctx.ServerContext) irouter.IHandler {
-	return &MyInfo{ctx, serCtx}
+func NewMyInfo(ctx *gin.Context, sc *serctx.ServerContext) irouter.IHandler {
+	return &MyInfo{hd.NewHd(ctx),ctx, sc}
 }
 
 func (this *MyInfo) Do() error {
@@ -34,13 +35,13 @@ func (this *MyInfo) Do() error {
 	}
 
 	po := &adminmodel.AdminPo3{}
-	if r := this.serctx.Db.Model(po).Where("id = ?", uid).Take(po); r.Error != nil {
+	if r := this.sc.Db.Model(po).Where("id = ?", uid).Take(po); r.Error != nil {
 		if r.Error == gorm.ErrRecordNotFound {
 			return errors.New("记录不存在")
 		} else {
 			return r.Error
 		}
 	}
-	hd.Rep(this.ctx, po)
+	this.Rep( po)
 	return nil
 }

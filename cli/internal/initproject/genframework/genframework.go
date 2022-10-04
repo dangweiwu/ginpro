@@ -39,8 +39,8 @@ var (
 	//go:embed tpl/regdb.tpl
 	RegDbTpl string
 
-	//go:embed tpl/appconfigyaml.tpl
-	AppConfigTpl string
+	//// go:embed tpl/appconfigyaml.tpl
+	// AppConfigTpl string
 
 	//go:embed tpl/configyaml.tpl
 	ConfigYamlTpl string
@@ -59,7 +59,7 @@ func NewGenFramework(name string) (*GenFramework, error) {
 	return &GenFramework{RootFile: name, pwd: wd}, nil
 }
 
-//创建目录
+// 创建目录
 func (this *GenFramework) genFrameworkDir() error {
 
 	pt := path.Join(this.pwd, this.RootFile)
@@ -120,7 +120,7 @@ func (this *GenFramework) genFrameworkDir() error {
 	return nil
 }
 
-//创建go文件
+// 创建go文件
 func (this *GenFramework) GenGoFile() error {
 	root := path.Join(this.pwd, this.RootFile)
 	vl := tpl.ModuleValue{Module: this.RootFile}
@@ -150,7 +150,7 @@ func (this *GenFramework) GenGoFile() error {
 		return err
 	}
 
-	routeri := path.Join(internal, "router","irouter", "irouter.go")
+	routeri := path.Join(internal, "router", "irouter", "irouter.go")
 	if err := utils.GenTpl(RouterI, vl, routeri); err != nil {
 		return err
 	}
@@ -165,10 +165,10 @@ func (this *GenFramework) GenGoFile() error {
 		return err
 	}
 
-	apicfg := path.Join(internal, "app", "tpl.yaml")
-	if err := utils.GenTpl(AppConfigTpl, vl, apicfg); err != nil {
-		return err
-	}
+	// apicfg := path.Join(internal, "app", "tpl.yaml")
+	// if err := utils.GenTpl(AppConfigTpl, vl, apicfg); err != nil {
+	// 	return err
+	// }
 
 	configyaml := path.Join(root, "config", "config.yaml")
 	if err := utils.GenTpl(ConfigYamlTpl, vl, configyaml); err != nil {

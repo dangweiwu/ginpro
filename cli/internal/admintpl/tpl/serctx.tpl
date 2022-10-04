@@ -21,12 +21,12 @@ type ServerContext struct {
 
 func NewServerContext(c config.Config) (*ServerContext, error) {
 	//初始化日志
-	svc := &ServerContext{}
-	svc.Config = c
+	sc := &ServerContext{}
+	sc.Config = c
 	if lg, err := logx.NewLogx(c.Log); err != nil {
 		return nil, err
 	} else {
-		svc.Log = lg
+		sc.Log = lg
 	}
 
 	//初始化数据库
@@ -36,8 +36,8 @@ func NewServerContext(c config.Config) (*ServerContext, error) {
 	} else {
 		d.Logger = logger.Default.LogMode(logger.Info)
 		d.Debug()
-		svc.Db = d
-		svc.Log.Info("数据库初始化完成")
+		sc.Db = d
+		sc.Log.Info("数据库初始化完成")
 
 	}
 
@@ -45,10 +45,10 @@ func NewServerContext(c config.Config) (*ServerContext, error) {
 	if redisCli, err := redisx.NewRedis(c.Redis).GetDb(); err != nil {
 		return nil, errs.WithMessage(err, "err init redis")
 	} else {
-		svc.Redis = redisCli
-		svc.Log.Info("redis初始化完成")
+		sc.Redis = redisCli
+		sc.Log.Info("redis初始化完成")
 
 	}
 
-	return svc, nil
+	return sc, nil
 }

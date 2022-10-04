@@ -13,19 +13,20 @@ import (
 )
 
 type AdminPost struct {
-	ctx    *gin.Context
-	serctx *serctx.ServerContext
+	*hd.Hd
+	ctx *gin.Context
+	sc  *serctx.ServerContext
 }
 
-func NewAdminPost(ctx *gin.Context, serCtx *serctx.ServerContext) irouter.IHandler {
-	return &AdminPost{ctx, serCtx}
+func NewAdminPost(ctx *gin.Context, sc *serctx.ServerContext) irouter.IHandler {
+	return &AdminPost{hd.NewHd(ctx),ctx, sc}
 }
 
 func (this *AdminPost) Do() error {
 
 	//数据源
 	po := &adminmodel.AdminPo{}
-	err := hd.Bind(this.ctx, po)
+	err := this.Bind(po)
 	if err != nil {
 		return err
 	}
@@ -33,12 +34,12 @@ func (this *AdminPost) Do() error {
 	if err != nil {
 		return err
 	}
-	hd.RepOk(this.ctx)
+	this.RepOk()
 	return nil
 }
 
 func (this *AdminPost) Post(po *adminmodel.AdminPo) error {
-	db := this.serctx.Db
+	db := this.sc.Db
 	//验证是否已创建 或者其他检查
 	if err := this.Valid(po); err != nil {
 		return err
@@ -53,7 +54,7 @@ func (this *AdminPost) Post(po *adminmodel.AdminPo) error {
 }
 
 func (this *AdminPost) Valid(po *adminmodel.AdminPo) error {
-	db := this.serctx.Db
+	db := this.sc.Db
 	var ct = int64(0)
 	if r := db.Model(po).Where("account = ?", po.Account).Count(&ct); r.Error != nil {
 		return errs.WithMessage(r.Error, "校验失败")

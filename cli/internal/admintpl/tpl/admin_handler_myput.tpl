@@ -15,9 +15,21 @@ import (
 	"gorm.io/gorm"
 )
 
+
 /*
 修改我的信息
 */
+
+type MyPut struct {
+	*hd.Hd
+	ctx    *gin.Context
+	sc     *serctx.ServerContext
+}
+
+func NewMyPut(ctx *gin.Context, sc *serctx.ServerContext) irouter.IHandler {
+	return &MyPut{hd.NewHd(ctx),ctx, sc}
+}
+
 
 func (this *MyPut) Do() error {
 	var err error
@@ -25,7 +37,7 @@ func (this *MyPut) Do() error {
 
 	po := &adminmodel.AdminPo4{}
 
-	err = hd.Bind(this.ctx, po)
+	err = this.Bind(po)
 	if err != nil {
 		return err
 	}
@@ -34,23 +46,14 @@ func (this *MyPut) Do() error {
 	if err != nil {
 		return err
 	}
-	hd.RepOk(this.ctx)
+	this.RepOk()
 	return nil
-}
-
-type MyPut struct {
-	ctx    *gin.Context
-	serctx *serctx.ServerContext
-}
-
-func NewMyPut(ctx *gin.Context, serCtx *serctx.ServerContext) irouter.IHandler {
-	return &MyPut{ctx, serCtx}
 }
 
 func (this *MyPut) Put(rawpo *adminmodel.AdminPo4) error {
 	po := &adminmodel.AdminPo4{}
 	//校验
-	if r := this.serctx.Db.Model(po).Where("id=?", rawpo.ID).Take(po); r.Error != nil {
+	if r := this.sc.Db.Model(po).Where("id=?", rawpo.ID).Take(po); r.Error != nil {
 		if r.Error == gorm.ErrRecordNotFound {
 			return errors.New("记录不存在")
 		} else {
@@ -62,7 +65,7 @@ func (this *MyPut) Put(rawpo *adminmodel.AdminPo4) error {
 		return err
 	}
 	//更新
-	if r := this.serctx.Db.Model(rawpo).Where("id=?", rawpo.ID).Select("phone", "name", "memo", "email").Updates(rawpo); r.Error != nil {
+	if r := this.sc.Db.Model(rawpo).Where("id=?", rawpo.ID).Select("phone", "name", "memo", "email").Updates(rawpo); r.Error != nil {
 		return r.Error
 	}
 	return nil
@@ -73,7 +76,7 @@ func (this *MyPut) valid(po *adminmodel.AdminPo4) error {
 	var ct = int64(0)
 
 	if po.Phone != "" {
-		if r := this.serctx.Db.Model(po).Where("account = ?", po.Phone).Count(&ct); r.Error != nil {
+		if r := this.sc.Db.Model(po).Where("account = ?", po.Phone).Count(&ct); r.Error != nil {
 			return errs.WithMessage(r.Error, "校验失败")
 		} else if ct != 0 {
 			return errors.New("手机号已存在")
@@ -81,7 +84,7 @@ func (this *MyPut) valid(po *adminmodel.AdminPo4) error {
 	}
 
 	if po.Email != "" {
-		if r := this.serctx.Db.Model(po).Where("Email = ?", po.Email).Count(&ct); r.Error != nil {
+		if r := this.sc.Db.Model(po).Where("Email = ?", po.Email).Count(&ct); r.Error != nil {
 			return errs.WithMessage(r.Error, "校验失败")
 		} else if ct != 0 {
 			return errors.New("Email已存在")

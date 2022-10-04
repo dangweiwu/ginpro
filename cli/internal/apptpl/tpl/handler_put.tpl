@@ -14,23 +14,24 @@ import (
 
 
 type {{.AppName}}Put struct {
+	*hd.Hd
     ctx    *gin.Context
-	serctx *serctx.ServerContext
+	sc *serctx.ServerContext
 }
 
-func New{{.AppName}}Put (ctx *gin.Context,serCtx *serctx.ServerContext) irouter.IHandler{
-	return &{{.AppName}}Put{ctx, serCtx}
+func New{{.AppName}}Put (ctx *gin.Context,sc *serctx.ServerContext) irouter.IHandler{
+	return &{{.AppName}}Put{hd.NewHd(ctx),ctx, sc}
 }
 
 
 func (this *{{.AppName}}Put) Do() error {
 	var err error
-	id, err := hd.GetId(this.ctx)
+	id, err := this.GetId()
 	if err != nil {
 		return err
 	}
 	po := &{{.ModelPackage}}.{{.ModelName}}{}
-	err = hd.Bind(this.ctx, po)
+	err = this.Bind(po)
 	if err != nil {
 		return err
 	}
@@ -39,12 +40,12 @@ func (this *{{.AppName}}Put) Do() error {
 	if err != nil {
 		return err
 	}
-	hd.RepOk(this.ctx)
+	this.RepOk()
 	return nil
 }
 
 func (this *{{.AppName}}Put) Put(po *{{.ModelPackage}}.{{.ModelName}}) error {
-    db := this.serctx.Db
+    db := this.sc.Db
 	tmpPo := &{{.ModelPackage}}.{{.ModelName}}{}
 	if r := db.Model(tmpPo).Take(tmpPo); r.Error != nil {
 		if r.Error == gorm.ErrRecordNotFound {

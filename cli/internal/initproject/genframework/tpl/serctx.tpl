@@ -2,7 +2,6 @@ package serctx
 
 import (
 	"{{.Module}}/internal/config"
-	"errors"
 	"gs/pkg/logx"
 	"gs/pkg/mysqlx"
 	errs "github.com/pkg/errors"
@@ -23,9 +22,6 @@ func NewServerContext(c config.Config) (*ServerContext, error) {
 	if lg, err := logx.NewLogx(c.Log); err != nil {
 		return nil, errs.WithMessage(err, "err init log")
 	} else {
-		//打开日志功能
-		d.Logger = logger.Default.LogMode(logger.Info)
-		d.Debug()
 		svc.Log = lg
 	}
 

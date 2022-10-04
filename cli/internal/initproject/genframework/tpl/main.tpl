@@ -13,6 +13,12 @@ import (
 var configFile = flag.String("f", "./config/config.yaml", "the config file")
 
 func main() {
+	//usage 自定义
+	flag.Usage = func(){
+		fmt.Println("{{.Module}} v1.0")
+		fmt.Println("main [tag]")
+		flag.PrintDefaults()
+	}
 	var c config.Config
 	flag.Parse()
 	yamconfig.MustLoad(*configFile, &c)
@@ -25,7 +31,7 @@ func main() {
 
 	//服务 NewApiServer 可用配置
 	server := apiserver.NewApiServer(c.Api, ctx.Log.Logger,
-		apiserver.WithStatic("/view", c.Api.StaticDir),
+		apiserver.WithStatic("/view", c.Api.ViewDir),
 	)
 
 	//注册路由

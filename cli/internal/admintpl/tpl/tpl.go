@@ -129,6 +129,12 @@ var (
 	//go:embed admin_handler_initadmin.tpl
 	AdminHandlerInitmain string
 
+	//go:embed mid_httplog.tpl
+	MidHttplog string
+
+	//go:embed mid_recover.tpl
+	MidRecover string
+
 
 	
 
