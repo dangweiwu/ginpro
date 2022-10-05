@@ -20,9 +20,7 @@ type ApiServer struct {
 	closeEvent map[string]func() error
 }
 
-func NewApiServer(cfg apiconfig.ApiConfig, lg *zap.Logger, opt ...ApiOpt) *ApiServer {
-
-	app := gin.Default()
+func NewApiServer(app *gin.Engine, cfg apiconfig.ApiConfig, lg *zap.Logger, opt ...ApiOpt) *ApiServer {
 
 	if !cfg.OpenGinLog {
 		gin.DefaultWriter = ioutil.Discard

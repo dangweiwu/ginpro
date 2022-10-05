@@ -29,6 +29,7 @@ func (this *Mysqlx) GetDb() (db *gorm.DB, err error) {
 				DisableForeignKeyConstraintWhenMigrating: true,
 			}
 			db, err = gorm.Open(mysql.Open(fmt.Sprintf(dsn, this.cfg.User, this.cfg.Password, this.cfg.Host, this.cfg.DbName)), dbcfg)
+			_db = db
 		})
 		return
 	} else {
