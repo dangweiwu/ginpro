@@ -1,8 +1,4 @@
-package mysqlx
-
-/*
-fake mysql数据库
-*/
+package mysqlfake
 
 import (
 	sqle "github.com/dolthub/go-mysql-server"
@@ -11,6 +7,10 @@ import (
 	"github.com/dolthub/go-mysql-server/sql"
 	"github.com/dolthub/go-mysql-server/sql/information_schema"
 )
+
+/*
+fake mysql数据库
+*/
 
 func FakeMysql(host, dbName string) *server.Server {
 	engine := sqle.NewDefault(

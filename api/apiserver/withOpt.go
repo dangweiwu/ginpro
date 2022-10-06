@@ -4,33 +4,32 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type ApiOpt func(*ApiServer)
+type ApiOpt func(engine *gin.Engine)
 
-//注册全局中间件
+// 注册全局中间件
 func WithMiddle(midf ...gin.HandlerFunc) ApiOpt {
-	return func(as *ApiServer) {
+	return func(as *gin.Engine) {
 		for _, v := range midf {
-			as.app.Use(v)
+			as.Use(v)
 		}
 	}
 }
 
-//注册静态
+// 注册静态
 func WithStatic(relativePath string, root string) ApiOpt {
-	return func(as *ApiServer) {
-		as.app.Static(relativePath, root)
-		as.app.GET("/", func(c *gin.Context) {
+	return func(as *gin.Engine) {
+		as.Static(relativePath, root)
+		as.GET("/", func(c *gin.Context) {
 			//重定向到主页面
 			c.Request.URL.Path = relativePath
-			as.app.HandleContext(c)
+			as.HandleContext(c)
 		})
 	}
 }
 
-
-//注册结束事件
-func WithStopEvent(name string, f func() error) ApiOpt {
-	return func(as *ApiServer) {
-		as.closeEvent[name] = f
+func RegMiddler(engine *gin.Engine, opt ...ApiOpt) {
+	for _, v := range opt {
+		v(engine)
 	}
+
 }

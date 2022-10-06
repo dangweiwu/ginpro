@@ -1,45 +1,44 @@
 package main
 
 import (
-	"flag"
-	"{{.Module}}/internal/config"
-	"{{.Module}}/internal/serctx"
-	"{{.Module}}/internal/app"
-	"{{.Module}}/internal/router"
-	"gs/pkg/yamconfig"
-	"gs/api/apiserver"
+    "{{.Module}}/cmd"
+    "{{.Module}}/internal/config"
+    "flag"
+    "fmt"
+    "gs/pkg/yamconfig"
+    "log"
+    "os"
 )
 
 var configFile = flag.String("f", "./config/config.yaml", "the config file")
 
 func main() {
-	//usage 自定义
-	flag.Usage = func(){
-		fmt.Println("{{.Module}} v1.0")
-		fmt.Println("main [tag]")
-		flag.PrintDefaults()
-	}
-	var c config.Config
+	flag.Usage = Usage
 	flag.Parse()
-	yamconfig.MustLoad(*configFile, &c)
 
-	//资源初始化
-	ctx, err := serctx.NewServerContext(c)
-	if err != nil {
-		panic(err)
+	var c config.Config
+	yamconfig.MustLoad(*configFile, &c)
+	if len(os.Args) < 2 {
+		flag.Usage()
+		os.Exit(1)
 	}
 
-	//服务 NewApiServer 可用配置
-	server := apiserver.NewApiServer(c.Api, ctx.Log.Logger,
-		apiserver.WithStatic("/view", c.Api.ViewDir),
-	)
+	cmder := os.Args[1]
+	switch cmder {
+	case "run":
+		cmd.Server(c)
+	default:
+        flag.Usage()
+        os.Exit(1)
+	}
+}
 
-	//注册路由
-	app.RegisterRoute(router.NewRouter(server.GetEngine(), ctx), ctx)
-
-	//注册数据库
-	app.Regdb(ctx)
-
-	//启动
-	server.Start()
+func Usage() {
+	fmt.Println("go server v1.0")
+	fmt.Println("main [cmd] [tag]")
+	fmt.Println("cmd:")
+	fmt.Println("   run: server run")
+    fmt.Println("   super: create or update super account")
+	fmt.Println("tag:")
+	flag.PrintDefaults()
 }

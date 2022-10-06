@@ -126,8 +126,8 @@ var (
 	// //go:embed admin_logic_mysetpwd.tpl
 	// AdminLogicMySetpwd string
 
-	//go:embed admin_handler_initadmin.tpl
-	AdminHandlerInitmain string
+	////go:embed admin_handler_initadmin.tpl
+	//AdminHandlerInitmain string
 
 	//go:embed mid_httplog.tpl
 	MidHttplog string
@@ -135,14 +135,12 @@ var (
 	//go:embed mid_recover.tpl
 	MidRecover string
 
+	//go:embed cmd_superman.tpl
+	CmdSuperTpl string
 
-	
+	//go:embed cmd_serve.tpl
+	CmdServeTpl string
 
-
-
-
-	
-
-
-	
+	//go:embed cmd_supertest.tpl
+	CmdSupertestTpl string
 )

@@ -25,6 +25,7 @@ type AdminTpl struct {
 	BaseConfigFile string
 	LogFile        string
 	pwd            string
+	CmdFile        string
 	Module         Module
 }
 
@@ -43,11 +44,12 @@ func NewGenAdmin(name string) (*AdminTpl, error) {
 	a.ConfigFile = path.Join(a.RootFile, "internal", "config")
 	a.BaseConfigFile = path.Join(a.RootFile, "config")
 	a.LogFile = path.Join(a.RootFile, "log")
+	a.CmdFile = path.Join(a.RootFile, "cmd")
 	a.Module = Module{name}
 	return a, nil
 }
 
-//创建基础目录
+// 创建基础目录
 func (this *AdminTpl) genDir() error {
 
 	if !utils.IsExists(this.AdminFile) {
@@ -97,6 +99,12 @@ func (this *AdminTpl) genDir() error {
 			return err
 		}
 	}
+	if !utils.IsExists(this.CmdFile) {
+		if err := os.MkdirAll(this.CmdFile, chmod); err != nil {
+			return err
+		}
+	}
+
 	return nil
 }
 
@@ -137,7 +145,6 @@ func (this *AdminTpl) genMiddler() error {
 		return err
 	}
 
-
 	return nil
 }
 
@@ -172,7 +179,7 @@ func (this *AdminTpl) genPkg() error {
 }
 
 func (this *AdminTpl) genAdmin() error {
-	
+
 	tmp := path.Join(this.AdminFile, "router.go")
 	if err := utils.GenTpl(tpl.AdminRouter, this.Module, tmp); err != nil {
 		return err
@@ -211,7 +218,6 @@ func (this *AdminTpl) genAdmin() error {
 		}
 	}
 
-
 	configFile := path.Join(this.AdminFile, "adminconfig")
 	if !utils.IsExists(configFile) {
 		if err := os.MkdirAll(configFile, chmod); err != nil {
@@ -223,8 +229,6 @@ func (this *AdminTpl) genAdmin() error {
 	if err := utils.GenTpl(tpl.AdminConfig, this.Module, tmp); err != nil {
 		return err
 	}
-
-
 
 	//model
 	tmp = path.Join(adminmodelFile, "const.go")
@@ -273,12 +277,11 @@ func (this *AdminTpl) genAdmin() error {
 		return err
 	}
 
-	tmp = path.Join(handlerFile, "initadmin.go")
-	if err := utils.GenTpl(tpl.AdminHandlerInitmain, this.Module, tmp); err != nil {
-		return err
-	}
+	//tmp = path.Join(handlerFile, "initadmin.go")
+	//if err := utils.GenTpl(tpl.AdminHandlerInitmain, this.Module, tmp); err != nil {
+	//	return err
+	//}
 
-	
 	tmp = path.Join(handlerFile, "resetPwd.go")
 	if err := utils.GenTpl(tpl.AdminHandlerResetpwd, this.Module, tmp); err != nil {
 		return err
@@ -298,7 +301,6 @@ func (this *AdminTpl) genAdmin() error {
 	if err := utils.GenTpl(tpl.AdminHandlerMySetpwd, this.Module, tmp); err != nil {
 		return err
 	}
-
 
 	//logic
 	// tmp = path.Join(logicFile, "del.go")
@@ -333,11 +335,10 @@ func (this *AdminTpl) genAdmin() error {
 
 	// adminrouter
 
-
 	return nil
 }
 
-//全局配置文件
+// 全局配置文件
 func (this *AdminTpl) genConfig() error {
 
 	tmp := path.Join(this.ConfigFile, "config.go")
@@ -353,9 +354,8 @@ func (this *AdminTpl) genConfig() error {
 	return nil
 }
 
-//router
+// router
 func (this *AdminTpl) genRouter() error {
-
 
 	tmp := path.Join(this.RouterFile, "do.go")
 	if err := utils.GenTpl(tpl.RouterDo, this.Module, tmp); err != nil {
@@ -367,7 +367,7 @@ func (this *AdminTpl) genRouter() error {
 		return err
 	}
 
-	irouter := path.Join(this.RouterFile,"irouter")	
+	irouter := path.Join(this.RouterFile, "irouter")
 	if !utils.IsExists(irouter) {
 		if err := os.MkdirAll(irouter, chmod); err != nil {
 			return err
@@ -381,12 +381,33 @@ func (this *AdminTpl) genRouter() error {
 	return nil
 }
 
-//main.go
+// main.go
 func (this *AdminTpl) genMain() error {
 	tmp := path.Join(this.RootFile, "main.go")
 	if err := utils.GenTpl(tpl.Main, this.Module, tmp); err != nil {
 		return err
 	}
+
+	return nil
+}
+
+func (this *AdminTpl) genCmd() error {
+	//cmd
+	tmp := path.Join(this.RootFile, "cmd", "superman.go")
+	if err := utils.GenTpl(tpl.CmdSuperTpl, this.Module, tmp); err != nil {
+		return err
+	}
+
+	tmp = path.Join(this.RootFile, "cmd", "server.go")
+	if err := utils.GenTpl(tpl.CmdServeTpl, this.Module, tmp); err != nil {
+		return err
+	}
+
+	tmp = path.Join(this.RootFile, "cmd", "superman_test.go")
+	if err := utils.GenTpl(tpl.CmdSupertestTpl, this.Module, tmp); err != nil {
+		return err
+	}
+
 	return nil
 }
 
@@ -401,6 +422,7 @@ func (this *AdminTpl) Do() error {
 		this.genRouter,
 		this.genAdmin,
 		this.genMain,
+		this.genCmd,
 	}
 	for _, v := range job {
 		if err := v(); err != nil {

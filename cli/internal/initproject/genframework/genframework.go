@@ -44,6 +44,12 @@ var (
 
 	//go:embed tpl/configyaml.tpl
 	ConfigYamlTpl string
+
+	//go:embed tpl/cmdserve.tpl
+	CmdServeTpl string
+	//
+	////go:embed tpl/cmdsuperman.tpl
+	//CmdSuperTpl string
 )
 
 type GenFramework struct {
@@ -71,49 +77,24 @@ func (this *GenFramework) genFrameworkDir() error {
 	if err := os.MkdirAll(pt, chmod); err != nil {
 		return err
 	}
-	configFile := path.Join(pt, "config")
-	if err := os.MkdirAll(configFile, chmod); err != nil {
-		return err
-	}
-	log := path.Join(pt, "log")
-	if err := os.MkdirAll(log, chmod); err != nil {
-		return err
+
+	for _, v := range []string{"config", "log", "internal", "cmd"} {
+		tmp := path.Join(pt, v)
+		if err := os.MkdirAll(tmp, chmod); err != nil {
+			return err
+		}
 	}
 	internal := path.Join(pt, "internal")
-	if err := os.MkdirAll(internal, chmod); err != nil {
-		return err
-	}
-	config := path.Join(internal, "config")
-	if err := os.MkdirAll(config, chmod); err != nil {
-		return err
-	}
-	middler := path.Join(internal, "middler")
-	if err := os.MkdirAll(middler, chmod); err != nil {
-		return err
-	}
 
+	for _, v := range []string{"config", "middler", "router", "serctx", "app", "pkg"} {
+		config := path.Join(internal, v)
+		if err := os.MkdirAll(config, chmod); err != nil {
+			return err
+		}
+	}
 	router := path.Join(internal, "router")
-	if err := os.MkdirAll(router, chmod); err != nil {
-		return err
-	}
-
 	routerI := path.Join(router, "irouter")
 	if err := os.MkdirAll(routerI, chmod); err != nil {
-		return err
-	}
-
-	serctx := path.Join(internal, "serctx")
-	if err := os.MkdirAll(serctx, chmod); err != nil {
-		return err
-	}
-
-	app := path.Join(internal, "app")
-	if err := os.MkdirAll(app, chmod); err != nil {
-		return err
-	}
-
-	pkg := path.Join(internal, "pkg")
-	if err := os.MkdirAll(pkg, chmod); err != nil {
 		return err
 	}
 
@@ -174,6 +155,16 @@ func (this *GenFramework) GenGoFile() error {
 	if err := utils.GenTpl(ConfigYamlTpl, vl, configyaml); err != nil {
 		return err
 	}
+
+	cmdserve := path.Join(root, "cmd", "server.go")
+	if err := utils.GenTpl(CmdServeTpl, vl, cmdserve); err != nil {
+		return err
+	}
+
+	//super := path.Join(root, "cmd", "superman.go")
+	//if err := utils.GenTpl(CmdSuperTpl, vl, super); err != nil {
+	//	return err
+	//}
 
 	return nil
 }

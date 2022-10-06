@@ -3,7 +3,7 @@ package mysqlx
 import (
 	"github.com/stretchr/testify/assert"
 	"gorm.io/gorm"
-	"gs/pkg/mysqlx/mysqlxconfig"
+	"gs/pkg/mysqlx/initmysqlfake"
 	"log"
 	"testing"
 )
@@ -11,21 +11,17 @@ import (
 func TestMain(m *testing.M) {
 	host := "localhost:3308"
 	dbName := "demo"
-	s := FakeMysql("localhost:3308", "demo")
-	cfg := mysqlxconfig.Mysql{
-		User:     "root",
-		Password: "root",
-		Host:     host,
-		DbName:   dbName,
-	}
-	_, err := NewDb(cfg).GetDb()
+	s, db := initmysqlfake.InitFakeDb(host, dbName, "", 2)
+	err := db.AutoMigrate(&Demo{})
 	if err != nil {
 		panic(err)
+
 	}
+
 	log.Println("数据库初始化完毕")
 	m.Run()
 	log.Println("测试运行完毕")
-	s.Close()
+	s()
 }
 
 type Demo struct {
@@ -35,12 +31,8 @@ type Demo struct {
 }
 
 func TestFakeMysql(t *testing.T) {
-	db, err := NewDb(mysqlxconfig.Mysql{}).GetDb()
-	assert.Nil(t, err, "获取数据库实例失败")
+	db := GetDb()
 	assert.NotNil(t, db, "获取数据库失败")
-	//1. create table
-	err = db.AutoMigrate(&Demo{})
-	assert.Nil(t, err, "创建表失败")
 
 	//2. insert
 	demo := Demo{}

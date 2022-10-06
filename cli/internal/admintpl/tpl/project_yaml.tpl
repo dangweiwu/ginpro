@@ -17,7 +17,9 @@ Mysql:
   User: root	
   Password: "123456"
   Host: mysql:3306
-  DbName: 
+  DbName:
+  LogFile:
+  LogLevel: 1
 
 Redis:
   Addr: redis:6379

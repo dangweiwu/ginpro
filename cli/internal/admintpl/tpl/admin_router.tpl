@@ -7,9 +7,6 @@ import (
 )
 
 func Route(r *router.Router, sc *serctx.ServerContext) {
-	if sc.Config.Admin.InitAdmin {
-		r.Root.GET("/initadmin", router.Do(sc, handler.NewInitAdmin))
-	}
 
 	r.Jwt.GET("/admin", router.Do(sc, handler.NewAdminGet))
 
