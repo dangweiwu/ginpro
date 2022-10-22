@@ -74,7 +74,7 @@ func (this *AdminPut) Put(po *adminmodel.AdminPo2) error {
 	}
 	//踢掉禁用人员
 	if tmpPo.Status == "1" && po.Status == "0" {
-		this.sc.Redis.Del(adminmodel.GetAdminId(int(uid)))
+		this.sc.Redis.Del(adminmodel.GetAdminId(int(tmpPo.ID )))
 	}
 
 	return nil

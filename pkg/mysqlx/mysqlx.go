@@ -25,6 +25,7 @@ func NewDb(cfg mysqlxconfig.Mysql) *Mysqlx {
 }
 
 func (this *Mysqlx) GetDb() (db *gorm.DB, err error) {
+	//println("-----", this.cfg.LogLevel)
 	if _db == nil {
 		once.Do(func() {
 			dsn := "%s:%s@tcp(%s)/%s?charset=utf8mb4&parseTime=True&loc=Local"

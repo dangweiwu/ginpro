@@ -1,20 +1,20 @@
 package handler
 
 import (
+	"{{.Module}}/internal/app/admin/adminmodel"
+	"{{.Module}}/internal/pkg"
+	"{{.Module}}/internal/pkg/jwtx"
+	"{{.Module}}/internal/router/irouter"
+	"{{.Module}}/internal/serctx"
 	"errors"
 	"gs/api/hd"
 	"strings"
 	"time"
+
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 	"gorm.io/gorm"
-	"{{.Module}}/internal/app/admin/adminmodel"
-	"{{.Module}}/internal/pkg"
-	"{{.Module}}/internal/pkg/jwtx"
-	"{{.Module}}/internal/serctx"
-	"{{.Module}}/internal/router/irouter"
 )
-
 
 type LoginForm struct {
 	Account  string `binding:"required"`
@@ -57,7 +57,7 @@ func (this *AdminLogin) Login(form *LoginForm) (interface{}, error) {
 		return nil, errors.New("密码错误")
 	}
 
-	logincode, err := this.newCode(po.ID)
+	logincode, err := this.newLoginCode(po.ID)
 	if err != nil {
 		return nil, err
 	}
@@ -73,10 +73,14 @@ func (this *AdminLogin) Login(form *LoginForm) (interface{}, error) {
 		return nil, this.ErrMsg("登陆失败", "jwt:"+err.Error())
 	} else {
 		// this.ctx.Header("Authorization", token)
+		refleshToken,err := this.newRefreshToken(po.ID)
+		if err!=nil{
+			return nil,err
+		}
 		return map[string]interface{}{
-			"Authorization": token,
-			"Fresh":         now + this.sc.Config.Jwt.Exp/2,
-			// "FreshToken": ,
+			"AccessToken": token,
+			"RefreshAt":       now + this.sc.Config.Jwt.Exp/2,
+			"RefreshToken":refleshToken ,
 		}, nil
 	}
 }
@@ -102,7 +106,8 @@ func (this *AdminLogin) Valid(form *LoginForm) (*adminmodel.AdminPo, error) {
 	return po, nil
 }
 
-func (this *AdminLogin) newCode(id int64) (string, error) {
+
+func (this *AdminLogin) newLoginCode(id int64) (string, error) {
 	//登陆处理
 	//登陆code 控制唯一登陆有效及踢人
 	var logincode string
@@ -110,9 +115,25 @@ func (this *AdminLogin) newCode(id int64) (string, error) {
 		return "", this.ErrMsg("登陆失败", "logincode is empty")
 	} else {
 		logincode = strings.Split(logincode, "-")[0]
-		if r := this.sc.Redis.Set(adminmodel.GetAdminId(int(id)), logincode, 0); r.Err() != nil {
+		if r := this.sc.Redis.Set(adminmodel.GetAdminRedisLoginId(int(id)), logincode, 0); r.Err() != nil {
 			return "", this.ErrMsg("登陆失败", "redis:"+r.Err().Error())
 		}
 	}
 	return logincode, nil
+}
+
+
+//刷新token生成
+func(this *AdminLogin) newRefreshToken(id int64)(string,error){
+	var refreshToken string
+	if refreshToken = uuid.New().String(); refreshToken == "" {
+		return "", this.ErrMsg("登陆失败", "refreshToken is empty")
+	} else {
+		refreshToken = strings.Split(refreshToken, "-")[0]
+		if r := this.sc.Redis.Set(adminmodel.GetAdminRedisRefreshTokenId(int(id)), refreshToken, 0); r.Err() != nil {
+			return "", this.ErrMsg("登陆失败", "redis:"+r.Err().Error())
+		}else{
+			return refreshToken,nil
+		}
+	}
 }

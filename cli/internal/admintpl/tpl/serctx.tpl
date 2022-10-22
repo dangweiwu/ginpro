@@ -34,7 +34,6 @@ func NewServerContext(c config.Config) (*ServerContext, error) {
 	if d, err := db.GetDb(); err != nil {
 		return nil, errs.WithMessage(err, "err init db")
 	} else {
-		d.Logger = logger.Default.LogMode(logger.Info)
 		d.Debug()
 		sc.Db = d
 		sc.Log.Info("数据库初始化完成")
