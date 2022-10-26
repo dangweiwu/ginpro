@@ -27,4 +27,7 @@ func Route(r *router.Router, sc *serctx.ServerContext) {
 	r.Jwt.PUT("/admin/my", router.Do(sc, handler.NewMyPut))
 
 	r.Jwt.PUT("/admin/my/password", router.Do(sc, handler.NewMySetPwd))
+
+    r.Jwt.POST("/admin/my/logout", router.Do(sc, handler.NewLogOut))
+
 }

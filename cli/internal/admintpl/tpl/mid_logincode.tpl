@@ -8,15 +8,13 @@ import (
 	"{{.Module}}/internal/app/admin/adminmodel"
 	"{{.Module}}/internal/pkg/jwtx"
 	"{{.Module}}/internal/serctx"
-	"gs/api/hd"
-	"strconv"
-
 	"github.com/gin-gonic/gin"
 	"github.com/go-redis/redis"
+	"gs/api/hd"
 )
 
 func LoginCodeErrResponse(ctx *gin.Context) {
-	ctx.JSON(401, hd.ErrMsg("鉴权已失效", ""))
+	ctx.JSON(401, hd.ErrMsg("鉴权已失效", "code err"))
 	ctx.Abort()
 }
 
@@ -42,8 +40,8 @@ func LoginCode(sc *serctx.ServerContext) gin.HandlerFunc {
 			LoginCodeErrResponse1(c, err.Error())
 			return
 		}
-
-		logincode, err := sc.Redis.Get(adminmodel.RedisPre + strconv.Itoa(int(uid))).Result()
+		//fmt.Println("@@", adminmodel.GetAdminRedisLoginId(int(uid)))
+		logincode, err := sc.Redis.Get(adminmodel.GetAdminRedisLoginId(int(uid))).Result()
 		if err != nil {
 			if err == redis.Nil {
 				LoginCodeErrResponse(c)
@@ -52,6 +50,7 @@ func LoginCode(sc *serctx.ServerContext) gin.HandlerFunc {
 			}
 			return
 		}
+		//fmt.Println("@@", logincode)
 
 		if logincode != code {
 			LoginCodeErrResponse(c)

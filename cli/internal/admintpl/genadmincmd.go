@@ -20,7 +20,7 @@ var Cmd = &cobra.Command{
 	Short: "init project by admin",
 	Run: func(cmd *cobra.Command, args []string) {
 
-		if len(args)==0{
+		if len(args) == 0 {
 			fmt.Println("缺少项目名称")
 			cmd.Help()
 			os.Exit(1)
@@ -58,12 +58,11 @@ var Cmd = &cobra.Command{
 			fmt.Println()
 			fmt.Println("please run:")
 			fmt.Println()
-			fmt.Printf("cd %s &&\n" , args[0])
-			fmt.Printf("go mod init %s && \n" , args[0])
-			fmt.Printf("go mod tidy")
+			fmt.Printf("cd %s &&\n", args[0])
+			fmt.Printf("go mod init %s && \n", args[0])
+			fmt.Printf("go mod tidy && \n")
+			fmt.Printf("go work use .")
 			fmt.Println()
-
-
 
 		}
 	},

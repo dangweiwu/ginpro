@@ -17,8 +17,8 @@ import (
 )
 
 type LoginForm struct {
-	Account  string `binding:"required"`
-	Password string `binging:"required"`
+	Account  string `json:"account" binding:"required"`
+	Password string `json:"password" binging:"required"`
 }
 
 type AdminLogin struct {

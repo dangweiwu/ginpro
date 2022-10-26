@@ -48,6 +48,9 @@ var (
 	//go:embed admin_handler_login.tpl
 	AdminHandlerLogin string
 
+	//go:embed admin_handler_logout.tpl
+	AdminHandlerLogout string
+
 	//go:embed admin_handler_post.tpl
 	AdminHandlerPost string
 
@@ -143,4 +146,55 @@ var (
 
 	//go:embed cmd_supertest.tpl
 	CmdSupertestTpl string
+
+	//go:embed apptest/admin_test/admin_del_test.tpl
+	AdminDelTest string
+
+	//go:embed apptest/admin_test/admin_get_test.tpl
+	AdminGetTest string
+
+	//go:embed apptest/admin_test/admin_main_test.tpl
+	AdminMainTest string
+
+	//go:embed apptest/admin_test/admin_post_test.tpl
+	AdminPostTest string
+
+	//go:embed apptest/admin_test/admin_put_test.tpl
+	AdminPutTest string
+
+	//go:embed apptest/admin_test/admin_resetpwd_test.tpl
+	AdminResetpwdTest string
+
+	//go:embed apptest/admin_test/my_get_test.tpl
+	MyGetTest string
+
+	//go:embed apptest/admin_test/my_put_test.tpl
+	MyPutTest string
+
+	//go:embed apptest/admin_test/my_resetpwd_test.tpl
+	MyResetpwdTest string
+
+	//go:embed apptest/adminlogin_test/admin_login_test.tpl
+	AdminLoginTest string
+
+	//go:embed apptest/adminlogin_test/admin_logout_test.tpl
+	AdminLogoutTest string
+
+	//go:embed apptest/adminlogin_test/admin_main_test.tpl
+	AdminLoginMainTest string
+
+	//go:embed apptest/adminlogin_test/admin_refreshtoken_test.tpl
+	AdminRefreshtokenTest string
+
+	//go:embed apptest/adminmock/mock.tpl
+	AdminMock string
+
+	//go:embed apptest/adminmock/mock_test.tpl
+	AdminMockTest string
+
+	//go:embed apptest/total.awk
+	CoverAwkScript string
+
+	//go:embed apptest/Taskfile.yml
+	TestTask string
 )

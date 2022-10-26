@@ -71,7 +71,7 @@ func (this *AdminPost) Valid(po *adminmodel.AdminPo) error {
 	}
 
 	if po.Email != "" {
-		if r := db.Model(po).Where("Email = ?", po.Email).Count(&ct); r.Error != nil {
+		if r := db.Model(po).Where("email = ?", po.Email).Count(&ct); r.Error != nil {
 			return errs.WithMessage(r.Error, "校验失败")
 		} else if ct != 0 {
 			return errors.New("Email已存在")

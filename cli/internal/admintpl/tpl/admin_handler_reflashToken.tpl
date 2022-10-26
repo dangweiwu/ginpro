@@ -85,9 +85,9 @@ func (this *ReflashToken) RefreshToken(uid int64) (interface{}, error) {
 			return "", err
 		}
 		return map[string]interface{}{
-			"Authorization": token,
-			"RefreshAt":         now + this.sc.Config.Jwt.Exp/2,
-			"RefreshToken":  newRefreshToken,
+			"AccessToken":  token,
+			"RefreshAt":    now + this.sc.Config.Jwt.Exp/2,
+			"RefreshToken": newRefreshToken,
 		}, nil
 	}
 }
@@ -106,4 +106,3 @@ func (this *ReflashToken) newRefreshToken(id int64) (string, error) {
 		}
 	}
 }
-

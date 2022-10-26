@@ -1,13 +1,12 @@
 package handler
 
 import (
-
 	"errors"
 	"gs/api/hd"
 
-	"{{.Module}}/internal/router/irouter"
-    "{{.Module}}/internal/app/admin/adminmodel"
+	"{{.Module}}/internal/app/admin/adminmodel"
 	"{{.Module}}/internal/pkg/jwtx"
+	"{{.Module}}/internal/router/irouter"
 	"{{.Module}}/internal/serctx"
 
 	"github.com/gin-gonic/gin"
@@ -15,21 +14,19 @@ import (
 	"gorm.io/gorm"
 )
 
-
 /*
 修改我的信息
 */
 
 type MyPut struct {
 	*hd.Hd
-	ctx    *gin.Context
-	sc     *serctx.ServerContext
+	ctx *gin.Context
+	sc  *serctx.ServerContext
 }
 
 func NewMyPut(ctx *gin.Context, sc *serctx.ServerContext) irouter.IHandler {
-	return &MyPut{hd.NewHd(ctx),ctx, sc}
+	return &MyPut{hd.NewHd(ctx), ctx, sc}
 }
-
 
 func (this *MyPut) Do() error {
 	var err error
@@ -65,7 +62,7 @@ func (this *MyPut) Put(rawpo *adminmodel.AdminPo4) error {
 		return err
 	}
 	//更新
-	if r := this.sc.Db.Model(rawpo).Where("id=?", rawpo.ID).Select("phone", "name", "memo", "email").Updates(rawpo); r.Error != nil {
+	if r := this.sc.Db.Model(rawpo).Select("phone", "name", "memo", "email").Updates(rawpo); r.Error != nil {
 		return r.Error
 	}
 	return nil
@@ -84,7 +81,7 @@ func (this *MyPut) valid(po *adminmodel.AdminPo4) error {
 	}
 
 	if po.Email != "" {
-		if r := this.sc.Db.Model(po).Where("Email = ?", po.Email).Count(&ct); r.Error != nil {
+		if r := this.sc.Db.Model(po).Where("email = ?", po.Email).Count(&ct); r.Error != nil {
 			return errs.WithMessage(r.Error, "校验失败")
 		} else if ct != 0 {
 			return errors.New("Email已存在")

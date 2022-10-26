@@ -13,7 +13,6 @@ import (
 	"gorm.io/gorm"
 )
 
-
 type AdminPut struct {
 	*hd.Hd
 	ctx *gin.Context
@@ -21,7 +20,7 @@ type AdminPut struct {
 }
 
 func NewAdminPut(ctx *gin.Context, sc *serctx.ServerContext) irouter.IHandler {
-	return &AdminPut{hd.NewHd(ctx),ctx, sc}
+	return &AdminPut{hd.NewHd(ctx), ctx, sc}
 }
 func (this *AdminPut) Do() error {
 	var err error
@@ -69,12 +68,12 @@ func (this *AdminPut) Put(po *adminmodel.AdminPo2) error {
 	}
 
 	//更新
-	if r := db.Select("Phone", "Name", "Status", "Memo", "Email", "IsSuperAdmin", "UpdatedAt").Updates(po); r.Error != nil {
+	if r := db.Select("phone", "name", "status", "memo", "email", "is_super_admin", "updated_at").Updates(po); r.Error != nil {
 		return r.Error
 	}
 	//踢掉禁用人员
 	if tmpPo.Status == "1" && po.Status == "0" {
-		this.sc.Redis.Del(adminmodel.GetAdminId(int(tmpPo.ID )))
+		this.sc.Redis.Del(adminmodel.GetAdminRedisLoginId(int(tmpPo.ID)))
 	}
 
 	return nil
@@ -91,7 +90,7 @@ func (this *AdminPut) Valid(po *adminmodel.AdminPo2) error {
 	}
 
 	if po.Email != "" {
-		if r := this.sc.Db.Model(po).Where("Email = ?", po.Email).Count(&ct); r.Error != nil {
+		if r := this.sc.Db.Model(po).Where("email = ?", po.Email).Count(&ct); r.Error != nil {
 			return errs.WithMessage(r.Error, "校验失败")
 		} else if ct != 0 {
 			return errors.New("Email已存在")

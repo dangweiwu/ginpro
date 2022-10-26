@@ -13,7 +13,6 @@ import (
 	"gorm.io/gorm"
 )
 
-
 /*
 重置账号密码
 */
@@ -25,7 +24,7 @@ type ResetPassword struct {
 }
 
 func NewResetPassword(ctx *gin.Context, sc *serctx.ServerContext) irouter.IHandler {
-	return &ResetPassword{hd.NewHd(ctx),ctx, sc}
+	return &ResetPassword{hd.NewHd(ctx), ctx, sc}
 }
 func (this *ResetPassword) Do() error {
 	var err error
@@ -66,6 +65,9 @@ func (this *ResetPassword) ResetPassword(rawPo *adminmodel.AdminPo) error {
 	r := this.sc.Db.Model(po).Update("password", pwd)
 
 	//踢出在线
-	this.sc.Redis.Del(adminmodel.GetAdminId(int(po.ID)))
+	this.sc.Redis.Del(adminmodel.GetAdminRedisLoginId(int(po.ID)))
+
+	//删除刷新token
+	this.sc.Redis.Del(adminmodel.GetAdminRedisRefreshTokenId(int(po.ID)))
 	return r.Error
 }

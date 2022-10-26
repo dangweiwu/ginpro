@@ -11,12 +11,13 @@ import (
 
 	"github.com/gin-gonic/gin"
 )
+
 /*
 修改我的密码
 */
 type PasswordForm struct {
-	Password    string `binding:"required"`
-	NewPassword string `binding:"required"`
+	Password    string `json:"password" binding:"required"`
+	NewPassword string `json:"new_password" binding:"required"`
 }
 
 type MySetPwd struct {
@@ -26,7 +27,7 @@ type MySetPwd struct {
 }
 
 func NewMySetPwd(ctx *gin.Context, sc *serctx.ServerContext) irouter.IHandler {
-	return &MySetPwd{hd.NewHd(ctx),ctx, sc}
+	return &MySetPwd{hd.NewHd(ctx), ctx, sc}
 }
 func (this *MySetPwd) Do() error {
 	var err error
@@ -59,6 +60,6 @@ func (this *MySetPwd) SetPwd(form *PasswordForm, id int64) error {
 	po.Password = pkg.GetPassword(form.NewPassword)
 	r := this.sc.Db.Model(po).Select("password").Updates(po)
 
-	this.sc.Redis.Del(adminmodel.GetAdminId(int(po.ID)))
+	this.sc.Redis.Del(adminmodel.GetAdminRedisLoginId(int(po.ID)))
 	return r.Error
 }

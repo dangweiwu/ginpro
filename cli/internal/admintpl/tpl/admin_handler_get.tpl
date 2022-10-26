@@ -32,10 +32,10 @@ func (this *AdminGet) Do() error {
 }
 
 var QueryRule = map[string]string{
-	"Account": "like",
-	"Phone":   "like",
-	"Email":   "like",
-	"Name":    "like",
+	"account": "like",
+	"phone":   "like",
+	"email":   "like",
+	"name":    "like",
 }
 
 func (this *AdminGet) Query() (interface{}, error) {

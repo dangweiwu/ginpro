@@ -8,7 +8,6 @@ import (
 	"github.com/go-redis/redis"
 	errs "github.com/pkg/errors"
 	"gorm.io/gorm"
-	"gorm.io/gorm/logger"
 )
 
 //所有资源放在此处

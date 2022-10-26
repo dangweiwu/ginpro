@@ -4,6 +4,7 @@ import (
 	"gs/cli/internal/admintpl/tpl"
 	"gs/pkg/utils"
 	"io/fs"
+	"io/ioutil"
 	"os"
 	"path"
 )
@@ -15,18 +16,23 @@ type Module struct {
 }
 
 type AdminTpl struct {
-	RootFile       string
-	AdminFile      string
-	MiddlerFile    string
-	PkgFile        string
-	SerCtxFile     string
-	RouterFile     string
-	ConfigFile     string
-	BaseConfigFile string
-	LogFile        string
-	pwd            string
-	CmdFile        string
-	Module         Module
+	RootFile           string
+	AdminFile          string
+	MiddlerFile        string
+	PkgFile            string
+	SerCtxFile         string
+	RouterFile         string
+	ConfigFile         string
+	BaseConfigFile     string
+	LogFile            string
+	pwd                string
+	CmdFile            string
+	AppTestFile        string
+	AdminTestFile      string
+	AdminLoginTestFile string
+	AdminMockFile      string
+	ScriptFile         string
+	Module             Module
 }
 
 func NewGenAdmin(name string) (*AdminTpl, error) {
@@ -46,6 +52,11 @@ func NewGenAdmin(name string) (*AdminTpl, error) {
 	a.LogFile = path.Join(a.RootFile, "log")
 	a.CmdFile = path.Join(a.RootFile, "cmd")
 	a.Module = Module{name}
+	a.AppTestFile = path.Join(a.RootFile, "internal", "apptest")
+	a.AdminTestFile = path.Join(a.AppTestFile, "admin_test")
+	a.AdminLoginTestFile = path.Join(a.AppTestFile, "adminlogin_test")
+	a.AdminMockFile = path.Join(a.AppTestFile, "adminmock")
+	a.ScriptFile = path.Join(a.RootFile, "script")
 	return a, nil
 }
 
@@ -262,6 +273,11 @@ func (this *AdminTpl) genAdmin() error {
 		return err
 	}
 
+	tmp = path.Join(handlerFile, "logout.go")
+	if err := utils.GenTpl(tpl.AdminHandlerLogout, this.Module, tmp); err != nil {
+		return err
+	}
+
 	tmp = path.Join(handlerFile, "post.go")
 	if err := utils.GenTpl(tpl.AdminHandlerPost, this.Module, tmp); err != nil {
 		return err
@@ -272,7 +288,7 @@ func (this *AdminTpl) genAdmin() error {
 		return err
 	}
 
-	tmp = path.Join(handlerFile, "reflashToken.go")
+	tmp = path.Join(handlerFile, "refreshToken.go")
 	if err := utils.GenTpl(tpl.AdminHandlerReflashToken, this.Module, tmp); err != nil {
 		return err
 	}
@@ -411,6 +427,90 @@ func (this *AdminTpl) genCmd() error {
 	return nil
 }
 
+func (this *AdminTpl) genApptest() error {
+
+	if !utils.IsExists(this.AppTestFile) {
+		if err := os.MkdirAll(this.AppTestFile, chmod); err != nil {
+			return err
+		}
+	}
+	if !utils.IsExists(this.AdminTestFile) {
+		if err := os.MkdirAll(this.AdminTestFile, chmod); err != nil {
+			return err
+		}
+	}
+	if !utils.IsExists(this.AdminLoginTestFile) {
+		if err := os.MkdirAll(this.AdminLoginTestFile, chmod); err != nil {
+			return err
+		}
+	}
+	if !utils.IsExists(this.AdminMockFile) {
+		if err := os.MkdirAll(this.AdminMockFile, chmod); err != nil {
+			return err
+		}
+	}
+	if !utils.IsExists(this.ScriptFile) {
+		if err := os.MkdirAll(this.ScriptFile, chmod); err != nil {
+			return err
+		}
+	}
+
+	//gen admin_test tpl
+	for k, v := range map[string]string{
+		"admin_del_test.go":      tpl.AdminDelTest,
+		"admin_get_test.go":      tpl.AdminGetTest,
+		"admin_main_test.go":     tpl.AdminMainTest,
+		"admin_post_test.go":     tpl.AdminPostTest,
+		"admin_put_test.go":      tpl.AdminPutTest,
+		"admin_resetpwd_test.go": tpl.AdminResetpwdTest,
+		"my_get_test.go":         tpl.MyGetTest,
+		"my_put_test.go":         tpl.MyPutTest,
+		"my_resetpwd_test.go":    tpl.MyResetpwdTest,
+	} {
+		tmp := path.Join(this.AdminTestFile, k)
+		if err := utils.GenTpl(v, this.Module, tmp); err != nil {
+			return err
+		}
+	}
+
+	//gen adminlogin_test tpl
+	for k, v := range map[string]string{
+		"admin_login_test.go":        tpl.AdminLoginTest,
+		"admin_logout_test.go":       tpl.AdminLogoutTest,
+		"admin_main_test.go":         tpl.AdminLoginMainTest,
+		"admin_refreshtoken_test.go": tpl.AdminRefreshtokenTest,
+	} {
+		tmp := path.Join(this.AdminLoginTestFile, k)
+		if err := utils.GenTpl(v, this.Module, tmp); err != nil {
+			return err
+		}
+	}
+
+	//gen adminmock
+
+	for k, v := range map[string]string{
+		"admin_user_mock.go":      tpl.AdminMock,
+		"admin_user_mock_test.go": tpl.AdminMockTest,
+	} {
+		tmp := path.Join(this.AdminMockFile, k)
+		if err := utils.GenTpl(v, this.Module, tmp); err != nil {
+			return err
+		}
+	}
+
+	//gen task
+	tmp := path.Join(this.ScriptFile, "cover.awk")
+	if err := utils.GenTpl(tpl.CoverAwkScript, this.Module, tmp); err != nil {
+		return err
+	}
+
+	tmp = path.Join(this.RootFile, "Taskfile.yml")
+	if err := ioutil.WriteFile(tmp, []byte(tpl.TestTask), 755); err != nil {
+		return err
+	}
+
+	return nil
+}
 func (this *AdminTpl) Do() error {
 
 	job := []func() error{
@@ -423,6 +523,7 @@ func (this *AdminTpl) Do() error {
 		this.genAdmin,
 		this.genMain,
 		this.genCmd,
+		this.genApptest,
 	}
 	for _, v := range job {
 		if err := v(); err != nil {
