@@ -92,10 +92,8 @@ func TestCreateUser(t *testing.T) {
 			}
 		case 3:
 			if assert.Equal(t, w.Code, 400, "%s:%s", v.Name, w.Body.String()) {
-				assert.Contains(t, w.Body.String(), "AdminPo.Email", "%s:%s", v.Name, "AdminPo.Email")
+				assert.Contains(t, w.Body.String(), "AdminPostPo.Email", "%s:%s", v.Name, "AdminPo.Email")
 			}
 		}
-
 	}
-
 }

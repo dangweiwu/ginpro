@@ -3,19 +3,21 @@ package middler
 import (
 	"{{.Module}}/internal/serctx"
 	"fmt"
+	"github.com/gin-contrib/requestid"
+	"github.com/gin-gonic/gin"
+	"go.uber.org/zap"
 	"net"
 	"net/http"
-	"net/http/httputil"
 	"os"
 	"runtime/debug"
 	"strings"
-	"time"
-
-	"github.com/gin-gonic/gin"
-	"go.uber.org/zap"
 )
 
-func Recovery(sc *serctx.ServerContext, stack bool) gin.HandlerFunc {
+/*
+es mapping kind = panic
+*/
+
+func Recovery(sc *serctx.ServerContext) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		defer func() {
 			if err := recover(); err != nil {
@@ -30,11 +32,22 @@ func Recovery(sc *serctx.ServerContext, stack bool) gin.HandlerFunc {
 					}
 				}
 
-				httpRequest, _ := httputil.DumpRequest(c.Request, false)
+				raw := c.Request.URL.RawQuery
+				path := c.Request.URL.Path
+
+				if raw != "" {
+					path = path + "?" + raw
+				}
+				//httpRequest, _ := httputil.DumpRequest(c.Request, false)
 				if brokenPipe {
-					sc.Log.Error(c.Request.URL.Path,
+					sc.Log.Error("网络中断",
+						//zap.Int64("at", time.Now().UnixMilli()),
+						//zap.Time("time", time.Now()),
+						zap.String("rid", requestid.Get(c)),
+						zap.String("path", path),
 						zap.Any("error", err),
-						zap.String("request", string(httpRequest)),
+						zap.String("stack", ""),
+						zap.String("kind", "panic"),
 					)
 					// If the connection is dead, we can't write a status to it.
 					c.Error(err.(error)) // nolint: errcheck
@@ -42,24 +55,18 @@ func Recovery(sc *serctx.ServerContext, stack bool) gin.HandlerFunc {
 					return
 				}
 
-				if stack {
-					sc.Log.Error("[Recovery from panic]",
-						zap.Time("time", time.Now()),
-						zap.Any("error", err),
-						zap.String("request", string(httpRequest)),
-						zap.String("stack", string(debug.Stack())),
-					)
-				} else {
-					sc.Log.Error("[Recovery from panic]",
-						zap.Time("time", time.Now()),
-						zap.Any("error", err),
-						zap.String("request", string(httpRequest)),
-					)
-				}
+				sc.Log.Error("系统异常",
+					//zap.Int64("at", time.Now().UnixMilli()),
+					zap.String("path", path),
+					zap.String("rid", requestid.Get(c)),
+					//zap.Time("at", time.Now()),
+					zap.Any("error", err),
+					zap.String("stack", string(debug.Stack())),
+					zap.String("kind", "panic"),
+				)
 				c.AbortWithStatus(http.StatusInternalServerError)
-				c.String(500,fmt.Sprintf("%v", err))
+				c.String(500, fmt.Sprintf("%v", err))
 			}
-
 		}()
 		c.Next()
 	}

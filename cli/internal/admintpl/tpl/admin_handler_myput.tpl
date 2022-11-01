@@ -28,6 +28,12 @@ func NewMyPut(ctx *gin.Context, sc *serctx.ServerContext) irouter.IHandler {
 	return &MyPut{hd.NewHd(ctx), ctx, sc}
 }
 
+// @tags    系统我的
+// @summary 修改信息
+// @router  /api/admin [put]
+// @param   Authorization header   string                   true "token"
+// @param   root          body     adminmodel.AdminPo4      true "修改信息"
+// @success 200           {object} hd.Response{data=string} "ok"
 func (this *MyPut) Do() error {
 	var err error
 	uid, err := jwtx.GetUid(this.ctx)

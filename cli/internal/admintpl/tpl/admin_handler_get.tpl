@@ -14,13 +14,20 @@ type AdminGet struct {
 	*hd.Hd
 	ctx *gin.Context
 	sc  *serctx.ServerContext
-
 }
 
 func NewAdminGet(ctx *gin.Context, sc *serctx.ServerContext) irouter.IHandler {
-	return &AdminGet{hd.NewHd(ctx),ctx, sc}
+	return &AdminGet{hd.NewHd(ctx), ctx, sc}
 }
 
+// @tags    系统用户
+// @summary 查询用户
+// @router  /api/admin [get]
+// @param   account query    string                                     false "账号 "
+// @param   phone   query    string                                     false "手机号"
+// @param   email   query    string                                     false "email"
+// @param   name    query    string                                     false "姓名"
+// @success 200     {object} query.PageData{data=[]adminmodel.AdminPo1} "ok"
 func (this *AdminGet) Do() error {
 	data, err := this.Query()
 	if err != nil {

@@ -16,8 +16,8 @@ import (
 修改我的密码
 */
 type PasswordForm struct {
-	Password    string `json:"password" binding:"required"`
-	NewPassword string `json:"new_password" binding:"required"`
+	Password    string `json:"password" binding:"required"`     //原始密码
+	NewPassword string `json:"new_password" binding:"required"` //新密码
 }
 
 type MySetPwd struct {
@@ -29,6 +29,13 @@ type MySetPwd struct {
 func NewMySetPwd(ctx *gin.Context, sc *serctx.ServerContext) irouter.IHandler {
 	return &MySetPwd{hd.NewHd(ctx), ctx, sc}
 }
+
+// @tags    系统我的
+// @summary 修改密码
+// @router  /api/admin/my/password [post]
+// @param   Authorization header   string                  true "token"
+// @param   root          body     LoginForm               true "修改密码"
+// @success 200           {object} hd.Response{data=string} "data=ok"
 func (this *MySetPwd) Do() error {
 	var err error
 	uid, err := jwtx.GetUid(this.ctx)

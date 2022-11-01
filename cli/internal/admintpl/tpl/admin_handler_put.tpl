@@ -22,6 +22,14 @@ type AdminPut struct {
 func NewAdminPut(ctx *gin.Context, sc *serctx.ServerContext) irouter.IHandler {
 	return &AdminPut{hd.NewHd(ctx), ctx, sc}
 }
+
+// @tags    系统用户
+// @summary 修改用户
+// @router  /api/admin/:id [put]
+// @param   id            path     int                      true "用户ID"
+// @param   Authorization header   string                   true "token"
+// @param   root          body     adminmodel.AdminPo2      true "修改信息"
+// @success 200           {object} hd.Response{data=string} "ok"
 func (this *AdminPut) Do() error {
 	var err error
 	id, err := this.GetId()

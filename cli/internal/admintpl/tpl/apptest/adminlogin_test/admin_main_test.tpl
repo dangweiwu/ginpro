@@ -103,5 +103,4 @@ func TestLogin(t *testing.T) {
 	t.Run("login", login)
 	t.Run("reflesh", refreshTokenf)
 	t.Run("logout", logout)
-
 }

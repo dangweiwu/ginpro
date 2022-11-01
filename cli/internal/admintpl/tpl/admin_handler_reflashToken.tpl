@@ -16,7 +16,7 @@ import (
 )
 
 type RefreshTokeForm struct {
-	RefreshToken string `binding:required`
+	RefreshToken string `json:"refresh_token" binding:"required""` //刷新token
 }
 
 type ReflashToken struct {
@@ -29,6 +29,14 @@ func NewReflashToken(ctx *gin.Context, sc *serctx.ServerContext) irouter.IHandle
 	return &ReflashToken{hd.NewHd(ctx), ctx, sc}
 }
 
+// @tags        系统用户
+// @summary     刷新token
+// @router      /api/token/reflesh [post]
+// @description 刷新token
+// @description 200时返回与登陆后获取的返回一样
+// @param       Authorization header   string            true "token"
+// @param       root          body     RefreshTokeForm   true "刷新token"
+// @success     200           {object} adminmodel.LogRep "登陆返回"
 func (this *ReflashToken) Do() error {
 
 	form := &RefreshTokeForm{}
@@ -84,10 +92,10 @@ func (this *ReflashToken) RefreshToken(uid int64) (interface{}, error) {
 		if err != nil {
 			return "", err
 		}
-		return map[string]interface{}{
-			"AccessToken":  token,
-			"RefreshAt":    now + this.sc.Config.Jwt.Exp/2,
-			"RefreshToken": newRefreshToken,
+		return adminmodel.LogRep{
+			token,
+			now + this.sc.Config.Jwt.Exp/2,
+			newRefreshToken,
 		}, nil
 	}
 }

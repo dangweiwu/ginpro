@@ -23,11 +23,11 @@ func refreshTokenf(t *testing.T) {
 	if assert.Equal(t, w.Code, 200, w.Body.String()) {
 		rmap := map[string]interface{}{}
 		json.Unmarshal(w.Body.Bytes(), &rmap)
-		assert.NotEmpty(t, rmap["AccessToken"])
-		accsessToken = rmap["AccessToken"].(string)
-		assert.NotEmpty(t, rmap["RefreshToken"])
-		assert.NotEqual(t, rmap["RefreshToken"], refleshToken)
-		assert.NotEmpty(t, rmap["RefreshAt"])
+		assert.NotEmpty(t, rmap["access_token"])
+		accsessToken = rmap["access_token"].(string)
+		assert.NotEmpty(t, rmap["refresh_token"])
+		assert.NotEqual(t, rmap["refresh_token"], refleshToken)
+		assert.NotEmpty(t, rmap["refresh_at"])
 	}
 
 	w = httptest.NewRecorder()

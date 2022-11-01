@@ -30,6 +30,5 @@ func TestMyPut(t *testing.T) {
 		assert.Equal(t, po.Name, rpo.Name)
 		assert.Equal(t, po.Email, rpo.Email)
 		assert.Equal(t, po.Memo, rpo.Memo)
-
 	}
 }

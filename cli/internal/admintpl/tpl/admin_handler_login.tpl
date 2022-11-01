@@ -17,8 +17,8 @@ import (
 )
 
 type LoginForm struct {
-	Account  string `json:"account" binding:"required"`
-	Password string `json:"password" binging:"required"`
+	Account  string `json:"account" binging:"required"`  //账号
+	Password string `json:"password" binging:"required"` //密码
 }
 
 type AdminLogin struct {
@@ -27,9 +27,17 @@ type AdminLogin struct {
 	sc  *serctx.ServerContext
 }
 
+// @tags        系统我的
+// @summary     登  录
+// @router      /api/admin/login [post]
+// @description errmsg1:400 登陆失败
+// @description errmsg2:400 密码错误
+// @param       root body     LoginForm         true "登陆账号密码"
+// @success     200  {object} adminmodel.LogRep "登陆返回"
 func NewAdminLogin(ctx *gin.Context, sc *serctx.ServerContext) irouter.IHandler {
-	return &AdminLogin{hd.NewHd(ctx),ctx, sc}
+	return &AdminLogin{hd.NewHd(ctx), ctx, sc}
 }
+
 func (this *AdminLogin) Do() error {
 
 	//数据源
@@ -73,15 +81,16 @@ func (this *AdminLogin) Login(form *LoginForm) (interface{}, error) {
 		return nil, this.ErrMsg("登陆失败", "jwt:"+err.Error())
 	} else {
 		// this.ctx.Header("Authorization", token)
-		refleshToken,err := this.newRefreshToken(po.ID)
-		if err!=nil{
-			return nil,err
+		refleshToken, err := this.newRefreshToken(po.ID)
+		if err != nil {
+			return nil, err
 		}
-		return map[string]interface{}{
-			"AccessToken": token,
-			"RefreshAt":       now + this.sc.Config.Jwt.Exp/2,
-			"RefreshToken":refleshToken ,
+		return adminmodel.LogRep{
+			token,
+			now + this.sc.Config.Jwt.Exp/2,
+			refleshToken,
 		}, nil
+
 	}
 }
 
@@ -106,7 +115,6 @@ func (this *AdminLogin) Valid(form *LoginForm) (*adminmodel.AdminPo, error) {
 	return po, nil
 }
 
-
 func (this *AdminLogin) newLoginCode(id int64) (string, error) {
 	//登陆处理
 	//登陆code 控制唯一登陆有效及踢人
@@ -122,9 +130,8 @@ func (this *AdminLogin) newLoginCode(id int64) (string, error) {
 	return logincode, nil
 }
 
-
-//刷新token生成
-func(this *AdminLogin) newRefreshToken(id int64)(string,error){
+// 刷新token生成
+func (this *AdminLogin) newRefreshToken(id int64) (string, error) {
 	var refreshToken string
 	if refreshToken = uuid.New().String(); refreshToken == "" {
 		return "", this.ErrMsg("登陆失败", "refreshToken is empty")
@@ -132,8 +139,8 @@ func(this *AdminLogin) newRefreshToken(id int64)(string,error){
 		refreshToken = strings.Split(refreshToken, "-")[0]
 		if r := this.sc.Redis.Set(adminmodel.GetAdminRedisRefreshTokenId(int(id)), refreshToken, 0); r.Err() != nil {
 			return "", this.ErrMsg("登陆失败", "redis:"+r.Err().Error())
-		}else{
-			return refreshToken,nil
+		} else {
+			return refreshToken, nil
 		}
 	}
 }

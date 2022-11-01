@@ -2,15 +2,14 @@ package handler
 
 import (
 	"errors"
-	"gs/api/hd"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
+	"gs/api/hd"
 
-	"{{.Module}}/internal/router/irouter"
 	"{{.Module}}/internal/app/admin/adminmodel"
-    "{{.Module}}/internal/serctx"
+	"{{.Module}}/internal/router/irouter"
+	"{{.Module}}/internal/serctx"
 )
-
 
 type AdminDel struct {
 	*hd.Hd
@@ -19,8 +18,15 @@ type AdminDel struct {
 }
 
 func NewAdminDel(ctx *gin.Context, sc *serctx.ServerContext) irouter.IHandler {
-	return &AdminDel{hd.NewHd(ctx),ctx, sc}
+	return &AdminDel{hd.NewHd(ctx), ctx, sc}
 }
+
+// @tags    系统用户
+// @summary 删除用户
+// @router  /api/admin/:id [delete]
+// @param   id            path     int                      true "用户ID"
+// @param   Authorization header   string                   true "token"
+// @success 200           {object} hd.Response{data=string} "ok"
 func (this *AdminDel) Do() error {
 	var err error
 	id, err := this.GetId()

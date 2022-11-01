@@ -8,9 +8,9 @@ const (
 )
 
 type ErrResponse struct {
-	Kind ErrKind
-	Data string
-	Msg  string
+	Kind ErrKind `json:"kind"`
+	Data string  `json:"data"`
+	Msg  string  `json:"msg"`
 }
 
 func (this ErrResponse) Error() string {

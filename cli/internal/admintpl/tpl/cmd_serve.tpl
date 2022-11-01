@@ -17,7 +17,7 @@ func Server(c config.Config) {
 	}
 	sc = sc
 	//服务 中间件
-	engine := gin.Default()
+    engine := gin.New()
 
 	apiserver.RegMiddler(engine,
 		apiserver.WithMiddle(middler.RegMiddler(sc)...),

@@ -28,7 +28,5 @@ func TestAdminResetpwd(t *testing.T) {
 	tmpPo := &adminmodel.AdminPo{}
 	sc.Db.Where("id=?", po.ID).Take(tmpPo)
 	assert.Equal(t, tmpPo.Password, pkg.GetPassword(cfg.Admin.RawPassword))
-
 	sc.Db.Delete(po)
-
 }

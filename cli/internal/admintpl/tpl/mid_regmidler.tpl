@@ -9,7 +9,9 @@ import (
 //批量注册全局中间件
 func RegMiddler(sc *serctx.ServerContext) []gin.HandlerFunc {
 	return []gin.HandlerFunc{
-		Cors(),
 		requestid.New(),
+        Recovery(sc),
+        HttpLog(sc),
+        Cors(),
 	}
 }

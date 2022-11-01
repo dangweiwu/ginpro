@@ -19,17 +19,24 @@ type AdminPost struct {
 }
 
 func NewAdminPost(ctx *gin.Context, sc *serctx.ServerContext) irouter.IHandler {
-	return &AdminPost{hd.NewHd(ctx),ctx, sc}
+	return &AdminPost{hd.NewHd(ctx), ctx, sc}
 }
 
+// @tags    系统用户
+// @summary 创建用户
+// @router  /api/admin [post]
+// @param   Authorization header   string                   true "token"
+// @param   root          body     adminmodel.AdminPostPo   true "登陆账号密码"
+// @success 200           {object} hd.Response{data=string} "ok"
 func (this *AdminPost) Do() error {
 
 	//数据源
-	po := &adminmodel.AdminPo{}
+	po := &adminmodel.AdminPostPo{}
 	err := this.Bind(po)
 	if err != nil {
 		return err
 	}
+
 	err = this.Post(po)
 	if err != nil {
 		return err
@@ -38,7 +45,7 @@ func (this *AdminPost) Do() error {
 	return nil
 }
 
-func (this *AdminPost) Post(po *adminmodel.AdminPo) error {
+func (this *AdminPost) Post(po *adminmodel.AdminPostPo) error {
 	db := this.sc.Db
 	//验证是否已创建 或者其他检查
 	if err := this.Valid(po); err != nil {
@@ -53,7 +60,7 @@ func (this *AdminPost) Post(po *adminmodel.AdminPo) error {
 	return nil
 }
 
-func (this *AdminPost) Valid(po *adminmodel.AdminPo) error {
+func (this *AdminPost) Valid(po *adminmodel.AdminPostPo) error {
 	db := this.sc.Db
 	var ct = int64(0)
 	if r := db.Model(po).Where("account = ?", po.Account).Count(&ct); r.Error != nil {

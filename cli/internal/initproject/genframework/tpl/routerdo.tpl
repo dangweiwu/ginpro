@@ -4,9 +4,7 @@ import (
 	"{{.Module}}/internal/serctx"
 	"fmt"
 	"gs/api/hd"
-
 	"{{.Module}}/internal/router/irouter"
-
 	"github.com/gin-gonic/gin"
 )
 
@@ -16,7 +14,7 @@ func Do(sc *serctx.ServerContext, f irouter.HandlerFunc) func(ctx *gin.Context) 
 		defer func() {
 			err := recover()
 			if err != nil {
-				ctx.JSON(500, &hd.ErrResponse{hd.MSG, fmt.Sprintf("%v", err), "panic"})
+				ctx.JSON(500, &hd.ErrResponse{hd.MSG, "panic", fmt.Sprintf("%v", err)})
 			}
 		}()
 		if err := f(ctx, sc).Do(); err != nil {
@@ -25,7 +23,7 @@ func Do(sc *serctx.ServerContext, f irouter.HandlerFunc) func(ctx *gin.Context) 
 				//多语言用
 				ctx.JSON(400, err)
 			default:
-				ctx.JSON(400, &hd.ErrResponse{hd.MSG, err.Error(), ""})
+				ctx.JSON(400, &hd.ErrResponse{hd.MSG, "", err.Error()})
 			}
 		}
 	}

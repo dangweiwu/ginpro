@@ -27,9 +27,9 @@ type ILogin interface {
 }
 
 type LoginData struct {
-	AccessToken  string
-	RefreshAt        int64
-	RefreshToken string
+	AccessToken  string `json:"access_token"`
+	RefreshAt    int64  `json:"refresh_at"`
+	RefreshToken string `json:"refresh_token"`
 }
 
 func MockLogin(ctx *serctx.ServerContext, user, password string) (*LoginData, error) {

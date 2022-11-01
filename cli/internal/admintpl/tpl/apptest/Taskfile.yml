@@ -4,8 +4,10 @@ vars:
     coverout: "cover.out"
     htmlout: "cover.html"
     covercount: 70
+    docfile: "./swagdocs"
+    
 tasks:
-  default:
+  test:
     cmds:
       - go install github.com/jstemmer/go-junit-report@latest
 
@@ -27,4 +29,8 @@ tasks:
         sh: go list ./... | grep 'adminmock'
       cmdpkg:
         sh: go list ./... | grep 'cmd'
+
+  swag:
+    - go install github.com/swaggo/swag/cmd/swag@latest
+    - swag init --pd --parseInternal -o {{.docfile}}
 

@@ -16,5 +16,4 @@ func TestMyGet(t *testing.T) {
 	if assert.Equal(t, w.Code, 200) {
 		assert.Contains(t, w.Body.String(), "name")
 	}
-
 }

@@ -22,6 +22,11 @@ func NewLogOut(ctx *gin.Context, sc *serctx.ServerContext) irouter.IHandler {
 	return &LogOut{hd.NewHd(ctx), ctx, sc}
 }
 
+// @tags    系统我的
+// @summary 退  出
+// @router  /api/admin/my/logout [post]
+// @param   Authorization header   string                   true "token"
+// @success 200           {object} hd.Response{data=string} "ok"
 func (this *LogOut) Do() error {
 	this.Logout()
 	this.Hd.RepOk()

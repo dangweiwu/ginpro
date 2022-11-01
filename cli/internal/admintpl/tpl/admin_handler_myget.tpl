@@ -1,13 +1,12 @@
 package handler
 
 import (
-
 	"errors"
 	"gs/api/hd"
 
-	"{{.Module}}/internal/router/irouter"
-    "{{.Module}}/internal/app/admin/adminmodel"
+	"{{.Module}}/internal/app/admin/adminmodel"
 	"{{.Module}}/internal/pkg/jwtx"
+	"{{.Module}}/internal/router/irouter"
 	"{{.Module}}/internal/serctx"
 
 	"github.com/gin-gonic/gin"
@@ -19,14 +18,19 @@ import (
 */
 type MyInfo struct {
 	*hd.Hd
-	ctx    *gin.Context
-	sc *serctx.ServerContext
+	ctx *gin.Context
+	sc  *serctx.ServerContext
 }
 
 func NewMyInfo(ctx *gin.Context, sc *serctx.ServerContext) irouter.IHandler {
-	return &MyInfo{hd.NewHd(ctx),ctx, sc}
+	return &MyInfo{hd.NewHd(ctx), ctx, sc}
 }
 
+// @tags    系统我的
+// @summary 查询信息
+// @router  /api/admin/my [get]
+// @param   Authorization header   string              true "token"
+// @success 200           {object} adminmodel.AdminPo3 "ok"
 func (this *MyInfo) Do() error {
 
 	uid, err := jwtx.GetUid(this.ctx)
@@ -42,6 +46,6 @@ func (this *MyInfo) Do() error {
 			return r.Error
 		}
 	}
-	this.Rep( po)
+	this.Rep(po)
 	return nil
 }

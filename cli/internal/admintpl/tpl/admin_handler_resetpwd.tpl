@@ -26,6 +26,15 @@ type ResetPassword struct {
 func NewResetPassword(ctx *gin.Context, sc *serctx.ServerContext) irouter.IHandler {
 	return &ResetPassword{hd.NewHd(ctx), ctx, sc}
 }
+
+// @tags    系统用户
+// @summary 修改密码
+// @description 默认密码为系统设置密码。
+// @description 修改后用户会被踢下线。
+// @router  /api/admin/resetpwd/:id [put]
+// @param   id            path     int                      true "用户ID"
+// @param   Authorization header   string                   true "token"
+// @success 200           {object} hd.Response{data=string} "ok"
 func (this *ResetPassword) Do() error {
 	var err error
 	id, err := this.GetId()
