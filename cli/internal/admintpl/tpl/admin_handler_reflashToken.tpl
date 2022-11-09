@@ -13,6 +13,7 @@ import (
 	"gs/api/hd"
 	"strings"
 	"time"
+	"context"
 )
 
 type RefreshTokeForm struct {
@@ -50,7 +51,7 @@ func (this *ReflashToken) Do() error {
 	}
 
 	//刷新token检验
-	r, err := this.sc.Redis.Get(adminmodel.GetAdminRedisRefreshTokenId(int(uid))).Result()
+	r, err := this.sc.Redis.Get(context.Background(), adminmodel.GetAdminRedisRefreshTokenId(int(uid))).Result()
 	if err != nil {
 		return err
 	}
@@ -107,7 +108,7 @@ func (this *ReflashToken) newRefreshToken(id int64) (string, error) {
 		return "", this.ErrMsg("刷新失败", "refreshToken is empty")
 	} else {
 		refreshToken = strings.Split(refreshToken, "-")[0]
-		if r := this.sc.Redis.Set(adminmodel.GetAdminRedisRefreshTokenId(int(id)), refreshToken, 0); r.Err() != nil {
+		if r := this.sc.Redis.Set(context.Background(), adminmodel.GetAdminRedisRefreshTokenId(int(id)), refreshToken, 0); r.Err() != nil {
 			return "", this.ErrMsg("刷新失败", "redis:"+r.Err().Error())
 		} else {
 			return refreshToken, nil

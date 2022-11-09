@@ -11,12 +11,12 @@ import (
 func Do(sc *serctx.ServerContext, f irouter.HandlerFunc) func(ctx *gin.Context) {
 	return func(ctx *gin.Context) {
 		//添加log id
-		defer func() {
-			err := recover()
-			if err != nil {
-				ctx.JSON(500, &hd.ErrResponse{hd.MSG, "panic", fmt.Sprintf("%v", err)})
-			}
-		}()
+		//defer func() {
+		//	err := recover()
+		//	if err != nil {
+		//		ctx.JSON(500, &hd.ErrResponse{hd.MSG, "panic", fmt.Sprintf("%v", err)})
+		//	}
+		//}()
 		if err := f(ctx, sc).Do(); err != nil {
 			switch err.(type) {
 			case hd.ErrResponse:

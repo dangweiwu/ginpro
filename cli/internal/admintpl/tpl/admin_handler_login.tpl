@@ -6,11 +6,11 @@ import (
 	"{{.Module}}/internal/pkg/jwtx"
 	"{{.Module}}/internal/router/irouter"
 	"{{.Module}}/internal/serctx"
+    "context"
 	"errors"
 	"gs/api/hd"
 	"strings"
 	"time"
-
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 	"gorm.io/gorm"
@@ -123,7 +123,7 @@ func (this *AdminLogin) newLoginCode(id int64) (string, error) {
 		return "", this.ErrMsg("登陆失败", "logincode is empty")
 	} else {
 		logincode = strings.Split(logincode, "-")[0]
-		if r := this.sc.Redis.Set(adminmodel.GetAdminRedisLoginId(int(id)), logincode, 0); r.Err() != nil {
+		if r := this.sc.Redis.Set(context.Background(), adminmodel.GetAdminRedisLoginId(int(id)), logincode, 0); r.Err() != nil {
 			return "", this.ErrMsg("登陆失败", "redis:"+r.Err().Error())
 		}
 	}
@@ -137,7 +137,7 @@ func (this *AdminLogin) newRefreshToken(id int64) (string, error) {
 		return "", this.ErrMsg("登陆失败", "refreshToken is empty")
 	} else {
 		refreshToken = strings.Split(refreshToken, "-")[0]
-		if r := this.sc.Redis.Set(adminmodel.GetAdminRedisRefreshTokenId(int(id)), refreshToken, 0); r.Err() != nil {
+		if r := this.sc.Redis.Set(context.Background(), adminmodel.GetAdminRedisRefreshTokenId(int(id)), refreshToken, 0); r.Err() != nil {
 			return "", this.ErrMsg("登陆失败", "redis:"+r.Err().Error())
 		} else {
 			return refreshToken, nil

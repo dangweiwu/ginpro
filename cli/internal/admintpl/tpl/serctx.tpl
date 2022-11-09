@@ -5,7 +5,7 @@ import (
 	"gs/pkg/logx"
 	"gs/pkg/mysqlx"
 	"gs/pkg/redisx"
-	"github.com/go-redis/redis"
+	"github.com/go-redis/redis/v8"
 	errs "github.com/pkg/errors"
 	"gorm.io/gorm"
 )

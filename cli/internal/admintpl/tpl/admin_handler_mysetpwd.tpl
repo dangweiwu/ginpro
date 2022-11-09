@@ -6,9 +6,9 @@ import (
 	"{{.Module}}/internal/pkg/jwtx"
 	"{{.Module}}/internal/router/irouter"
 	"{{.Module}}/internal/serctx"
+	"context"
 	"errors"
 	"gs/api/hd"
-
 	"github.com/gin-gonic/gin"
 )
 
@@ -67,6 +67,6 @@ func (this *MySetPwd) SetPwd(form *PasswordForm, id int64) error {
 	po.Password = pkg.GetPassword(form.NewPassword)
 	r := this.sc.Db.Model(po).Select("password").Updates(po)
 
-	this.sc.Redis.Del(adminmodel.GetAdminRedisLoginId(int(po.ID)))
+	this.sc.Redis.Del(context.Background(), adminmodel.GetAdminRedisLoginId(int(po.ID)))
 	return r.Error
 }

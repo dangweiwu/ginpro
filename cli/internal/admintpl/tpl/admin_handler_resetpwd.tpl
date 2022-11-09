@@ -6,9 +6,9 @@ import (
 	"{{.Module}}/internal/pkg/jwtx"
 	"{{.Module}}/internal/router/irouter"
 	"{{.Module}}/internal/serctx"
+    "context"
 	"errors"
 	"gs/api/hd"
-
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 )
@@ -74,9 +74,9 @@ func (this *ResetPassword) ResetPassword(rawPo *adminmodel.AdminPo) error {
 	r := this.sc.Db.Model(po).Update("password", pwd)
 
 	//踢出在线
-	this.sc.Redis.Del(adminmodel.GetAdminRedisLoginId(int(po.ID)))
+	this.sc.Redis.Del(context.Background(), adminmodel.GetAdminRedisLoginId(int(po.ID)))
 
 	//删除刷新token
-	this.sc.Redis.Del(adminmodel.GetAdminRedisRefreshTokenId(int(po.ID)))
+	this.sc.Redis.Del(context.Background(), adminmodel.GetAdminRedisRefreshTokenId(int(po.ID)))
 	return r.Error
 }

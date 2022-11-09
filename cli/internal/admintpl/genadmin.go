@@ -318,39 +318,6 @@ func (this *AdminTpl) genAdmin() error {
 		return err
 	}
 
-	//logic
-	// tmp = path.Join(logicFile, "del.go")
-	// if err := utils.GenTpl(tpl.AdminLogicDel, this.Module, tmp); err != nil {
-	// 	return err
-	// }
-
-	// tmp = path.Join(logicFile, "get.go")
-	// if err := utils.GenTpl(tpl.AdminLogicGet, this.Module, tmp); err != nil {
-	// 	return err
-	// }
-
-	// tmp = path.Join(logicFile, "login.go")
-	// if err := utils.GenTpl(tpl.AdminLogicLogin, this.Module, tmp); err != nil {
-	// 	return err
-	// }
-
-	// tmp = path.Join(logicFile, "post.go")
-	// if err := utils.GenTpl(tpl.AdminLogicPost, this.Module, tmp); err != nil {
-	// 	return err
-	// }
-
-	// tmp = path.Join(logicFile, "put.go")
-	// if err := utils.GenTpl(tpl.AdminLogicPut, this.Module, tmp); err != nil {
-	// 	return err
-	// }
-
-	// tmp = path.Join(logicFile, "reflashToken.go")
-	// if err := utils.GenTpl(tpl.AdminLogicReflashToken, this.Module, tmp); err != nil {
-	// 	return err
-	// }
-
-	// adminrouter
-
 	return nil
 }
 
@@ -364,6 +331,12 @@ func (this *AdminTpl) genConfig() error {
 
 	tmp = path.Join(this.BaseConfigFile, "config.yaml")
 	if err := utils.GenTpl(tpl.ProjectYaml, this.Module, tmp); err != nil {
+		return err
+	}
+
+	//es日志mapping
+	tmp = path.Join(this.BaseConfigFile, "logmapping.json")
+	if err := utils.GenTpl(tpl.LogMapping, this.Module, tmp); err != nil {
 		return err
 	}
 

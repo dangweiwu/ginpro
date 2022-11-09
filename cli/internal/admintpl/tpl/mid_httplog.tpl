@@ -17,19 +17,20 @@ es mapping kind=api
 
 	time is iso8601 format
 	{
-		"level":{"type":"keyword",index:true},
-		"time":{"type":"date","index":true},
-		"kind":{"type":"keyword","index":true},
-		"rid":{"type":"keyword","index":true},
+		"level":{"type":"keyword"},
+		"time":{"type":"date"},
+		"kind":{"type":"keyword"},
+		"rid":{"type":"keyword"},
 		"msg":{"type":"text"},
 		"path":{"type":"text"},
-		"latency":{"type":"long"},
+		"latency":{"type":"long",index:false},
 		"ip":{"type":"keyword"},
 		"method":{"type":"keyword"},
 		"status":{"type":"long"},
 		"size":{"type":"long"},
-		"uid":{"type":"long","index":true},
-		"error":{"type":"text"}
+		"uid":{"type":"long"},
+		"error":{"type":"keyword",index:false},
+		"stack":{"type":"keyword",index:false}
 	}
 */
 var skip = map[string]struct{}{}

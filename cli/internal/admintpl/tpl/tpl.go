@@ -123,15 +123,6 @@ var (
 	//go:embed admin_handler_resetpwd.tpl
 	AdminHandlerResetpwd string
 
-	// //go:embed admin_logic_myput.tpl
-	// AdminLogicMyPut string
-
-	// //go:embed admin_logic_mysetpwd.tpl
-	// AdminLogicMySetpwd string
-
-	////go:embed admin_handler_initadmin.tpl
-	//AdminHandlerInitmain string
-
 	//go:embed mid_httplog.tpl
 	MidHttplog string
 
@@ -197,4 +188,7 @@ var (
 
 	//go:embed apptest/Taskfile.yml
 	TestTask string
+
+	//go:embed logmapping.json
+	LogMapping string
 )

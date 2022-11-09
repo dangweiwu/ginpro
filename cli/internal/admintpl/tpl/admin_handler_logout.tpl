@@ -7,6 +7,7 @@ import (
 	"{{.Module}}/internal/serctx"
 	"github.com/gin-gonic/gin"
 	"gs/api/hd"
+	"context"
 )
 
 /*
@@ -40,9 +41,9 @@ func (this *LogOut) Logout() error {
 		return nil
 	}
 	//删除logincode
-	this.sc.Redis.Del(adminmodel.GetAdminRedisLoginId(int(id)))
+	this.sc.Redis.Del(context.Background(), adminmodel.GetAdminRedisLoginId(int(id)))
 
 	//删除刷新token
-	this.sc.Redis.Del(adminmodel.GetAdminRedisRefreshTokenId(int(id)))
+	this.sc.Redis.Del(context.Background(), adminmodel.GetAdminRedisRefreshTokenId(int(id)))
 	return nil
 }

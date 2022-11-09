@@ -1,6 +1,7 @@
 package redisx
 
 import (
+	"context"
 	"github.com/alicebob/miniredis/v2"
 	"github.com/stretchr/testify/assert"
 	"gs/pkg/redisx/redisconfig"
@@ -18,14 +19,13 @@ func TestNewRedis(t *testing.T) {
 	//基本测试
 	key := "a"
 	value := "b"
-
-	rdcmd := cli.Set(key, value, 0)
+	ctx := context.Background()
+	rdcmd := cli.Set(ctx, key, value, 0)
 	assert.Nil(t, rdcmd.Err(), "set err")
 	r.FastForward(100 * time.Hour)
-	rdstus := cli.Get(key)
+	rdstus := cli.Get(ctx, key)
 	assert.Nil(t, rdstus.Err(), "get err")
 	rdvalue, err := rdstus.Result()
 	assert.Nil(t, rdstus.Err(), "get result err")
 	assert.Equal(t, rdvalue, value, "get value not equal")
-
 }

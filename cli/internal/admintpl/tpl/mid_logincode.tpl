@@ -8,6 +8,7 @@ import (
 	"{{.Module}}/internal/app/admin/adminmodel"
 	"{{.Module}}/internal/pkg/jwtx"
 	"{{.Module}}/internal/serctx"
+    "context"
 	"github.com/gin-gonic/gin"
 	"github.com/go-redis/redis"
 	"gs/api/hd"
@@ -41,7 +42,7 @@ func LoginCode(sc *serctx.ServerContext) gin.HandlerFunc {
 			return
 		}
 		//fmt.Println("@@", adminmodel.GetAdminRedisLoginId(int(uid)))
-		logincode, err := sc.Redis.Get(adminmodel.GetAdminRedisLoginId(int(uid))).Result()
+		logincode, err := sc.Redis.Get(context.Background(), adminmodel.GetAdminRedisLoginId(int(uid))).Result()
 		if err != nil {
 			if err == redis.Nil {
 				LoginCodeErrResponse(c)

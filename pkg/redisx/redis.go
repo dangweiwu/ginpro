@@ -1,10 +1,10 @@
 package redisx
 
 import (
+	"context"
+	"github.com/go-redis/redis/v8"
 	"gs/pkg/redisx/redisconfig"
 	"sync"
-
-	"github.com/go-redis/redis"
 )
 
 var _r *redis.Client
@@ -26,10 +26,11 @@ func (this *Redis) GetDb() (db *redis.Client, err error) {
 				Password: this.cfg.Password,
 				DB:       this.cfg.Db,
 			})
-			if _, _err := _r.Ping().Result(); _err != nil {
+			if _, _err := _r.Ping(context.Background()).Result(); _err != nil {
 				err = _err
 				// fmt.Println("redis=========", _r)
 			}
+
 		})
 		return _r, nil
 	} else {

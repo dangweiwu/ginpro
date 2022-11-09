@@ -7,7 +7,7 @@ import (
 	"{{.Module}}/internal/serctx"
 	"errors"
 	"gs/api/hd"
-
+    "context"
 	"github.com/gin-gonic/gin"
 	errs "github.com/pkg/errors"
 	"gorm.io/gorm"
@@ -81,7 +81,7 @@ func (this *AdminPut) Put(po *adminmodel.AdminPo2) error {
 	}
 	//踢掉禁用人员
 	if tmpPo.Status == "1" && po.Status == "0" {
-		this.sc.Redis.Del(adminmodel.GetAdminRedisLoginId(int(tmpPo.ID)))
+		this.sc.Redis.Del(context.Background(), adminmodel.GetAdminRedisLoginId(int(tmpPo.ID)))
 	}
 
 	return nil
