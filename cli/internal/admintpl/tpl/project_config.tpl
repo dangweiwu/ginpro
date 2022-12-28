@@ -17,4 +17,12 @@ type Config struct {
 	Mysql mysqlxconfig.Mysql
 	Jwt   jwtconfig.JwtConfig
 	Redis redisconfig.RedisConfig
+	Prom  PromCfg
 }
+
+//promethus 配置
+type PromCfg struct {
+	UserName string
+	Password string
+}
+

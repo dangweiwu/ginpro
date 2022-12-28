@@ -30,3 +30,7 @@ Jwt:
   Secret: jwtsecret123#$
   # 过期时间 3天
   Exp: 259200
+
+Prom:
+  Username: goserver
+  Password: goserver123

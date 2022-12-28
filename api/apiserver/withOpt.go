@@ -27,9 +27,9 @@ func WithStatic(relativePath string, root string) ApiOpt {
 	}
 }
 
+// 注册中间件
 func RegMiddler(engine *gin.Engine, opt ...ApiOpt) {
 	for _, v := range opt {
 		v(engine)
 	}
-
 }

@@ -7,6 +7,7 @@ import (
 	"{{.Module}}/internal/serctx"
 	"github.com/gin-gonic/gin"
 	"gs/api/apiserver"
+	"gs/pkg/metric"
 )
 
 func Server(c config.Config) {
@@ -15,14 +16,18 @@ func Server(c config.Config) {
 	if err != nil {
 		panic(err)
 	}
-	sc = sc
 	//服务 中间件
-    engine := gin.New()
+	//engine := gin.Default()
+	engine := gin.New()
 
 	apiserver.RegMiddler(engine,
 		apiserver.WithMiddle(middler.RegMiddler(sc)...),
 		apiserver.WithStatic("/view", c.Api.ViewDir),
 	)
+
+	//启动promagent
+	metric.StartAgent(engine, "/metrics", sc.Config.Prom.UserName, sc.Config.Prom.Password)
+
 	//注册路由
 	app.RegisterRoute(engine, sc)
 

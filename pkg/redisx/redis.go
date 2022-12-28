@@ -2,6 +2,7 @@ package redisx
 
 import (
 	"context"
+	"fmt"
 	"github.com/go-redis/redis/v8"
 	"gs/pkg/redisx/redisconfig"
 	"sync"
@@ -19,6 +20,7 @@ func NewRedis(cfg redisconfig.RedisConfig) *Redis {
 }
 
 func (this *Redis) GetDb() (db *redis.Client, err error) {
+	//fmt.Println("@@.......")
 	if _r == nil {
 		once.Do(func() {
 			_r = redis.NewClient(&redis.Options{
@@ -26,14 +28,14 @@ func (this *Redis) GetDb() (db *redis.Client, err error) {
 				Password: this.cfg.Password,
 				DB:       this.cfg.Db,
 			})
+
 			if _, _err := _r.Ping(context.Background()).Result(); _err != nil {
 				err = _err
-				// fmt.Println("redis=========", _r)
 			}
-
 		})
-		return _r, nil
+		return _r, err
 	} else {
+		fmt.Println("_r", _r)
 		return _r, nil
 	}
 }
