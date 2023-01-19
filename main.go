@@ -1,14 +1,13 @@
 package main
 
 import (
-	"fmt"
-	"gs/cli"
-	"os"
+	"github.com/jessevdk/go-flags"
+	"gs/option"
 )
 
 func main() {
-	if err := cli.Cmd.Execute(); err != nil {
-		fmt.Println(err)
-		os.Exit(1)
-	}
+	p := flags.NewParser(&option.Opt, flags.Default)
+	p.ShortDescription = "v0.1 go server framework"
+	p.LongDescription = `v0.1 go server framework`
+	p.Parse()
 }

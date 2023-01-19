@@ -1,9 +1,9 @@
-package apptpl
+package apitpl
 
 import (
 	"fmt"
-	"gs/cli/internal/apptpl/tpl"
 	"gs/pkg/utils"
+	tpl2 "gs/template/apitpl/tpl"
 	"os"
 	"path"
 	"strings"
@@ -18,10 +18,10 @@ const (
 
 type ApiApp struct {
 	root string
-	cfg  tpl.AppTplConfig
+	cfg  tpl2.AppTplConfig
 }
 
-func NewApiApp(cfg tpl.AppTplConfig) (*ApiApp, error) {
+func NewApiApp(cfg tpl2.AppTplConfig) (*ApiApp, error) {
 	wd, err := os.Getwd()
 	if err != nil {
 		return nil, err
@@ -67,7 +67,7 @@ func GenTpl(tpl string, value interface{}, f string) error {
 func (this *ApiApp) GenRouter() error {
 
 	f := path.Join(this.root, "router.go")
-	return GenTpl(tpl.RouterTpl, this.cfg, f)
+	return GenTpl(tpl2.RouterTpl, this.cfg, f)
 }
 
 // 生成model 数据
@@ -78,7 +78,7 @@ func (this *ApiApp) GenModel() error {
 		return err
 	}
 
-	if err := utils.GenTpl(tpl.ModelTpl, this.cfg, path.Join(f, "model.go")); err != nil {
+	if err := utils.GenTpl(tpl2.ModelTpl, this.cfg, path.Join(f, "model.go")); err != nil {
 		return err
 	}
 	return nil
@@ -87,7 +87,7 @@ func (this *ApiApp) GenModel() error {
 func (this *ApiApp) GenGet() error {
 	handlerName := path.Join(this.root, HandlerName, "get.go")
 
-	if err := GenTpl(tpl.HandlerGetTpl, this.cfg, handlerName); err != nil {
+	if err := GenTpl(tpl2.HandlerGetTpl, this.cfg, handlerName); err != nil {
 		return errors.WithMessage(err, "gen get handlerTpl error: ")
 	}
 
@@ -101,7 +101,7 @@ func (this *ApiApp) GenGet() error {
 func (this *ApiApp) GenPost() error {
 	handlerName := path.Join(this.root, HandlerName, "post.go")
 
-	if err := GenTpl(tpl.HandlerPostTpl, this.cfg, handlerName); err != nil {
+	if err := GenTpl(tpl2.HandlerPostTpl, this.cfg, handlerName); err != nil {
 		return errors.WithMessage(err, "gen post handlerTpl error: ")
 	}
 
@@ -115,7 +115,7 @@ func (this *ApiApp) GenPost() error {
 func (this *ApiApp) GenPut() error {
 	handlerName := path.Join(this.root, HandlerName, "put.go")
 
-	if err := GenTpl(tpl.HandlerPutTpl, this.cfg, handlerName); err != nil {
+	if err := GenTpl(tpl2.HandlerPutTpl, this.cfg, handlerName); err != nil {
 		return errors.WithMessage(err, "gen put handlerTpl error: ")
 	}
 
@@ -129,7 +129,7 @@ func (this *ApiApp) GenPut() error {
 func (this *ApiApp) GenDelete() error {
 	handlerName := path.Join(this.root, HandlerName, "del.go")
 
-	if err := GenTpl(tpl.HandlerDelTpl, this.cfg, handlerName); err != nil {
+	if err := GenTpl(tpl2.HandlerDelTpl, this.cfg, handlerName); err != nil {
 		return errors.WithMessage(err, "gen del handlerTpl error: ")
 	}
 
@@ -140,7 +140,7 @@ func (this *ApiApp) GenDelete() error {
 	return nil
 }
 
-func GenTemplate(name string, cfg tpl.AppTplConfig) error {
+func GenTemplate(name string, cfg tpl2.AppTplConfig) error {
 	a, err := NewApiApp(cfg)
 	if err != nil {
 		return err

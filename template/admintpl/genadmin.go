@@ -1,8 +1,8 @@
 package admintpl
 
 import (
-	"gs/cli/internal/admintpl/tpl"
 	"gs/pkg/utils"
+	"gs/template/admintpl/tpl"
 	"io/fs"
 	"io/ioutil"
 	"os"

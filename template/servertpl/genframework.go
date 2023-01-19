@@ -1,10 +1,10 @@
-package genframework
+package servertpl
 
 import (
 	_ "embed"
 	"errors"
-	"gs/cli/internal/initproject/genframework/tpl"
 	"gs/pkg/utils"
+	"gs/template/servertpl/tpl"
 	"io/fs"
 	"os"
 	"path"

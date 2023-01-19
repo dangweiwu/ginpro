@@ -40,9 +40,10 @@ func (this *Mysqlx) GetDb() (db *gorm.DB, err error) {
 			} else {
 				out = os.Stdout
 			}
+
 			dbcfg := &gorm.Config{
 				DisableForeignKeyConstraintWhenMigrating: true,
-				Logger: logger.New(log.New(out, "\r\n", log.LstdFlags), // io writer（日志输出的目标，前缀和日志包含的内容——译者注）
+				Logger: logger.New(log.New(out, "\r\n", log.LstdFlags), // io writer（日志输出的目标，前缀和日志包含的内容）
 					logger.Config{
 						SlowThreshold:             time.Second,                        // 慢 SQL 阈值
 						LogLevel:                  logger.LogLevel(this.cfg.LogLevel), // 日志级别
