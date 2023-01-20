@@ -2,10 +2,7 @@ package servertpl
 
 import (
 	_ "embed"
-	"errors"
-	"gs/pkg/utils"
-	"gs/template/servertpl/tpl"
-	"io/fs"
+	"gs/template/gencode"
 	"os"
 	"path"
 )
@@ -13,48 +10,51 @@ import (
 /*
 生成基础框架
 */
-var chmod fs.FileMode = 755
+var Host = "gs"
 
 var (
-	//go:embed tpl/main.tpl
+	//go:embed tpl/core/main.tpl
 	MainTpl string
-	//go:embed tpl/config.tpl
+
+	//go:embed tpl/core/config/config.tpl
 	ConfigTpl string
 
-	//go:embed tpl/serctx.tpl
+	//go:embed tpl/core/ctx/serverCtx.tpl
 	SerctxTpl string
 
-	//go:embed tpl/router.tpl
+	//go:embed tpl/core/router/router.tpl
 	RouterTpl string
 
-	//go:embed tpl/routerdo.tpl
+	//go:embed tpl/core/router/routerdo.tpl
 	DoTpl string
 
-	//go:embed tpl/routeri.tpl
-	RouterI string
+	//go:embed tpl/core/router/irouter/irouter.tpl
+	IRouter string
 
-	//go:embed tpl/approuter.tpl
-	AppRouterTpl string
+	//go:embed tpl/core/api/regRouter.tpl
+	RegRouterTpl string
 
-	//go:embed tpl/regdb.tpl
-	RegDbTpl string
-
-	//// go:embed tpl/appconfigyaml.tpl
-	// AppConfigTpl string
-
-	//go:embed tpl/configyaml.tpl
+	//go:embed tpl/config/configyaml.tpl
 	ConfigYamlTpl string
 
-	//go:embed tpl/cmdserve.tpl
-	CmdServeTpl string
-	//
-	////go:embed tpl/cmdsuperman.tpl
-	//CmdSuperTpl string
+	//go:embed  tpl/core/option/option.tpl
+	OptionTpl string
+
+	//go:embed tpl/core/option/runserver.tpl
+	RunServerTpl string
+
+	//go:embed tpl/core/api/demo/router.tpl
+	DemoRouter string
+
+	//go:embed tpl/core/api/demo/handler/info.tpl
+	DemoInfo string
+
+	//go:embed tpl/view/index.tpl
+	IndexHtml string
 )
 
 type GenFramework struct {
-	RootFile string
-	pwd      string
+	code *gencode.GenCode
 }
 
 func NewGenFramework(name string) (*GenFramework, error) {
@@ -62,120 +62,42 @@ func NewGenFramework(name string) (*GenFramework, error) {
 	if err != nil {
 		return nil, err
 	}
-	return &GenFramework{RootFile: name, pwd: wd}, nil
+	pt := path.Join(wd, name)
+	c := gencode.NewGenCode(pt, gencode.ModuleValue{Module: name, Host: Host})
+	a := &GenFramework{c}
+	return a, nil
 }
 
-// 创建目录
-func (this *GenFramework) genFrameworkDir() error {
-
-	pt := path.Join(this.pwd, this.RootFile)
-
-	if utils.IsExists(pt) {
-		return errors.New(this.RootFile + "已存在")
+func (this *GenFramework) InitFile() error {
+	var internal = "internal"
+	fileItems := []gencode.FileItem{
+		{"main.go", []string{}, MainTpl},
+		{"config.go", []string{internal, "config"}, ConfigTpl},
+		{"serCtx.go", []string{internal, "ctx"}, SerctxTpl},
+		{"router.go", []string{internal, "router"}, RouterTpl},
+		{"routeDo.go", []string{internal, "router"}, DoTpl},
+		{"irouter.go", []string{internal, "router", "irouter"}, IRouter},
+		{"regRouter.go", []string{internal, "api"}, RegRouterTpl},
+		{"option.go", []string{internal, "option"}, OptionTpl},
+		{"runServer.go", []string{internal, "option"}, RunServerTpl},
+		{"router.go", []string{internal, "api", "demo"}, DemoRouter},
+		{"info.go", []string{internal, "api", "demo", "handler"}, DemoInfo},
+		{"config.yaml", []string{"config"}, ConfigYamlTpl},
+		{"index.html", []string{"view"}, IndexHtml},
 	}
-
-	if err := os.MkdirAll(pt, chmod); err != nil {
-		return err
-	}
-
-	for _, v := range []string{"config", "log", "internal", "cmd"} {
-		tmp := path.Join(pt, v)
-		if err := os.MkdirAll(tmp, chmod); err != nil {
-			return err
-		}
-	}
-	internal := path.Join(pt, "internal")
-
-	for _, v := range []string{"config", "middler", "router", "serctx", "app", "pkg"} {
-		config := path.Join(internal, v)
-		if err := os.MkdirAll(config, chmod); err != nil {
-			return err
-		}
-	}
-	router := path.Join(internal, "router")
-	routerI := path.Join(router, "irouter")
-	if err := os.MkdirAll(routerI, chmod); err != nil {
-		return err
-	}
-
+	this.code.SetFileItem(fileItems)
 	return nil
 }
 
-// 创建go文件
-func (this *GenFramework) GenGoFile() error {
-	root := path.Join(this.pwd, this.RootFile)
-	vl := tpl.ModuleValue{Module: this.RootFile}
-
-	mainFile := path.Join(root, "main.go")
-	if err := utils.GenTpl(MainTpl, vl, mainFile); err != nil {
-		return err
-	}
-	internal := path.Join(root, "internal")
-	configFile := path.Join(internal, "config", "config.go")
-	if err := utils.GenTpl(ConfigTpl, vl, configFile); err != nil {
-		return err
-	}
-
-	serctx := path.Join(internal, "serctx", "serctx.go")
-	if err := utils.GenTpl(SerctxTpl, vl, serctx); err != nil {
-		return err
-	}
-
-	router := path.Join(internal, "router", "router.go")
-	if err := utils.GenTpl(RouterTpl, vl, router); err != nil {
-		return err
-	}
-
-	do := path.Join(internal, "router", "do.go")
-	if err := utils.GenTpl(DoTpl, vl, do); err != nil {
-		return err
-	}
-
-	routeri := path.Join(internal, "router", "irouter", "irouter.go")
-	if err := utils.GenTpl(RouterI, vl, routeri); err != nil {
-		return err
-	}
-
-	approuter := path.Join(internal, "app", "regrouter.go")
-	if err := utils.GenTpl(AppRouterTpl, vl, approuter); err != nil {
-		return err
-	}
-
-	regdb := path.Join(internal, "app", "regdb.go")
-	if err := utils.GenTpl(RegDbTpl, vl, regdb); err != nil {
-		return err
-	}
-
-	// apicfg := path.Join(internal, "app", "tpl.yaml")
-	// if err := utils.GenTpl(AppConfigTpl, vl, apicfg); err != nil {
-	// 	return err
-	// }
-
-	configyaml := path.Join(root, "config", "config.yaml")
-	if err := utils.GenTpl(ConfigYamlTpl, vl, configyaml); err != nil {
-		return err
-	}
-
-	cmdserve := path.Join(root, "cmd", "server.go")
-	if err := utils.GenTpl(CmdServeTpl, vl, cmdserve); err != nil {
-		return err
-	}
-
-	//super := path.Join(root, "cmd", "superman.go")
-	//if err := utils.GenTpl(CmdSuperTpl, vl, super); err != nil {
-	//	return err
-	//}
-
-	return nil
+func (this *GenFramework) GenFile() error {
+	return this.code.Gen()
 }
 
-func (this *GenFramework) Do() error {
-	if err := this.genFrameworkDir(); err != nil {
+func GenCode(name string) error {
+	a, err := NewGenFramework(name)
+	if err != nil {
 		return err
 	}
-	if err := this.GenGoFile(); err != nil {
-		return err
-	}
-
-	return nil
+	a.InitFile()
+	return a.GenFile()
 }

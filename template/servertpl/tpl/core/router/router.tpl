@@ -1,7 +1,7 @@
 package router
 
 import (
-	"{{.Module}}/internal/serctx"
+	"{{.Module}}/internal/ctx"
 	"github.com/gin-gonic/gin"
 )
 
@@ -14,7 +14,7 @@ type Router struct {
 	Jwt  *gin.RouterGroup //jwt登陆
 }
 
-func NewRouter(g *gin.Engine, sc *serctx.ServerContext) *Router {
+func NewRouter(g *gin.Engine, sc *ctx.ServerContext) *Router {
 	return &Router{
 		Root: g.Group("/api"),
 		//Jwt:  g.Group("/api", middler.JwtMiddle(sc.Config.Jwt)),

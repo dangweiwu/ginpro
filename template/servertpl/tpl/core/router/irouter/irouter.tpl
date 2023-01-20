@@ -1,7 +1,7 @@
 package irouter
 
 import (
-	"{{.Module}}/internal/serctx"
+	"{{.Module}}/internal/ctx"
 
 	"github.com/gin-gonic/gin"
 )
@@ -11,5 +11,5 @@ type (
 		Do() error
 	}
 
-	HandlerFunc func(ctx *gin.Context, sc *serctx.ServerContext) IHandler
+	HandlerFunc func(ctx *gin.Context, sc *ctx.ServerContext) IHandler
 )
