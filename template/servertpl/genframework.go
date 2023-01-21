@@ -10,7 +10,6 @@ import (
 /*
 生成基础框架
 */
-var Host = "gs"
 
 var (
 	//go:embed tpl/core/main.tpl
@@ -31,7 +30,7 @@ var (
 	//go:embed tpl/core/router/irouter/irouter.tpl
 	IRouter string
 
-	//go:embed tpl/core/api/regRouter.tpl
+	//go:embed tpl/core/app/regRouter.tpl
 	RegRouterTpl string
 
 	//go:embed tpl/config/configyaml.tpl
@@ -43,10 +42,10 @@ var (
 	//go:embed tpl/core/option/runserver.tpl
 	RunServerTpl string
 
-	//go:embed tpl/core/api/demo/router.tpl
+	//go:embed tpl/core/app/demo/router.tpl
 	DemoRouter string
 
-	//go:embed tpl/core/api/demo/handler/info.tpl
+	//go:embed tpl/core/app/demo/api/info.tpl
 	DemoInfo string
 
 	//go:embed tpl/view/index.tpl
@@ -63,7 +62,7 @@ func NewGenFramework(name string) (*GenFramework, error) {
 		return nil, err
 	}
 	pt := path.Join(wd, name)
-	c := gencode.NewGenCode(pt, gencode.ModuleValue{Module: name, Host: Host})
+	c := gencode.NewGenCode(pt, gencode.ModuleValue{Module: name, Host: gencode.Host})
 	a := &GenFramework{c}
 	return a, nil
 }
@@ -77,11 +76,11 @@ func (this *GenFramework) InitFile() error {
 		{"router.go", []string{internal, "router"}, RouterTpl},
 		{"routeDo.go", []string{internal, "router"}, DoTpl},
 		{"irouter.go", []string{internal, "router", "irouter"}, IRouter},
-		{"regRouter.go", []string{internal, "api"}, RegRouterTpl},
+		{"regApiRouter.go", []string{internal, "app"}, RegRouterTpl},
 		{"option.go", []string{internal, "option"}, OptionTpl},
 		{"runServer.go", []string{internal, "option"}, RunServerTpl},
-		{"router.go", []string{internal, "api", "demo"}, DemoRouter},
-		{"info.go", []string{internal, "api", "demo", "handler"}, DemoInfo},
+		{"apiRouter.go", []string{internal, "app", "demo"}, DemoRouter},
+		{"info.go", []string{internal, "app", "demo", "api"}, DemoInfo},
 		{"config.yaml", []string{"config"}, ConfigYamlTpl},
 		{"index.html", []string{"view"}, IndexHtml},
 	}

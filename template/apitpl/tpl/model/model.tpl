@@ -1,7 +1,7 @@
 package {{.ModelPackage}}
 
 import(
-	"gs/pkg/dbtype"
+	"{{.Host}}/pkg/dbtype"
 )
 
 type {{.ModelName}} struct {

@@ -1,7 +1,7 @@
-package api
+package app
 
 import (
-	"{{.Module}}/internal/api/demo"
+	"{{.Module}}/internal/app/demo"
 	"{{.Module}}/internal/router"
 	"{{.Module}}/internal/ctx"
 	"github.com/gin-gonic/gin"

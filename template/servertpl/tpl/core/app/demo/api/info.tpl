@@ -1,4 +1,4 @@
-package handler
+package api
 
 import (
 	"{{.Module}}/internal/ctx"

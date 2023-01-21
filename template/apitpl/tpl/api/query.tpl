@@ -2,25 +2,25 @@ package handler
 
 import (
 	"github.com/gin-gonic/gin"
-	"gs/api/hd"
-	"gs/api/query"
-	"{{.Module}}/internal/serctx"
-	"{{.Module}}/internal/app/{{.AppPackage}}/{{.ModelPackage}}"
+	"{{.Host}}/api/hd"
+	"{{.Host}}/api/query"
+	"{{.Module}}/internal/ctx"
+	"{{.Module}}/internal/api/{{.ApiPackage}}/{{.ModelPackage}}"
 	"{{.Module}}/internal/router/irouter"	
 )
 
 
-type {{.AppName}}Get struct {
+type {{.ApiName}}Query struct {
 	*hd.Hd
     ctx *gin.Context
-	sc  *serctx.ServerContext
+	sc  *ctx.ServerContext
 }
 
-func New{{.AppName}}Get(ctx *gin.Context,sc *serctx.ServerContext) irouter.IHandler {
-	return &{{.AppName}}Get{hd.NewHd(ctx),ctx, sc}
+func New{{.ApiName}}Query(c *gin.Context,sc *ctx.ServerContext) irouter.IHandler {
+	return &{{.ApiName}}Query{hd.NewHd(c),c, sc}
 }
 
-func (this *{{.AppName}}Get) Do() error {
+func (this *{{.ApiName}}Query) Do() error {
 
 	data,err := this.Query()
 	if err != nil {
@@ -35,7 +35,7 @@ var QueryRule = map[string]string{
 	//	key:"like"  or ""
 }
 
-func (this *{{.AppName}}Get) Query() (interface{}, error) {
+func (this *{{.ApiName}}Query) Query() (interface{}, error) {
 	po := &{{.ModelPackage}}.{{.ModelName}}{}
 	pos := []{{.ModelPackage}}.{{.ModelName}}{}
 	q := query.NewQuery(this.ctx, this.sc.Db, QueryRule, po, &pos)

@@ -2,23 +2,23 @@ package handler
 
 import (
 	"github.com/gin-gonic/gin"
-    "gs/api/hd"
-    "{{.Module}}/internal/serctx"
-    "{{.Module}}/internal/app/{{.AppPackage}}/{{.ModelPackage}}"
+    "{{.Host}}/api/hd"
+    "{{.Module}}/internal/ctx"
+    "{{.Module}}/internal/api/{{.ApiPackage}}/{{.ModelPackage}}"
 	"{{.Module}}/internal/router/irouter"	
 )
 
-type {{.AppName}}Post struct {
+type {{.ApiName}}Create struct {
 	*hd.Hd
     ctx *gin.Context
-	sc  *serctx.ServerContext
+	sc  *ctx.ServerContext
 }
 
-func New{{.AppName}}Post(ctx *gin.Context,sc *serctx.ServerContext) irouter.IHandler{
-	return &{{.AppName}}Post{hd.NewHd(ctx),ctx, sc}
+func New{{.ApiName}}Create(c *gin.Context,sc *ctx.ServerContext) irouter.IHandler{
+	return &{{.ApiName}}Create{hd.NewHd(c),c, sc}
 }
 
-func (this *{{.AppName}}Post) Do() error {
+func (this *{{.ApiName}}Create) Do() error {
     //数据源
 	po := &{{.ModelPackage}}.{{.ModelName}}{}
 	err := this.Bind(po)
@@ -26,7 +26,7 @@ func (this *{{.AppName}}Post) Do() error {
 		return err
 	}
 
-	err = this.Post(po)
+	err = this.Create(po)
 	if err != nil {
 		return err
 	}
@@ -34,7 +34,7 @@ func (this *{{.AppName}}Post) Do() error {
 	return nil
 }
 
-func (this *{{.AppName}}Post) Post(po *{{.ModelPackage}}.{{.ModelName}}) error {
+func (this *{{.ApiName}}Post) Create(po *{{.ModelPackage}}.{{.ModelName}}) error {
 	db := this.sc.Db
 	//验证是否已创建 或者其他检查
 	//tmpPo := &{{.ModelPackage}}.{{.ModelName}}{}

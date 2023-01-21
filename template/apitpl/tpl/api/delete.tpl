@@ -3,26 +3,25 @@ package handler
 import (
     "github.com/gin-gonic/gin"
     "gorm.io/gorm"
-	"gs/api/hd"
+	"{{.Host}}/api/hd"
 	"errors"
-    "{{.Module}}/internal/app/{{.AppPackage}}/{{.ModelPackage}}"
-	"{{.Module}}/internal/serctx"
+    "{{.Module}}/internal/api/{{.ApiPackage}}/{{.ModelPackage}}"
+	"{{.Module}}/internal/ctx"
 	"{{.Module}}/internal/router/irouter"
 )
 
 
-
-type {{.AppName}}Del struct {
+type {{.ApiName}}Del struct {
 	*hd.Hd
     ctx *gin.Context
-	sc  *serctx.ServerContext
+	sc  *ctx.ServerContext
 }
 
-func New{{.AppName}}Del (ctx *gin.Context,sc *serctx.ServerContext) irouter.IHandler {
-	return &{{.AppName}}Del{hd.NewHd(ctx),ctx, sc}
+func New{{.ApiName}}Del (c *gin.Context,sc *ctx.ServerContext) irouter.IHandler {
+	return &{{.ApiName}}Del{hd.NewHd(c),c, sc}
 }
 
-func (this *{{.AppName}}Del) Do() error {
+func (this *{{.ApiName}}Del) Do() error {
 	var err error
 	id, err := this.GetId()
 	if err != nil {
@@ -36,7 +35,7 @@ func (this *{{.AppName}}Del) Do() error {
 	}
 }
 
-func (this *{{.AppName}}Del) Delete(id int64) error {
+func (this *{{.ApiName}}Del) Delete(id int64) error {
 	db := this.sc.Db
 	po := &{{.ModelPackage}}.{{.ModelName}}{}
 	po.ID = id

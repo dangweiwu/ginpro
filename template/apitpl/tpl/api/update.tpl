@@ -2,9 +2,9 @@ package handler
 
 import (
 	"github.com/gin-gonic/gin"
-    "gs/api/hd"
-    "{{.Module}}/internal/serctx"
-    "{{.Module}}/internal/app/{{.AppPackage}}/{{.ModelPackage}}"
+    "{{.Host}}/api/hd"
+    "{{.Module}}/internal/ctx"
+    "{{.Module}}/internal/api/{{.ApiPackage}}/{{.ModelPackage}}"
 	"{{.Module}}/internal/router/irouter"	
 	"errors"
 	"gorm.io/gorm"
@@ -13,18 +13,18 @@ import (
 
 
 
-type {{.AppName}}Put struct {
+type {{.ApiName}}Update struct {
 	*hd.Hd
-    ctx    *gin.Context
-	sc *serctx.ServerContext
+    ctx *gin.Context
+	sc  *ctx.ServerContext
 }
 
-func New{{.AppName}}Put (ctx *gin.Context,sc *serctx.ServerContext) irouter.IHandler{
-	return &{{.AppName}}Put{hd.NewHd(ctx),ctx, sc}
+func New{{.ApiName}}Update (c *gin.Context,sc *ctx.ServerContext) irouter.IHandler{
+	return &{{.ApiName}}Update{hd.NewHd(c),c, sc}
 }
 
 
-func (this *{{.AppName}}Put) Do() error {
+func (this *{{.ApiName}}Update) Do() error {
 	var err error
 	id, err := this.GetId()
 	if err != nil {
@@ -36,7 +36,7 @@ func (this *{{.AppName}}Put) Do() error {
 		return err
 	}
 	po.ID = id
-	err = this.Put(po)
+	err = this.Update(po)
 	if err != nil {
 		return err
 	}
@@ -44,7 +44,7 @@ func (this *{{.AppName}}Put) Do() error {
 	return nil
 }
 
-func (this *{{.AppName}}Put) Put(po *{{.ModelPackage}}.{{.ModelName}}) error {
+func (this *{{.ApiName}}Update) Update(po *{{.ModelPackage}}.{{.ModelName}}) error {
     db := this.sc.Db
 	tmpPo := &{{.ModelPackage}}.{{.ModelName}}{}
 	if r := db.Model(tmpPo).Take(tmpPo); r.Error != nil {

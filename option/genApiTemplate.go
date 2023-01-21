@@ -2,8 +2,8 @@ package option
 
 import (
 	"errors"
-	"gs/pkg/utils"
-	"gs/template/apitpl/tpl"
+	"fmt"
+	"gs/template/apitpl"
 )
 
 //生成api模板 包括增删查改
@@ -22,23 +22,11 @@ func (this *ApiTemlate) Execute(args []string) error {
 		return errors.New("缺少api-name")
 	}
 	apiName := args[0]
-	appName := utils.FirstUpper(apiName)
-	modelName, err := utils.GetModName()
+	err := apitpl.GenCode(apiName)
 	if err != nil {
 		return err
 	}
-	var TplConfig = &tpl.AppTplConfig{}
-
-	TplConfig.AppName = appName
-	TplConfig.Module = modelName
-	TplConfig.ModelName = appName
-	TplConfig.TableName = appName
-	TplConfig.RouterType = "Jwt"
-	TplConfig.RouterUrl = utils.FirstLower(apiName)
-	TplConfig.HasDelete = true
-	TplConfig.HasGet = true
-	TplConfig.HasPost = true
-	TplConfig.HasPut = true
+	fmt.Println(apiName + "已生成")
 
 	return nil
 }

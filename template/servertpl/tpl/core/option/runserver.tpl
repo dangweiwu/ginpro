@@ -1,7 +1,7 @@
 package option
 
 import (
-	"{{.Module}}/internal/api"
+	"{{.Module}}/internal/app"
 	"{{.Module}}/internal/config"
 	"{{.Module}}/internal/ctx"
 	"github.com/gin-gonic/gin"
@@ -34,7 +34,7 @@ func (this *RunServe) Execute(args []string) error {
     apiserver.RegMiddler(engine, apiserver.WithStatic("/view", c.Api.ViewDir))
 
 	//注册路由
-	api.RegisterRoute(engine, sc)
+	app.RegisterRoute(engine, sc)
 
 	//启动
 	apiserver.Run(engine, sc.Log.Logger, c.Api)
