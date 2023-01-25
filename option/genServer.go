@@ -32,7 +32,9 @@ func (this *ServerOption) Execute(args []string) error {
 
 	fmt.Printf(`cd ./%s &&
 go mod init %s && 
-go mod tidy`, args[0], args[0])
+go mod tidy &&
+go work use .`,
+		args[0], args[0])
 
 	return nil
 }

@@ -21,3 +21,9 @@ type FileItem struct {
 	Dir      []string
 	Tpl      string
 }
+
+type CopyFile struct {
+	FileName string
+	Dir      []string
+	Tpl      string
+}

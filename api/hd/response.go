@@ -3,7 +3,7 @@ package hd
 import "github.com/gin-gonic/gin"
 
 type Response struct {
-	Data interface{}
+	Data interface{} `json:"data"`
 }
 
 func Rep(c *gin.Context, data interface{}) {

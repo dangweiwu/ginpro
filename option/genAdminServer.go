@@ -28,22 +28,20 @@ func (this *AdminServer) Execute(args []string) error {
 	if len(args) == 0 {
 		return errors.New("缺少项目名称")
 	}
-	if wk, err := admintpl.NewGenAdmin(args[0]); err != nil {
+	name := args[0]
+	err := admintpl.GenAdminServerCode(name)
+	if err != nil {
 		return err
-	} else {
-		if err := wk.Do(); err != nil {
-			return err
-		}
-		fmt.Println("admin项目初始化完成")
-		fmt.Println()
-		fmt.Println("please run:")
-		fmt.Println()
-		fmt.Printf("cd %s &&\n", args[0])
-		fmt.Printf("go mod init %s && \n", args[0])
-		fmt.Printf("go mod tidy && \n")
-		fmt.Printf("go work use .")
-		fmt.Println()
-
 	}
+
+	fmt.Println("admin项目初始化完成")
+	fmt.Println()
+	fmt.Println("please run:")
+	fmt.Println()
+	fmt.Printf("cd %s &&\n", args[0])
+	fmt.Printf("go mod init %s && \n", args[0])
+	fmt.Printf("go mod tidy && \n")
+	fmt.Printf("go work use .")
+	fmt.Println()
 	return nil
 }
