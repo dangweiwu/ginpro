@@ -25,7 +25,7 @@ type Login struct {
 
 // @tags        系统我的
 // @summary     登  录
-// @router      /api/admin/login [post]
+// @router      /api/login [post]
 // @description errmsg1:400 登陆失败
 // @description errmsg2:400 密码错误
 // @param       root body     mymodel.LoginForm         true "登陆账号密码"

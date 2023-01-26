@@ -1,13 +1,12 @@
 package middler
 
 import (
-	"{{.Module}}/internal/pkg/jwtx"
 	"{{.Module}}/internal/ctx"
+	"{{.Module}}/internal/pkg/jwtx"
+	"{{.Module}}/internal/pkg/lg"
 	"github.com/gin-contrib/requestid"
 	"time"
-
 	"github.com/gin-gonic/gin"
-	"go.uber.org/zap"
 )
 
 // http 日志中间件
@@ -33,7 +32,10 @@ es mapping kind=api
 		"stack":{"type":"keyword",index:false}
 	}
 */
-var skip = map[string]struct{}{}
+var skipPath = map[string]struct{}{}
+var skipMethod = map[string]struct{}{
+	"GET": {},
+}
 
 func HttpLog(sc *ctx.ServerContext) gin.HandlerFunc {
 
@@ -47,7 +49,9 @@ func HttpLog(sc *ctx.ServerContext) gin.HandlerFunc {
 		c.Next()
 
 		// Log only when path is not being skipped
-		if _, ok := skip[path]; !ok {
+		_, ok := skipPath[path]
+		_, ok2 := skipMethod[c.Request.Method]
+		if !ok && !ok2 {
 			// Stop timer
 			TimeStamp := time.Now()
 			Latency := TimeStamp.Sub(start)
@@ -56,20 +60,17 @@ func HttpLog(sc *ctx.ServerContext) gin.HandlerFunc {
 				path = path + "?" + raw
 			}
 			uid, _ := jwtx.GetUid(c)
-			sc.Log.Info("请求响应",
-				//zap.String("at", TimeStamp.Format("2006-01-02 15:04:05")),
-				//zap.Int64("at", time.Now().UnixMilli()),
-				zap.Int64("latency", Latency.Milliseconds()),
-				zap.String("ip", c.ClientIP()),
-				zap.String("method", c.Request.Method),
-				zap.Int("status", c.Writer.Status()),
-				zap.Int("size", c.Writer.Size()),
-				zap.Int64("uid", uid),
-				zap.String("error", c.Errors.ByType(gin.ErrorTypePrivate).String()),
-				zap.String("kind", "api"),
-				zap.String("rid", requestid.Get(c)),
-				zap.String("path", path),
-			)
+			log := lg.Msg("request").
+				Kind("api").
+				Uid(requestid.Get(c)).
+				Id(uid).
+				Api(c.Request.Method, path, c.Writer.Status(), c.Writer.Size(), int(Latency.Milliseconds()))
+
+			errmsg := c.Errors.String()
+			if len(errmsg) != 0 {
+				log.ExData(errmsg).Err(sc.Log)
+			}
+			log.Info(sc.Log)
 		}
 	}
 }

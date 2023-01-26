@@ -2,6 +2,7 @@ package ctx
 
 import (
 	"{{.Module}}/internal/config"
+	"{{.Module}}/internal/pkg/lg"
 	"github.com/go-redis/redis/v8"
 	errs "github.com/pkg/errors"
 	"gorm.io/gorm"
@@ -35,7 +36,7 @@ func NewServerContext(c config.Config) (*ServerContext, error) {
 	} else {
 		d.Debug()
 		sc.Db = d
-		sc.Log.Info("数据库初始化完成")
+		lg.Msg("数据库链接成功").Info(sc.Log)
 	}
 
 	//初始化redis
@@ -43,7 +44,7 @@ func NewServerContext(c config.Config) (*ServerContext, error) {
 		return nil, errs.WithMessage(err, "err init redis")
 	} else {
 		sc.Redis = redisCli
-		sc.Log.Info("redis初始化完成")
+		lg.Msg("redis链接成功").Info(sc.Log)
 
 	}
 

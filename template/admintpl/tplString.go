@@ -167,4 +167,7 @@ var (
 	TestMyRefreshTokenTpl string
 	//go:embed tpl/core/app/my/api_test/updatePwd_test.tpl
 	TestMyUpdatePwdTpl string
+
+	//go:embed tpl/core/pkg/lg/lg.tpl
+	LgTpl string
 )

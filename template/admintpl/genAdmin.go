@@ -61,9 +61,12 @@ func (this *GenAdminServer) InitFile() error {
 		{"initTable.go", []string{"option"}, OptionInitTableTpl},
 		{"initSuperUser.go", []string{"option"}, OptionInitSuperUserTpl},
 		{"runServer.go", []string{"option"}, OptionRunServerTpl},
+
 		{"password.go", []string{internal, "pkg"}, PkgPasswordTpl},
 		{"config.go", []string{internal, "pkg", "jwtx", "jwtconfig"}, JwtConfigTpl},
 		{"jwt.go", []string{internal, "pkg", "jwtx"}, JwtTpl},
+		{"lg.go", []string{internal, "pkg", "lg"}, LgTpl},
+
 		{"do.go", []string{internal, "router"}, RouterDoTpl},
 		{"router.go", []string{internal, "router"}, RouterTpl},
 		{"irouter.go", []string{internal, "router", "irouter"}, RouterITpl},

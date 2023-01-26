@@ -2,6 +2,7 @@ package ctx
 
 import (
 	"{{.Module}}/internal/config"
+	"{{.Module}}/internal/pkg/lg"
 	errs "github.com/pkg/errors"
 	"{{.Host}}/pkg/logx"
 	"{{.Host}}/pkg/mysqlx"
@@ -24,7 +25,7 @@ func NewDbContext(c config.Config) (*ServerContext, error) {
 	} else {
 		//d.Debug()
 		sc.Db = d
-		sc.Log.Info("数据库连接成功")
+		lg.Msg("数据库链接成功").Info(sc.Log)
 	}
 	return sc, nil
 }
