@@ -67,6 +67,26 @@ func (this *GenAdminServer) InitFile() error {
 		{"do.go", []string{internal, "router"}, RouterDoTpl},
 		{"router.go", []string{internal, "router"}, RouterTpl},
 		{"irouter.go", []string{internal, "router", "irouter"}, RouterITpl},
+		//test相关
+		{"ctx.go", []string{internal, "testtool", "testctx"}, TestCtxTpl},
+		{"adminUser.go", []string{internal, "testtool"}, TestAdminUserTpl},
+		{"config.go", []string{internal, "testtool"}, TestConfigTpl},
+		{"server.go", []string{internal, "testtool"}, TestServerTpl},
+
+		{"create_test.go", []string{internal, "app", "admin", "api_test"}, TestAdminCreateTpl},
+		{"main_test.go", []string{internal, "app", "admin", "api_test"}, TestAdminMainTpl},
+		{"del_test.go", []string{internal, "app", "admin", "api_test"}, TestAdminDelTpl},
+		{"query_test.go", []string{internal, "app", "admin", "api_test"}, TestAdminQueryTpl},
+		{"resetPwd_test.go", []string{internal, "app", "admin", "api_test"}, TestAdminResetPwdTpl},
+		{"update_test.go", []string{internal, "app", "admin", "api_test"}, TestAdminUpdateTpl},
+
+		{"info_test.go", []string{internal, "app", "my", "api_test"}, TestMyInfoTpl},
+		{"login_test.go", []string{internal, "app", "my", "api_test"}, TestMyLoginTpl},
+		{"logout_test.go", []string{internal, "app", "my", "api_test"}, TestMyLogoutTpl},
+		{"main_test.go", []string{internal, "app", "my", "api_test"}, TestMyMainTpl},
+		{"refreshToken_test.go", []string{internal, "app", "my", "api_test"}, TestMyRefreshTokenTpl},
+		{"update_test.go", []string{internal, "app", "my", "api_test"}, TestMyUpdateTpl},
+		{"updatePwd_test.go", []string{internal, "app", "my", "api_test"}, TestMyUpdatePwdTpl},
 	}
 	this.code.SetFileItem(fileItems)
 	copyFile := []gencode.CopyFile{

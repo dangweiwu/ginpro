@@ -12,7 +12,7 @@ tasks:
 
       - go test -cover -v
         -coverprofile="{{.coverout}}"
-        -coverpkg={{.pkgs}}{{.adminpkg}},{{.cmdpkg}}
+        -coverpkg={{.pkgs}}
         ./... | go-junit-report --set-exit-code > report.xml
 
       - sed -i '/\/cmd\/server.go/d' {{.coverout}}
@@ -23,11 +23,7 @@ tasks:
 
     vars:
       pkgs:
-        sh: go list ./... | grep 'api' | tr '\n' ','
-      adminpkg:
-        sh: go list ./... | grep 'adminmock'
-      cmdpkg:
-        sh: go list ./... | grep 'cmd'
+        sh: go list ./... |grep 'api' | grep -v 'api_test'| tr '\n' ',' | sed 's/.$//g'
   # 文档
   swag:
     - go install github.com/swaggo/swag/cmd/swag@latest

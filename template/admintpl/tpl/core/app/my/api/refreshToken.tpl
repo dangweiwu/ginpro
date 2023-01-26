@@ -11,7 +11,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 	"{{.Host}}/api/hd"
-	"strings"
 	"time"
 	"context"
 )
@@ -28,7 +27,7 @@ func NewRefreshToken(c *gin.Context, sc *ctx.ServerContext) irouter.IHandler {
 	return &RefreshToken{hd.NewHd(c), c, sc}
 }
 
-// @tags        系统用户
+// @tags        系统我的
 // @summary     刷新token
 // @router      /api/token/refresh [post]
 // @description 刷新token

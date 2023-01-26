@@ -11,7 +11,7 @@ import (
 	"{{.Module}}/internal/ctx"
     "context"
 	"errors"
-	"gs/api/hd"
+	"{{.Host}}/api/hd"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 )

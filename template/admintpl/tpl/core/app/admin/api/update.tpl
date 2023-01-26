@@ -1,17 +1,17 @@
 package api
 
 import (
+	"context"
 	"{{.Module}}/internal/app/admin/adminmodel"
 	"{{.Module}}/internal/app/my/mymodel"
+	"{{.Module}}/internal/ctx"
 	"{{.Module}}/internal/pkg/jwtx"
 	"{{.Module}}/internal/router/irouter"
-	"{{.Module}}/internal/ctx"
 	"errors"
-	"{{.Host}}/api/hd"
-    "context"
 	"github.com/gin-gonic/gin"
 	errs "github.com/pkg/errors"
 	"gorm.io/gorm"
+	"{{.Host}}/api/hd"
 )
 
 type AdminUpdate struct {
@@ -29,7 +29,7 @@ func NewAdminUpdate(c *gin.Context, sc *ctx.ServerContext) irouter.IHandler {
 // @router  /api/admin/:id [put]
 // @param   id            path     int                      true "用户ID"
 // @param   Authorization header   string                   true "token"
-// @param   root          body     adminmodel.AdminPo2      true "修改信息"
+// @param   root          body     adminmodel.AdminUpdateForm      true "修改信息"
 // @success 200           {object} hd.Response{data=string} "ok"
 func (this *AdminUpdate) Do() error {
 	var err error
@@ -91,7 +91,7 @@ func (this *AdminUpdate) Update(po *adminmodel.AdminUpdateForm) error {
 func (this *AdminUpdate) Valid(po *adminmodel.AdminUpdateForm) error {
 	var ct = int64(0)
 	if po.Phone != "" {
-		if r := this.sc.Db.Model(po).Where("id != ? and account = ?",po.ID,po.Account).Count(&ct); r.Error != nil {
+		if r := this.sc.Db.Model(po).Where("id != ? and phone = ? ", po.ID, po.Phone).Count(&ct); r.Error != nil {
 			return errs.WithMessage(r.Error, "校验失败")
 		} else if ct != 0 {
 			return errors.New("手机号已存在")
@@ -99,7 +99,7 @@ func (this *AdminUpdate) Valid(po *adminmodel.AdminUpdateForm) error {
 	}
 
 	if po.Email != "" {
-		if r := this.sc.Db.Model(po).Where("id != ? and email = ?",po.ID, po.Email).Count(&ct); r.Error != nil {
+		if r := this.sc.Db.Model(po).Where("id != ? and email = ?", po.ID, po.Email).Count(&ct); r.Error != nil {
 			return errs.WithMessage(r.Error, "校验失败")
 		} else if ct != 0 {
 			return errors.New("Email已存在")

@@ -3,12 +3,10 @@ package api
 import (
 	"errors"
 	"{{.Host}}/api/hd"
-
 	"{{.Module}}/internal/app/my/mymodel"
 	"{{.Module}}/internal/pkg/jwtx"
 	"{{.Module}}/internal/router/irouter"
 	"{{.Module}}/internal/ctx"
-
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 )

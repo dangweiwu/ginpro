@@ -51,5 +51,9 @@ type RefreshTokeForm struct {
 	RefreshToken string `json:"refresh_token" binding:"required""` //刷新token
 }
 
-
+//修改密码
+type PasswordForm struct {
+	Password    string `json:"password" binding:"required"`     //原始密码
+	NewPassword string `json:"new_password" binding:"required"` //新密码
+}
 

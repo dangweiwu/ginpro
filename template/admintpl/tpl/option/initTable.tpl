@@ -5,6 +5,7 @@ import (
 	"{{.Module}}/internal/config"
 	"{{.Module}}/internal/ctx"
 	"{{.Host}}/pkg/yamconfig"
+	"log"
 )
 
 // 初始化数据库
@@ -26,6 +27,8 @@ func (this *InitTable) Execute(args []string) error {
 	}
 
 	app.Regdb(sc)
+
+    log.Println("初始化完毕")
 
 	return nil
 }

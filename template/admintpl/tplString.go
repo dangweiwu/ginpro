@@ -126,4 +126,45 @@ var (
 
 	//go:embed tpl/script/cover.awk
 	CoverAwkTpl string
+
+	//调试相关
+	//go:embed tpl/core/testtool/testctx/ctx.tpl
+	TestCtxTpl string
+
+	//go:embed tpl/core/testtool/adminUser.tpl
+	TestAdminUserTpl string
+
+	//go:embed tpl/core/testtool/server.tpl
+	TestServerTpl string
+
+	//go:embed tpl/core/testtool/config.tpl
+	TestConfigTpl string
+
+	//go:embed tpl/core/app/admin/api_test/create_test.tpl
+	TestAdminCreateTpl string
+	//go:embed tpl/core/app/admin/api_test/main_test.tpl
+	TestAdminMainTpl string
+	//go:embed tpl/core/app/admin/api_test/del_test.tpl
+	TestAdminDelTpl string
+	//go:embed tpl/core/app/admin/api_test/query_test.tpl
+	TestAdminQueryTpl string
+	//go:embed tpl/core/app/admin/api_test/update_test.tpl
+	TestAdminUpdateTpl string
+	//go:embed tpl/core/app/admin/api_test/resetPwd_test.tpl
+	TestAdminResetPwdTpl string
+
+	//go:embed tpl/core/app/my/api_test/main_test.tpl
+	TestMyMainTpl string
+	//go:embed tpl/core/app/my/api_test/update_test.tpl
+	TestMyUpdateTpl string
+	//go:embed tpl/core/app/my/api_test/info_test.tpl
+	TestMyInfoTpl string
+	//go:embed tpl/core/app/my/api_test/login_test.tpl
+	TestMyLoginTpl string
+	//go:embed tpl/core/app/my/api_test/logout_test.tpl
+	TestMyLogoutTpl string
+	//go:embed tpl/core/app/my/api_test/refreshToken_test.tpl
+	TestMyRefreshTokenTpl string
+	//go:embed tpl/core/app/my/api_test/updatePwd_test.tpl
+	TestMyUpdatePwdTpl string
 )

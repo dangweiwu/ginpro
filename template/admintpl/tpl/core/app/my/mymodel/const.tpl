@@ -1,7 +1,6 @@
 package mymodel
 
 import (
-	"{{.Module}}/internal/ctx"
 	"strconv"
 )
 
@@ -16,5 +15,5 @@ func GetAdminRedisLoginId(appName string, id int) string {
 
 // redis login refreshtoken id
 func GetAdminRedisRefreshTokenId(appName string, id int) string {
-	return cs.Config.App.Name + "rft:" + GetAdminRedisId(id)
+	return appName + "rft:" + GetAdminRedisId(id)
 }

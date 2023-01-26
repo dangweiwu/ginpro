@@ -2,8 +2,11 @@ package yamconfig
 
 import (
 	"encoding/json"
+	"errors"
+	"fmt"
 	"gs/pkg/utils"
 	"io/ioutil"
+	"os"
 	"reflect"
 
 	"github.com/creasty/defaults"
@@ -65,35 +68,37 @@ func (this *YamlConfig) doDefault() error {
 do valide
 https://github.com/dealancer/validate
 eg
-type Registration struct {
-    // Username should be between 3 and 25 characters and in alphanumeric unicode format
-    Username string `validate:"gte=3 & lte=25 & format=alnum_unicode"`
 
-    // Email should be empty or in the email format
-    Email string `validate:"empty=true | format=email"`
+	type Registration struct {
+	    // Username should be between 3 and 25 characters and in alphanumeric unicode format
+	    Username string `validate:"gte=3 & lte=25 & format=alnum_unicode"`
 
-    // Password is validated using a custom validation method
-    Password string
+	    // Email should be empty or in the email format
+	    Email string `validate:"empty=true | format=email"`
 
-    // Role should be one of "admin", "publisher", or "author"
-    Role string `validate:"one_of=admin,publisher,author"`
+	    // Password is validated using a custom validation method
+	    Password string
 
-    // URLs should not be empty, URLs values should be in the url format
-    URLs []string `validate:"empty=false > format=url"`
+	    // Role should be one of "admin", "publisher", or "author"
+	    Role string `validate:"one_of=admin,publisher,author"`
 
-    // Retired (pointer) should not be nil
-    Retired *bool `validate:"nil=false"`
+	    // URLs should not be empty, URLs values should be in the url format
+	    URLs []string `validate:"empty=false > format=url"`
 
-    // Some complex field with validation
-    Complex []map[*string]int `validate:"gte=1 & lte=2 | eq=4 > empty=false [nil=false > empty=false] > ne=0"`
-}
-func (r Registration) Validate() error {
-    if !StrongPass(r.Password) {
-        return errors.New("Password should be strong!")
-    }
+	    // Retired (pointer) should not be nil
+	    Retired *bool `validate:"nil=false"`
 
-    return nil
-}
+	    // Some complex field with validation
+	    Complex []map[*string]int `validate:"gte=1 & lte=2 | eq=4 > empty=false [nil=false > empty=false] > ne=0"`
+	}
+
+	func (r Registration) Validate() error {
+	    if !StrongPass(r.Password) {
+	        return errors.New("Password should be strong!")
+	    }
+
+	    return nil
+	}
 */
 func (this *YamlConfig) doValide() error {
 	return validate.Validate(this.cfg)
@@ -125,6 +130,13 @@ func Load(configFile string, in interface{}) error {
 
 func MustLoad(configFile string, in interface{}) {
 	if err := Load(configFile, in); err != nil {
-		panic(err)
+		if errors.Is(err, os.ErrNotExist) {
+			fmt.Println("缺少配置文件")
+			os.Exit(1)
+		} else {
+			fmt.Println("读取配置文件失败")
+			fmt.Println(err.Error())
+			os.Exit(1)
+		}
 	}
 }
