@@ -1,10 +1,10 @@
-package handler
+package api
 
 import (
 	"github.com/gin-gonic/gin"
     "{{.Host}}/api/hd"
     "{{.Module}}/internal/ctx"
-    "{{.Module}}/internal/api/{{.ApiPackage}}/{{.ModelPackage}}"
+    "{{.Module}}/internal/app/{{.ApiPackage}}/{{.ModelPackage}}"
 	"{{.Module}}/internal/router/irouter"	
 )
 
@@ -14,6 +14,12 @@ type {{.ApiName}}Create struct {
 	sc  *ctx.ServerContext
 }
 
+//	@tags		主题{{.ApiName}}
+//	@summary	创建{{.ApiName}}
+//	@router		/api/{{.ApiName}} [post]
+//	@param		Authorization	header		string						true	"token"
+//	@param		root			body		{{.ModelPackage}}.{{.ModelName}}		true	"登陆账号密码"
+//	@success	200				{object}	hd.Response{data=string}	"ok"
 func New{{.ApiName}}Create(c *gin.Context,sc *ctx.ServerContext) irouter.IHandler{
 	return &{{.ApiName}}Create{hd.NewHd(c),c, sc}
 }
@@ -34,7 +40,7 @@ func (this *{{.ApiName}}Create) Do() error {
 	return nil
 }
 
-func (this *{{.ApiName}}Post) Create(po *{{.ModelPackage}}.{{.ModelName}}) error {
+func (this *{{.ApiName}}Create) Create(po *{{.ModelPackage}}.{{.ModelName}}) error {
 	db := this.sc.Db
 	//验证是否已创建 或者其他检查
 	//tmpPo := &{{.ModelPackage}}.{{.ModelName}}{}

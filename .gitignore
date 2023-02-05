@@ -6,3 +6,5 @@ cmd
 .vscode
 config
 .idea
+go.mod
+go.sum

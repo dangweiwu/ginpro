@@ -43,8 +43,8 @@ import (
 const ORDER = "od"
 
 type QueryResult struct {
-	Page *Page       
-	Data interface{} 
+	Page *Page       `json:"page"`
+	Data interface{} `json:"data"`
 }
 
 type QueryAllResult struct {
@@ -80,17 +80,17 @@ func (this *Query) ClearPage() {
 	this.Page = nil
 }
 
-//order 定制
+// order 定制
 func (this *Query) SetOrder(f DbCallBack) {
 	this.OrderF = f
 }
 
-//where 订制
+// where 订制
 func (this *Query) SetWhere(f DbCallBack) {
 	this.WhereF = f
 }
 
-//默认where
+// 默认where
 func (this *Query) Where(r *gorm.DB) *gorm.DB {
 	if len(this.QData) != 0 {
 		r = r.Where(this.QData)
@@ -100,8 +100,6 @@ func (this *Query) Where(r *gorm.DB) *gorm.DB {
 	}
 	return r
 }
-
-
 
 func (this *Query) GetResult() interface{} {
 	if this.Page == nil {

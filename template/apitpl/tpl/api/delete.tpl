@@ -1,11 +1,11 @@
-package handler
+package api
 
 import (
     "github.com/gin-gonic/gin"
     "gorm.io/gorm"
 	"{{.Host}}/api/hd"
 	"errors"
-    "{{.Module}}/internal/api/{{.ApiPackage}}/{{.ModelPackage}}"
+    "{{.Module}}/internal/app/{{.ApiPackage}}/{{.ModelPackage}}"
 	"{{.Module}}/internal/ctx"
 	"{{.Module}}/internal/router/irouter"
 )
@@ -21,6 +21,12 @@ func New{{.ApiName}}Del (c *gin.Context,sc *ctx.ServerContext) irouter.IHandler 
 	return &{{.ApiName}}Del{hd.NewHd(c),c, sc}
 }
 
+//	@tags		主题{{.ApiName}}
+//	@summary	删除{{.ApiName}}
+//	@router		/api/{{.ApiName}}/:id [delete]
+//	@param		id				path		int							true	"用户ID"
+//	@param		Authorization	header		string						true	"token"
+//	@success	200				{object}	hd.Response{data=string}	"ok"
 func (this *{{.ApiName}}Del) Do() error {
 	var err error
 	id, err := this.GetId()

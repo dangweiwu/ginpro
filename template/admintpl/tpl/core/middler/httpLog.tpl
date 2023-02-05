@@ -49,7 +49,7 @@ func HttpLog(sc *ctx.ServerContext) gin.HandlerFunc {
 		c.Next()
 
 		// Log only when path is not being skipped
-		_, ok := skipPath[path]
+		_, ok := skipPath[c.FullPath()]
 		_, ok2 := skipMethod[c.Request.Method]
 		if !ok && !ok2 {
 			// Stop timer

@@ -27,6 +27,7 @@ tasks:
   # 文档
   swag:
     - go install github.com/swaggo/swag/cmd/swag@latest
+    - swag fmt
     - swag init --pd --parseInternal -o doc/swag
 
 

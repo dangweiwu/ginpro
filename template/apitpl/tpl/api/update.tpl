@@ -1,17 +1,14 @@
-package handler
+package api
 
 import (
 	"github.com/gin-gonic/gin"
     "{{.Host}}/api/hd"
     "{{.Module}}/internal/ctx"
-    "{{.Module}}/internal/api/{{.ApiPackage}}/{{.ModelPackage}}"
+    "{{.Module}}/internal/app/{{.ApiPackage}}/{{.ModelPackage}}"
 	"{{.Module}}/internal/router/irouter"	
 	"errors"
 	"gorm.io/gorm"
 )
-
-
-
 
 type {{.ApiName}}Update struct {
 	*hd.Hd
@@ -24,6 +21,13 @@ func New{{.ApiName}}Update (c *gin.Context,sc *ctx.ServerContext) irouter.IHandl
 }
 
 
+// @tags		主题{{.ApiName}}
+// @summary	    修改{{.ApiName}}
+// @router		/api/{{.ApiName}}/:id [put]
+// @param		id				path		int							true	"用户ID"
+// @param		Authorization	header		string						true	"token"
+// @param		root			body		{{.ModelPackage}}.{{.ModelName}}	true	"修改信息"
+// @success	200				{object}	hd.Response{data=string}	"ok"
 func (this *{{.ApiName}}Update) Do() error {
 	var err error
 	id, err := this.GetId()

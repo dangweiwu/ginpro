@@ -1,7 +1,7 @@
 package {{.ApiPackage}}
 
 import (
-	"{{.Module}}/internal/api/{{.ApiPackage}}/api"
+	"{{.Module}}/internal/app/{{.ApiPackage}}/api"
 	"{{.Module}}/internal/router"
 	"{{.Module}}/internal/ctx"
 )
