@@ -1,6 +1,7 @@
 package gencode
 
 import (
+	"github.com/pkg/errors"
 	"gs/pkg/utils"
 	"io/fs"
 	"os"
@@ -41,7 +42,7 @@ func (this *GenCode) Gen() error {
 
 		codefile := path.Join(pt, v.FileName)
 		if err := utils.GenTpl(v.Tpl, this.module, codefile); err != nil {
-			return err
+			return errors.WithMessage(err, codefile)
 		}
 	}
 

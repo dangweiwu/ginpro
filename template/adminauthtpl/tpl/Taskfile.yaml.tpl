@@ -1,9 +1,9 @@
 version: '3'
 
 vars:
-    coverout: "cover.out"
-    htmlout: "cover.html"
-    covercount: 70
+  coverout: "cover.out"
+  htmlout: "cover.html"
+  covercount: 70
 tasks:
   # 测试
   test:
