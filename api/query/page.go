@@ -15,8 +15,8 @@ var (
 )
 
 type Page struct {
-	Limit   int `json:"limit" form:"Limit"`     // 每页条数
-	Current int `json:"current" form:"Current"` //当前页数
+	Limit   int `json:"limit" form:"limit"`     // 每页条数
+	Current int `json:"current" form:"current"` //当前页数
 	Total   int `json:"total"`                  //总数
 }
 
