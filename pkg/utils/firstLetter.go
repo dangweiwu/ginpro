@@ -29,3 +29,11 @@ func FirstLower(s string) string {
 	return strings.ToLower(s[:1]) + s[1:]
 
 }
+
+// 全部小写 url中使用
+func LowerAll(s string) string {
+	if s == "" {
+		return ""
+	}
+	return strings.ToUpper(s)
+}

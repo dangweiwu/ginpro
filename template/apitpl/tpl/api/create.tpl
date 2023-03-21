@@ -16,7 +16,7 @@ type {{.ApiName}}Create struct {
 
 //	@tags		主题{{.ApiName}}
 //	@summary	创建{{.ApiName}}
-//	@router		/api/{{.ApiName}} [post]
+//	@router		/api/{{.RouterUrl}} [post]
 //	@param		Authorization	header		string						true	"token"
 //	@param		root			body		{{.ModelPackage}}.{{.ModelName}}		true	"登陆账号密码"
 //	@success	200				{object}	hd.Response{data=string}	"ok"

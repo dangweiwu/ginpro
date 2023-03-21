@@ -11,7 +11,6 @@ import (
 /*
 获取全部url
 */
-
 type GetFullUrl struct {
 	*hd.Hd
 	ctx *gin.Context

@@ -22,7 +22,7 @@ func New{{.ApiName}}Query(c *gin.Context,sc *ctx.ServerContext) irouter.IHandler
 
 //	@tags		主题{{.ApiName}}
 //	@summary	查询{{.ApiName}}
-//	@router		/api/{{.ApiName}} [get]
+//	@router		/api/{{.RouterUrl}} [get]
 //	@param		[参数变量1]	query		string										false	"[参数名1]"
 //	@param		[参数变量2]	query		string										false	"[参数名2]"
 //	@success	200		{object}	query.PageData{data=[]{{.ModelPackage}}.{{.ModelName}}}	"ok"

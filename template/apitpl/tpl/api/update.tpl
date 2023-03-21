@@ -23,7 +23,7 @@ func New{{.ApiName}}Update (c *gin.Context,sc *ctx.ServerContext) irouter.IHandl
 
 // @tags		主题{{.ApiName}}
 // @summary	    修改{{.ApiName}}
-// @router		/api/{{.ApiName}}/:id [put]
+// @router		/api/{{.RouterUrl}}/:id [put]
 // @param		id				path		int							true	"用户ID"
 // @param		Authorization	header		string						true	"token"
 // @param		root			body		{{.ModelPackage}}.{{.ModelName}}	true	"修改信息"

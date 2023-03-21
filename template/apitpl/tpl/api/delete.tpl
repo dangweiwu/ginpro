@@ -23,7 +23,7 @@ func New{{.ApiName}}Del (c *gin.Context,sc *ctx.ServerContext) irouter.IHandler 
 
 //	@tags		主题{{.ApiName}}
 //	@summary	删除{{.ApiName}}
-//	@router		/api/{{.ApiName}}/:id [delete]
+//	@router		/api/{{.RouterUrl}}/:id [delete]
 //	@param		id				path		int							true	"用户ID"
 //	@param		Authorization	header		string						true	"token"
 //	@success	200				{object}	hd.Response{data=string}	"ok"

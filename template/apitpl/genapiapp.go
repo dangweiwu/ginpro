@@ -51,7 +51,7 @@ func NewApiApp(appname string) (*ApiApp, error) {
 	moduleValue.ModelName = utils.FirstUpper(appname) + "Po"
 	moduleValue.ModelPackage = utils.FirstLower(appname) + "model"
 	moduleValue.RouterType = "Jwt"
-	moduleValue.RouterUrl = utils.FirstLower(appname)
+	moduleValue.RouterUrl = utils.LowerAll(appname)
 	pt := path.Join(wd, appname)
 	c := gencode.NewGenCode(pt, moduleValue)
 	a := &ApiApp{c, moduleValue.ModelPackage}
