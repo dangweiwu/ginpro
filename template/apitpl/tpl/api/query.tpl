@@ -25,7 +25,7 @@ func New{{.ApiName}}Query(c *gin.Context,sc *ctx.ServerContext) irouter.IHandler
 //	@router		/api/{{.RouterUrl}} [get]
 //	@param		[参数变量1]	query		string										false	"[参数名1]"
 //	@param		[参数变量2]	query		string										false	"[参数名2]"
-//	@success	200		{object}	query.PageData{data=[]{{.ModelPackage}}.{{.ModelName}}}	"ok"
+//	@success	200		{object}	query.PageData{data=[]{{.ModelPackage}}.{{.ModelName}}Po}	"ok"
 func (this *{{.ApiName}}Query) Do() error {
 
 	data,err := this.Query()
@@ -42,8 +42,8 @@ var QueryRule = map[string]string{
 }
 
 func (this *{{.ApiName}}Query) Query() (interface{}, error) {
-	po := &{{.ModelPackage}}.{{.ModelName}}{}
-	pos := []{{.ModelPackage}}.{{.ModelName}}{}
+	po := &{{.ModelPackage}}.{{.ModelName}}Po{}
+	pos := []{{.ModelPackage}}.{{.ModelName}}Po{}
 	q := query.NewQuery(this.ctx, this.sc.Db, QueryRule, po, &pos)
 	return q.Do()
 }

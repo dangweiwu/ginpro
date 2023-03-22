@@ -43,7 +43,7 @@ func (this *{{.ApiName}}Del) Do() error {
 
 func (this *{{.ApiName}}Del) Delete(id int64) error {
 	db := this.sc.Db
-	po := &{{.ModelPackage}}.{{.ModelName}}{}
+	po := &{{.ModelPackage}}.{{.ModelName}}Po{}
 	po.ID = id
 	if r := db.Take(po); r.Error != nil {
 		if r.Error == gorm.ErrRecordNotFound {

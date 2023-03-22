@@ -26,7 +26,7 @@ func New{{.ApiName}}Update (c *gin.Context,sc *ctx.ServerContext) irouter.IHandl
 // @router		/api/{{.RouterUrl}}/:id [put]
 // @param		id				path		int							true	"用户ID"
 // @param		Authorization	header		string						true	"token"
-// @param		root			body		{{.ModelPackage}}.{{.ModelName}}	true	"修改信息"
+// @param		root			body		{{.ModelPackage}}.{{.ModelName}}Form	true	"修改信息"
 // @success	200				{object}	hd.Response{data=string}	"ok"
 func (this *{{.ApiName}}Update) Do() error {
 	var err error
@@ -34,7 +34,7 @@ func (this *{{.ApiName}}Update) Do() error {
 	if err != nil {
 		return err
 	}
-	po := &{{.ModelPackage}}.{{.ModelName}}{}
+	po := &{{.ModelPackage}}.{{.ModelName}}Form{}
 	err = this.Bind(po)
 	if err != nil {
 		return err
@@ -48,9 +48,9 @@ func (this *{{.ApiName}}Update) Do() error {
 	return nil
 }
 
-func (this *{{.ApiName}}Update) Update(po *{{.ModelPackage}}.{{.ModelName}}) error {
+func (this *{{.ApiName}}Update) Update(po *{{.ModelPackage}}.{{.ModelName}}Form) error {
     db := this.sc.Db
-	tmpPo := &{{.ModelPackage}}.{{.ModelName}}{}
+	tmpPo := &{{.ModelPackage}}.{{.ModelName}}Form{}
 	if r := db.Model(tmpPo).Take(tmpPo); r.Error != nil {
 		if r.Error == gorm.ErrRecordNotFound {
 			return errors.New("记录不存在")

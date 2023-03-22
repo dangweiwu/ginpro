@@ -6,6 +6,7 @@ import (
 )
 
 type AdminForm struct {
+    dbtype.BaseForm
 	Account      string `json:"account" gorm:"type:varchar(50);unique;comment:账号" binding:"required"`                     //账号
 	Phone        string `json:"phone" gorm:"type:varchar(50);unique;comment:电话" binding:"max=11"`                         //手机号 只进行11位校验
 	Name         string `json:"name" gorm:"size:100;not null;default:'';comment:名称" binding:"max=100"`                    //名称

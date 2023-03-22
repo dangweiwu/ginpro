@@ -18,7 +18,7 @@ type {{.ApiName}}Create struct {
 //	@summary	创建{{.ApiName}}
 //	@router		/api/{{.RouterUrl}} [post]
 //	@param		Authorization	header		string						true	"token"
-//	@param		root			body		{{.ModelPackage}}.{{.ModelName}}		true	"登陆账号密码"
+//	@param		root			body		{{.ModelPackage}}.{{.ModelName}}Form		true	"登陆账号密码"
 //	@success	200				{object}	hd.Response{data=string}	"ok"
 func New{{.ApiName}}Create(c *gin.Context,sc *ctx.ServerContext) irouter.IHandler{
 	return &{{.ApiName}}Create{hd.NewHd(c),c, sc}
@@ -26,7 +26,7 @@ func New{{.ApiName}}Create(c *gin.Context,sc *ctx.ServerContext) irouter.IHandle
 
 func (this *{{.ApiName}}Create) Do() error {
     //数据源
-	po := &{{.ModelPackage}}.{{.ModelName}}{}
+	po := &{{.ModelPackage}}.{{.ModelName}}Form{}
 	err := this.Bind(po)
 	if err != nil {
 		return err
@@ -40,7 +40,7 @@ func (this *{{.ApiName}}Create) Do() error {
 	return nil
 }
 
-func (this *{{.ApiName}}Create) Create(po *{{.ModelPackage}}.{{.ModelName}}) error {
+func (this *{{.ApiName}}Create) Create(po *{{.ModelPackage}}.{{.ModelName}}Form) error {
 	db := this.sc.Db
 	//验证是否已创建 或者其他检查
 	//tmpPo := &{{.ModelPackage}}.{{.ModelName}}{}

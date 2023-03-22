@@ -12,8 +12,11 @@ var (
 	//go:embed tpl/router.tpl
 	RouterTpl string
 
-	//go:embed tpl/model/model.tpl
+	//go:embed tpl/model/po.tpl
 	ModelTpl string
+
+	//go:embed tpl/model/form.tpl
+	FormTpl string
 
 	//go:embed tpl/api/query.tpl
 	HandlerQueryTpl string
@@ -48,7 +51,7 @@ func NewApiApp(appname string) (*ApiApp, error) {
 	moduleValue.ApiName = utils.FirstUpper(appname)
 	moduleValue.ApiPackage = utils.FirstLower(appname)
 	moduleValue.TableName = appname
-	moduleValue.ModelName = utils.FirstUpper(appname) + "Po"
+	moduleValue.ModelName = utils.FirstUpper(appname)
 	moduleValue.ModelPackage = utils.FirstLower(appname) + "model"
 	moduleValue.RouterType = "Jwt"
 	moduleValue.RouterUrl = utils.LowerAll(appname)
@@ -66,6 +69,7 @@ func (this *ApiApp) InitFile() error {
 		{"query.go", []string{api}, HandlerQueryTpl},
 		{"update.go", []string{api}, HandlerUpdateTpl},
 		{"model.go", []string{this.model}, ModelTpl},
+		{"form.go", []string{this.model}, FormTpl},
 		{"apiRouter.go", []string{}, RouterTpl},
 	}
 	this.code.SetFileItem(fileItems)
