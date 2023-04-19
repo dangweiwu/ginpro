@@ -26,7 +26,7 @@ func NewAdminQuery(c *gin.Context, sc *ctx.ServerContext) irouter.IHandler {
 // @param   phone   query    string                                     false "手机号"
 // @param   email   query    string                                     false "email"
 // @param   name    query    string                                     false "姓名"
-// @success 200     {object} query.PageData{data=[]adminmodel.AdminInfo} "ok"
+// @success 200     {object} query.PageData{data=[]adminmodel.AdminVo} "ok"
 func (this *AdminQuery) Do() error {
 	data, err := this.Query()
 	if err != nil {
@@ -45,8 +45,8 @@ var QueryRule = map[string]string{
 }
 
 func (this *AdminQuery) Query() (interface{}, error) {
-	po := &adminmodel.AdminInfo{}
-	pos := []adminmodel.AdminInfo{}
+	po := &adminmodel.AdminVo{}
+	pos := []adminmodel.AdminVo{}
 	q := query.NewQuery(this.ctx, this.sc.Db, QueryRule, po, &pos)
 	return q.Do()
 }

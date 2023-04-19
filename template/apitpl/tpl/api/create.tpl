@@ -18,7 +18,7 @@ type {{.ApiName}}Create struct {
 //	@summary	创建{{.ApiName}}
 //	@router		/api/{{.RouterUrl}} [post]
 //	@param		Authorization	header		string						true	"token"
-//	@param		root			body		{{.ModelPackage}}.{{.ModelName}}Form		true	"登陆账号密码"
+//	@param		root			body		{{.ModelPackage}}.{{.ModelName}}Form		true	""
 //	@success	200				{object}	hd.Response{data=string}	"ok"
 func New{{.ApiName}}Create(c *gin.Context,sc *ctx.ServerContext) irouter.IHandler{
 	return &{{.ApiName}}Create{hd.NewHd(c),c, sc}

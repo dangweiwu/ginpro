@@ -18,6 +18,9 @@ var (
 	//go:embed tpl/model/form.tpl
 	FormTpl string
 
+	//go:embed tpl/model/vo.tpl
+	VoTpl string
+
 	//go:embed tpl/api/query.tpl
 	HandlerQueryTpl string
 
@@ -70,6 +73,7 @@ func (this *ApiApp) InitFile() error {
 		{"update.go", []string{api}, HandlerUpdateTpl},
 		{"model.go", []string{this.model}, ModelTpl},
 		{"form.go", []string{this.model}, FormTpl},
+		{"vo.go", []string{this.model}, VoTpl},
 		{"apiRouter.go", []string{}, RouterTpl},
 	}
 	this.code.SetFileItem(fileItems)
