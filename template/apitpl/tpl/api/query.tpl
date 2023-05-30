@@ -20,12 +20,14 @@ func New{{.ApiName}}Query(c *gin.Context,sc *ctx.ServerContext) irouter.IHandler
 	return &{{.ApiName}}Query{hd.NewHd(c),c, sc}
 }
 
-//	@tags		主题{{.ApiName}}
+// @x-group		{"key":"{{.ApiName}}","inorder":4}
 //	@summary	查询{{.ApiName}}
 //	@router		/api/{{.RouterUrl}} [get]
-//	@param		[参数变量1]	query		string										false	"[参数名1]"
-//	@param		[参数变量2]	query		string										false	"[参数名2]"
-//	@success	200		{object}	query.PageData{data=[]{{.ModelPackage}}.{{.ModelName}}Vo}	"ok"
+//  @param      Authorization header   string                 true " " extensions(x-name=鉴权,x-value=[TOKEN])
+//  @param      limit query    string          false " "  extensions(x-name=分页条数,x-value=10)
+//  @param      current query    string        false " "  extensions(x-name=页码,x-value=1)
+//	@param		[参数变量1]	query		string	false	" "  extensions(x-name=,x-value=)
+//	@success	200		{object}	{{.ModelPackage}}.{{.ModelName}}Vo	" "
 func (this *{{.ApiName}}Query) Do() error {
 
 	data,err := this.Query()
@@ -37,13 +39,10 @@ func (this *{{.ApiName}}Query) Do() error {
 	}
 }
 
-var QueryRule = map[string]string{
-	//	key:"like"  or ""
-}
 
 func (this *{{.ApiName}}Query) Query() (interface{}, error) {
 	vo := &{{.ModelPackage}}.{{.ModelName}}Vo{}
 	vos := []{{.ModelPackage}}.{{.ModelName}}Vo{}
-	q := query.NewQuery(this.ctx, this.sc.Db, QueryRule, vo, &vos)
+	q := query.NewQuery(this.ctx, this.sc.Db, {{.ModelPackage}}.QueryRule, vo, &vos)
 	return q.Do()
 }

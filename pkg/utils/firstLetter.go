@@ -35,5 +35,5 @@ func LowerAll(s string) string {
 	if s == "" {
 		return ""
 	}
-	return strings.ToUpper(s)
+	return strings.ToLower(s)
 }

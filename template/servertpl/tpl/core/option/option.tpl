@@ -4,5 +4,5 @@ var Opt Option
 
 type Option struct {
 	ConfigPath    string        `long:"config" short:"f" description:"配置文件路径"`
-	RunServe      RunServe      `command:"runserve" description:"启动api服务"`
+	RunServe      RunServe      `command:"run" description:"启动api服务"`
 }

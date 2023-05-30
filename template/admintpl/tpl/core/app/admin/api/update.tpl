@@ -26,11 +26,12 @@ func NewAdminUpdate(c *gin.Context, sc *ctx.ServerContext) irouter.IHandler {
 
 // @tags    系统用户
 // @summary 修改用户
+// @x-group		{"key":"adminuser","inorder":2}
 // @router  /api/admin/:id [put]
-// @param   id            path     int                      true "用户ID"
-// @param   Authorization header   string                   true "token"
-// @param   root          body     adminmodel.AdminUpdateForm      true "修改信息"
-// @success 200           {object} hd.Response{data=string} "ok"
+// @param   id            path     int                      true " " extensions(x-name=用户ID,x-value=1)
+// @param   Authorization header   string                   true " " extensions(x-name=鉴权,x-value=[TOKEN])
+// @param   root          body     adminmodel.AdminUpdateForm      true " "
+// @success 200           {string} string  "{data:'ok'}"
 func (this *AdminUpdate) Do() error {
 	var err error
 	id, err := this.GetId()
@@ -65,17 +66,20 @@ func (this *AdminUpdate) Update(po *adminmodel.AdminUpdateForm) error {
 	if err != nil {
 		return err
 	}
-
+	if uid == po.ID {
+		return errors.New("禁止修改自己")
+	}
 	if tmpPo.ID == uid {
 		if tmpPo.Status == "1" && po.Status == "0" {
 			return errors.New("不能禁用自己")
 		}
 	}
 	//其他校验
+	/*
 	if err := this.Valid(po); err != nil {
 		return err
 	}
-
+    */
 	//更新
 	if r := db.Select("phone", "name", "status", "memo", "email", "is_super_admin", "updated_at").Updates(po); r.Error != nil {
 		return r.Error

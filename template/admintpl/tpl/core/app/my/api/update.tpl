@@ -28,12 +28,13 @@ func NewMyUpdate(c *gin.Context, sc *ctx.ServerContext) irouter.IHandler {
 	return &MyUpdate{hd.NewHd(c), c, sc}
 }
 
+// @x-group		{"key":"my","name":"系统我的","order":0,"desc":"系统我的","inorder":2}
 // @tags    系统我的
 // @summary 修改信息
 // @router  /api/my [put]
-// @param   Authorization header   string                   true "token"
+// @param   Authorization header   string              true " " extensions(x-name=鉴权,x-value=[TOKEN])
 // @param   root          body     mymodel.MyForm      true "修改信息"
-// @success 200           {object} hd.Response{data=string} "ok"
+// @success 200           {string} string "{data:'ok'}"
 func (this *MyUpdate) Do() error {
 	var err error
 	uid, err := jwtx.GetUid(this.ctx)

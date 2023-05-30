@@ -4,15 +4,12 @@ import(
 	"{{.Host}}/pkg/dbtype"
 )
 
-type {{.ModelName}}Vo struct {
-	dbtype.Base
+type {{.ModelName}}UpdateForm struct {
+	dbtype.BaseForm
 	//Demo     string      +` + "`+gorm:\"size:100;not null;default:'';comment:demo\" binding:\"max=100\"`" + `
 }
 
-func ({{.ModelName}}Vo) TableName() string {
+func ({{.ModelName}}UpdateForm) TableName() string {
 	return "{{.TableName}}"
 }
 
-var QueryRule = map[string]string{
-	//	key:"like"  or ""
-}

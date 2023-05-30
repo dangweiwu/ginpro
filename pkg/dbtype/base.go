@@ -23,9 +23,8 @@ func (this *Base) BeforeUpdate(tx *gorm.DB) (err error) {
 	return
 }
 
-
 type BaseForm struct {
-	ID        int64  `json:"-" gorm:"primaryKey"`
+	ID        int64  `json:"-" swaggerignore:"true" gorm:"primaryKey"`
 	CreatedAt TimeAt `json:"-" swaggerignore:"true"`
 	UpdatedAt TimeAt `json:"-" swaggerignore:"true"`
 }
@@ -37,6 +36,18 @@ func (this *BaseForm) BeforeCreate(tx *gorm.DB) (err error) {
 }
 
 func (this *BaseForm) BeforeUpdate(tx *gorm.DB) (err error) {
+	this.UpdatedAt = TimeAt(time.Now())
+	return
+}
+
+
+type UpdateForm struct {
+	ID        int64  `json:"-" swaggerignore:"true" gorm:"primaryKey"`
+	UpdatedAt TimeAt `json:"-" swaggerignore:"true"`
+}
+
+
+func (this *UpdateForm) BeforeUpdate(tx *gorm.DB) (err error) {
 	this.UpdatedAt = TimeAt(time.Now())
 	return
 }

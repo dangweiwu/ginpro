@@ -1,6 +1,7 @@
 package api
 
 import (
+    "{{.Module}}/internal/pkg/jwtx"
 	"errors"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
@@ -23,16 +24,27 @@ func NewAdminDel(c *gin.Context, sc *ctx.ServerContext) irouter.IHandler {
 
 // @tags    系统用户
 // @summary 删除用户
+// @x-group		{"key":"adminuser","inorder":3}
 // @router  /api/admin/:id [delete]
-// @param   id            path     int                      true "用户ID"
-// @param   Authorization header   string                   true "token"
-// @success 200           {object} hd.Response{data=string} "ok"
+// @param   Authorization header   string                   true " " extensions(x-name=鉴权,x-value=[TOKEN])
+// @param   id            path     int                      true " "  extensions(x-name=用户ID,x-value=1)
+// @success 200           {string} string  "{data:'ok'}"
 func (this *AdminDel) Do() error {
 	var err error
 	id, err := this.GetId()
 	if err != nil {
 		return err
 	}
+
+    uid, err := jwtx.GetUid(this.ctx)
+    if err != nil {
+        return err
+    }
+
+    if id == uid {
+        return errors.New("禁止删除自己")
+    }
+
 	if err := this.Delete(id); err != nil {
 		return err
 	} else {

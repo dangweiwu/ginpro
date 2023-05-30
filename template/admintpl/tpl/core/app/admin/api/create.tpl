@@ -24,10 +24,11 @@ func NewAdminCreate(c *gin.Context, sc *ctx.ServerContext) irouter.IHandler {
 
 // @tags    系统用户
 // @summary 创建用户
+// @x-group		{"key":"adminuser","name":"系统用户","order":1,"desc":"系统用户管理","inorder":1}
 // @router  /api/admin [post]
-// @param   Authorization header   string                   true "token"
-// @param   root          body     adminmodel.AdminForm   true "登陆账号密码"
-// @success 200           {object} hd.Response{data=string} "ok"
+// @param   Authorization header   string                 true " " extensions(x-name=鉴权,x-value=[TOKEN])
+// @param   root          body     adminmodel.AdminForm   true " "
+// @success 200           {string} string  "{data:'ok'}"
 func (this *AdminCreate) Do() error {
 
 	//数据源
@@ -69,6 +70,7 @@ func (this *AdminCreate) Valid(po *adminmodel.AdminForm) error {
 		return errors.New("账号已存在")
 	}
 
+    /*
 	if po.Phone != "" {
 		if r := db.Model(po).Where("phone = ?", po.Phone).Count(&ct); r.Error != nil {
 			return errs.WithMessage(r.Error, "校验失败")
@@ -84,5 +86,6 @@ func (this *AdminCreate) Valid(po *adminmodel.AdminForm) error {
 			return errors.New("Email已存在")
 		}
 	}
+	*/
 	return nil
 }

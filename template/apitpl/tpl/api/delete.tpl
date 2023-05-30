@@ -21,12 +21,12 @@ func New{{.ApiName}}Del (c *gin.Context,sc *ctx.ServerContext) irouter.IHandler 
 	return &{{.ApiName}}Del{hd.NewHd(c),c, sc}
 }
 
-//	@tags		主题{{.ApiName}}
+//  @x-group    {"key":"{{.ApiName}}","inorder":3}
 //	@summary	删除{{.ApiName}}
 //	@router		/api/{{.RouterUrl}}/:id [delete]
-//	@param		id				path		int							true	"用户ID"
-//	@param		Authorization	header		string						true	"token"
-//	@success	200				{object}	hd.Response{data=string}	"ok"
+//  @param   Authorization header   string                   true " " extensions(x-name=鉴权,x-value=[TOKEN])
+//  @param   id            path     int                      true " "  extensions(x-name=用户ID,x-value=1)
+//  @success	200		{string} string	 "{data:'ok'}"
 func (this *{{.ApiName}}Del) Do() error {
 	var err error
 	id, err := this.GetId()

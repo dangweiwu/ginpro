@@ -14,12 +14,12 @@ type {{.ApiName}}Create struct {
 	sc  *ctx.ServerContext
 }
 
-//	@tags		主题{{.ApiName}}
+// @x-group		{"key":"{{.ApiName}}","name":"","order":1,"desc":"","inorder":1}
 //	@summary	创建{{.ApiName}}
 //	@router		/api/{{.RouterUrl}} [post]
-//	@param		Authorization	header		string						true	"token"
+//  @param      Authorization header   string                 true " " extensions(x-name=鉴权,x-value=[TOKEN])
 //	@param		root			body		{{.ModelPackage}}.{{.ModelName}}Form		true	""
-//	@success	200				{object}	hd.Response{data=string}	"ok"
+//	@success	200				{string} string	 "{data:'ok'}"
 func New{{.ApiName}}Create(c *gin.Context,sc *ctx.ServerContext) irouter.IHandler{
 	return &{{.ApiName}}Create{hd.NewHd(c),c, sc}
 }

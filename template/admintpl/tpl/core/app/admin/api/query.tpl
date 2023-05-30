@@ -21,12 +21,16 @@ func NewAdminQuery(c *gin.Context, sc *ctx.ServerContext) irouter.IHandler {
 
 // @tags    系统用户
 // @summary 查询用户
+// @x-group		{"key":"adminuser","inorder":4}
 // @router  /api/admin [get]
-// @param   account query    string                                     false "账号 "
-// @param   phone   query    string                                     false "手机号"
-// @param   email   query    string                                     false "email"
-// @param   name    query    string                                     false "姓名"
-// @success 200     {object} query.PageData{data=[]adminmodel.AdminVo} "ok"
+// @param   Authorization header   string  true  " " extensions(x-name=鉴权,x-value=[TOKEN])
+// @param   limit query    string          false " "  extensions(x-name=分页条数,x-value=10)
+// @param   current query    string        false " "  extensions(x-name=页码,x-value=1)
+// @param   account query    string        false " "  extensions(x-name=账号,x-value=admin)
+// @param   phone   query    string        false " "  extensions(x-name=手机号,x-value=123)
+// @param   email   query    string        false " "   extensions(x-name=Email,x-value=2)
+// @param   name    query    string        false " "  extensions(x-name=姓名,x-value=)
+// @success 200     {object} adminmodel.AdminVo " "
 func (this *AdminQuery) Do() error {
 	data, err := this.Query()
 	if err != nil {

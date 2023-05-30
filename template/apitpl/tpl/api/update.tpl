@@ -20,27 +20,26 @@ func New{{.ApiName}}Update (c *gin.Context,sc *ctx.ServerContext) irouter.IHandl
 	return &{{.ApiName}}Update{hd.NewHd(c),c, sc}
 }
 
-
-// @tags		主题{{.ApiName}}
+// @x-group		{"key":"{{.ApiName}}","inorder":2}
 // @summary	    修改{{.ApiName}}
 // @router		/api/{{.RouterUrl}}/:id [put]
-// @param		id				path		int							true	"用户ID"
-// @param		Authorization	header		string						true	"token"
-// @param		root			body		{{.ModelPackage}}.{{.ModelName}}Form	true	"修改信息"
-// @success	200				{object}	hd.Response{data=string}	"ok"
+// @param   Authorization header   string                   true " " extensions(x-name=鉴权,x-value=[TOKEN])
+// @param   id            path     int                      true " "  extensions(x-name=用户ID,x-value=1)
+// @param		root			body		{{.ModelPackage}}.{{.ModelName}}UpdateForm	true	" "
+// @success	200				{string}	string	"{data:'ok'}"
 func (this *{{.ApiName}}Update) Do() error {
 	var err error
 	id, err := this.GetId()
 	if err != nil {
 		return err
 	}
-	po := &{{.ModelPackage}}.{{.ModelName}}Form{}
-	err = this.Bind(po)
+	form := &{{.ModelPackage}}.{{.ModelName}}UpdateForm{}
+	err = this.Bind(form)
 	if err != nil {
 		return err
 	}
-	po.ID = id
-	err = this.Update(po)
+	form.ID = id
+	err = this.Update(form)
 	if err != nil {
 		return err
 	}
@@ -48,10 +47,10 @@ func (this *{{.ApiName}}Update) Do() error {
 	return nil
 }
 
-func (this *{{.ApiName}}Update) Update(po *{{.ModelPackage}}.{{.ModelName}}Form) error {
+func (this *{{.ApiName}}Update) Update(form *{{.ModelPackage}}.{{.ModelName}}UpdateForm) error {
     db := this.sc.Db
-	tmpPo := &{{.ModelPackage}}.{{.ModelName}}Form{}
-	if r := db.Model(tmpPo).Take(tmpPo); r.Error != nil {
+	tmpForm := &{{.ModelPackage}}.{{.ModelName}}UpdateForm{}
+	if r := db.Model(tmpForm).Take(tmpForm); r.Error != nil {
 		if r.Error == gorm.ErrRecordNotFound {
 			return errors.New("记录不存在")
 		} else {
@@ -61,7 +60,7 @@ func (this *{{.ApiName}}Update) Update(po *{{.ModelPackage}}.{{.ModelName}}Form)
     //其他校验
 
     //更新
-	if r := db.Select("xx","xx").Updates(po); r.Error != nil {
+	if r := db.Select("*").Updates(form); r.Error != nil {
 		return r.Error
 	}
 	return nil
