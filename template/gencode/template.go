@@ -27,3 +27,20 @@ type CopyFile struct {
 	Dir      []string
 	Tpl      string
 }
+
+type FormItem struct {
+	Name string
+	Key  string
+	Type string //string int
+	//Radio map[string]string //radio value valuename
+	Rule []string //rule type name
+}
+
+// 生成html使用
+type HtmlValue struct {
+	Name      string
+	View      []FormItem
+	QueryRule []FormItem //query rule key name
+	Create    []FormItem
+	Update    []FormItem
+}

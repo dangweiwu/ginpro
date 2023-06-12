@@ -7,4 +7,6 @@ type Option struct {
 	AdminServer     AdminServer     `command:"admin" description:"生成admin server框架"`
 	ApiTemplate     ApiTemlate      `command:"apitpl" description:"生成api模板"`
 	AdminAuthServer AdminAuthServer `command:"adminauth" description:"生成admin auth server框架"`
+	ApiHtml         ApiHtml         `command:"apihtml" description:"生成指定html模板"`
+	FrontHtml       FrontHtml       `command:"front" description:"生成基础前端框架"`
 }

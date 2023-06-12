@@ -6,6 +6,7 @@ import (
 	"io/fs"
 	"os"
 	"path"
+	"text/template"
 )
 
 var chmod fs.FileMode = 755
@@ -15,13 +16,25 @@ type GenCode struct {
 	fileItem []FileItem //需要模板的
 	CopyFile []CopyFile //直接copy的
 	root     string
-	module   ModuleValue
+	//module   ModuleValue
+	module interface{}
+	tp     string //生成类型 html other
+	funcs  template.FuncMap
 }
 
-func NewGenCode(root string, module ModuleValue) *GenCode {
+func NewGenCode(root string, module interface{}) *GenCode {
 	a := &GenCode{root: root, module: module}
 	a.fileItem = []FileItem{}
+	a.funcs = template.FuncMap{}
 	return a
+}
+
+func (this *GenCode) SetHtmlType() {
+	this.tp = "html"
+}
+
+func (this *GenCode) AddFunc(name string, f any) {
+	this.funcs[name] = f
 }
 
 func (this *GenCode) SetFileItem(s []FileItem) {
@@ -41,9 +54,17 @@ func (this *GenCode) Gen() error {
 		}
 
 		codefile := path.Join(pt, v.FileName)
-		if err := utils.GenTpl(v.Tpl, this.module, codefile); err != nil {
-			return errors.WithMessage(err, codefile)
+
+		if this.tp == "html" {
+			if err := utils.GenHtml(v.Tpl, this.module, codefile, this.funcs); err != nil {
+				return errors.WithMessage(err, codefile)
+			}
+		} else {
+			if err := utils.GenTpl(v.Tpl, this.module, codefile); err != nil {
+				return errors.WithMessage(err, codefile)
+			}
 		}
+
 	}
 
 	for _, v := range this.CopyFile {

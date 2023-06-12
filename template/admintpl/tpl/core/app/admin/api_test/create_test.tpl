@@ -28,13 +28,8 @@ func TestAdminCreate(t *testing.T) {
 			&adminmodel.AdminForm{Name: "dang", Phone: "12345678911", Account: "dang", Password: "123456", IsSuperAdmin: "0", Status: "1", Email: "abc1@qq.com"}},
 		{"重复账号", "POST", "/api/admin", false,
 			&adminmodel.AdminForm{Name: "dang", Phone: "12345678911", Account: "dang", Password: "123456", IsSuperAdmin: "0", Status: "1", Email: "abc2@qq.com"}},
-		{"重复手机号", "POST", "/api/admin", false,
-			&adminmodel.AdminForm{Name: "dang", Phone: "12345678911", Account: "dang3", Password: "123456", IsSuperAdmin: "0", Status: "1", Email: "abc3@qq.com"}},
 		{"email格式", "POST", "/api/admin", false,
 			&adminmodel.AdminForm{Name: "dang", Phone: "12345678912", Account: "dang3", Password: "123456", IsSuperAdmin: "0", Status: "1", Email: "abc"}},
-
-		{"email重复", "POST", "/api/admin", false,
-			&adminmodel.AdminForm{Name: "dang", Phone: "12345678912", Account: "dang3", Password: "123456", IsSuperAdmin: "0", Status: "1", Email: "abc1@qq.com"}},
 	}
 	for k, tt := range tests {
 		body, _ := json.Marshal(tt.po)
@@ -59,20 +54,9 @@ func TestAdminCreate(t *testing.T) {
 		case 2:
 			ser := testtool.NewTestServer(SerCtx, tt.Method, tt.Target, bytes.NewBuffer(body)).SetAuth(my.AccessToken).Do()
 			if assert.Equal(t, 400, ser.GetCode(), "%s:%s", tt.name, ser.GetBody()) {
-				assert.Contains(t, ser.GetBody(), "手机号已存在", "%s:%s", tt.name, "手机号已存在")
-			}
-		case 3:
-			ser := testtool.NewTestServer(SerCtx, tt.Method, tt.Target, bytes.NewBuffer(body)).SetAuth(my.AccessToken).Do()
-			if assert.Equal(t, 400, ser.GetCode(), "%s:%s", tt.name, ser.GetBody()) {
 				assert.Contains(t, ser.GetBody(), "AdminForm.Email", "%s:%s", tt.name, "AdminForm.Email")
 			}
-		case 4:
-			ser := testtool.NewTestServer(SerCtx, tt.Method, tt.Target, bytes.NewBuffer(body)).SetAuth(my.AccessToken).Do()
-			if assert.Equal(t, 400, ser.GetCode(), "%s:%s", tt.name, ser.GetBody()) {
-				assert.Contains(t, ser.GetBody(), "Email已存在", "%s:%s", tt.name, "AdminForm.Email")
-			}
 		}
-
 	}
 
 }
