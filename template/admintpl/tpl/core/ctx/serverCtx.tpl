@@ -5,6 +5,8 @@ import (
 	"{{.Module}}/internal/pkg/lg"
 	"github.com/go-redis/redis/v8"
 	errs "github.com/pkg/errors"
+    "go.opentelemetry.io/otel"
+    "go.opentelemetry.io/otel/trace"
 	"gorm.io/gorm"
 	"{{.Host}}/pkg/logx"
 	"{{.Host}}/pkg/mysqlx"
@@ -17,6 +19,7 @@ type ServerContext struct {
 	Log    *logx.Logx
 	Db     *gorm.DB
 	Redis  *redis.Client
+    Tracer trace.Tracer
 }
 
 func NewServerContext(c config.Config) (*ServerContext, error) {
@@ -46,6 +49,10 @@ func NewServerContext(c config.Config) (*ServerContext, error) {
 		sc.Redis = redisCli
 		lg.Msg("redis链接成功").Info(sc.Log)
 
+	}
+
+	if c.Trace.Enable {
+		sc.Tracer = otel.Tracer("{{.Module}}")
 	}
 
 	return sc, nil

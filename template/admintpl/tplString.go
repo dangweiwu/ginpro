@@ -112,6 +112,9 @@ var (
 	//go:embed tpl/core/pkg/jwtx/jwt.tpl
 	JwtTpl string
 
+	//go:embed tpl/core/pkg/tel/otel_http.tpl
+	OtelHttpTpl string
+
 	//go:embed tpl/core/router/do.tpl
 	RouterDoTpl string
 

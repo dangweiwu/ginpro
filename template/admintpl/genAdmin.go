@@ -66,6 +66,7 @@ func (this *GenAdminServer) InitFile() error {
 		{"config.go", []string{internal, "pkg", "jwtx", "jwtconfig"}, JwtConfigTpl},
 		{"jwt.go", []string{internal, "pkg", "jwtx"}, JwtTpl},
 		{"lg.go", []string{internal, "pkg", "lg"}, LgTpl},
+		{"otel_http.go", []string{internal, "pkg", "tel"}, OtelHttpTpl},
 
 		{"do.go", []string{internal, "router"}, RouterDoTpl},
 		{"router.go", []string{internal, "router"}, RouterTpl},
