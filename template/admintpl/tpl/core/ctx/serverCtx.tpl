@@ -15,11 +15,12 @@ import (
 
 // 所有资源放在此处
 type ServerContext struct {
-	Config config.Config
-	Log    *logx.Logx
-	Db     *gorm.DB
-	Redis  *redis.Client
-    Tracer trace.Tracer
+	Config       config.Config
+	Log          *logx.Logx
+	Db           *gorm.DB
+	Redis        *redis.Client
+	Tracer       trace.Tracer
+	EnableTrace bool
 }
 
 func NewServerContext(c config.Config) (*ServerContext, error) {
@@ -52,7 +53,8 @@ func NewServerContext(c config.Config) (*ServerContext, error) {
 	}
 
 	if c.Trace.Enable {
-		sc.Tracer = otel.Tracer("{{.Module}}")
+		sc.EnableTrace = true
+		sc.Tracer = otel.Tracer("ogm2")
 	}
 
 	return sc, nil
