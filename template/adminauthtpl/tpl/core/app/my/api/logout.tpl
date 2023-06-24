@@ -23,11 +23,12 @@ func NewLogOut(c *gin.Context, sc *ctx.ServerContext) irouter.IHandler {
 	return &LogOut{hd.NewHd(c), c, sc}
 }
 
-//	@tags		系统我的
-//	@summary	退  出
-//	@router		/api/logout [post]
-//	@param		Authorization	header		string						true	"token"
-//	@success	200				{object}	hd.Response{data=string}	"ok"
+// @x-group		{"key":"my","name":"系统我的","order":0,"desc":"系统我的","inorder":3}
+// @tags    系统我的
+// @summary 退  出
+// @router  /api/logout [post]
+// @param   Authorization header   string              true " " extensions(x-name=鉴权,x-value=[TOKEN])
+// @success 200           {string} string "{data:'ok'}"
 func (this *LogOut) Do() error {
 	this.Logout()
 	this.Hd.RepOk()

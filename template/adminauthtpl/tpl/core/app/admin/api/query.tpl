@@ -8,6 +8,7 @@ import (
 	"gorm.io/gorm"
 	"{{.Host}}/api/hd"
 	"{{.Host}}/api/query"
+    "go.opentelemetry.io/otel/trace"
 )
 
 type AdminQuery struct {
@@ -20,15 +21,24 @@ func NewAdminQuery(c *gin.Context, sc *ctx.ServerContext) irouter.IHandler {
 	return &AdminQuery{hd.NewHd(c), c, sc}
 }
 
-//	@tags		系统用户
-//	@summary	查询用户
-//	@router		/api/admin [get]
-//	@param		account	query		string										false	"账号 "
-//	@param		phone	query		string										false	"手机号"
-//	@param		email	query		string										false	"email"
-//	@param		name	query		string										false	"姓名"
-//	@success	200		{object}	query.PageData{data=[]adminmodel.AdminInfo}	"ok"
+// @tags    系统用户
+// @summary 查询用户
+// @x-group		{"key":"adminuser","inorder":4}
+// @router  /api/admin [get]
+// @param   Authorization header   string  true  " " extensions(x-name=鉴权,x-value=[TOKEN])
+// @param   limit query    string          false " "  extensions(x-name=分页条数,x-value=10)
+// @param   current query    string        false " "  extensions(x-name=页码,x-value=1)
+// @param   account query    string        false " "  extensions(x-name=账号,x-value=admin)
+// @param   phone   query    string        false " "  extensions(x-name=手机号,x-value=123)
+// @param   email   query    string        false " "   extensions(x-name=Email,x-value=2)
+// @param   name    query    string        false " "  extensions(x-name=姓名,x-value=)
+// @success 200     {object} adminmodel.AdminVo " "
 func (this *AdminQuery) Do() error {
+	if this.sc.EnableTrace {
+		_tx, span := this.sc.Tracer.Start(this.ctx.Request.Context(), "Do")
+		this.ctx.Request = this.ctx.Request.WithContext(_tx)
+		defer span.End()
+	}
 	data, err := this.Query()
 	if err != nil {
 		return err
@@ -46,12 +56,24 @@ var QueryRule = map[string]string{
 }
 
 func (this *AdminQuery) Query() (interface{}, error) {
-	po := &adminmodel.AdminInfo{}
-	pos := []adminmodel.AdminInfo{}
+	var span trace.Span
+	if this.sc.EnableTrace {
+		_tx, _span := this.sc.Tracer.Start(this.ctx.Request.Context(), "DoQuery")
+		span = _span
+		this.ctx.Request = this.ctx.Request.WithContext(_tx)
+		defer _span.End()
+	}
+	po := &adminmodel.AdminVo{}
+	pos := []adminmodel.AdminVo{}
 	q := query.NewQuery(this.ctx, this.sc.Db, QueryRule, po, &pos)
+	/*
 	q.SetWhere(func(db *gorm.DB) (r *gorm.DB) {
 		db = db.Preload("RolePo")
 		return q.Where(db)
 	})
+	*/
+    if this.sc.EnableTrace {
+        span.AddEvent("dbstart")
+    }
 	return q.Do()
 }

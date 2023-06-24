@@ -54,6 +54,7 @@ func (this *GenAdminAuthServer) InitFile() error {
 		{"jwt.go", []string{internal, "pkg", "jwtx"}, JwtTpl},
 		{"lg.go", []string{internal, "pkg", "lg"}, LgTpl},
 		{"fullUrl.go", []string{internal, "pkg", "fullurl"}, PkgFullUrlTpl},
+		{"otel_http.go", []string{internal, "pkg", "tel"}, OtelHttpTpl},
 
 		{"do.go", []string{internal, "router"}, RouterDoTpl},
 		{"router.go", []string{internal, "router"}, RouterTpl},

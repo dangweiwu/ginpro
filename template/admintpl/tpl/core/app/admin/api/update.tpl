@@ -69,11 +69,7 @@ func (this *AdminUpdate) Update(po *adminmodel.AdminUpdateForm) error {
 	if uid == po.ID {
 		return errors.New("禁止修改自己")
 	}
-	if tmpPo.ID == uid {
-		if tmpPo.Status == "1" && po.Status == "0" {
-			return errors.New("不能禁用自己")
-		}
-	}
+
 	//其他校验
 	/*
 	if err := this.Valid(po); err != nil {

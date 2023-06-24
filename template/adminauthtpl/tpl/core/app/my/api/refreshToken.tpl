@@ -25,14 +25,15 @@ func NewRefreshToken(c *gin.Context, sc *ctx.ServerContext) irouter.IHandler {
 	return &RefreshToken{hd.NewHd(c), c, sc}
 }
 
-//	@tags			系统我的
-//	@summary		刷新token
-//	@router			/api/token/refresh [post]
-//	@description	刷新token
-//	@description	200时返回与登陆后获取的返回一样
-//	@param			Authorization	header		string					true	"token"
-//	@param			root			body		mymodel.RefreshTokeForm	true	"刷新token"
-//	@success		200				{object}	mymodel.LogRep			"登陆返回"
+// @x-group		{"key":"my","name":"系统我的","order":0,"desc":"系统我的","inorder":5}
+// @tags        系统我的
+// @summary     刷新token
+// @router      /api/token/refresh [post]
+// @description 刷新token
+// @description 200时返回与登陆后获取的返回一样
+// @param   Authorization header   string              true " " extensions(x-name=鉴权,x-value=[TOKEN])
+// @param       root          body     mymodel.RefreshTokeForm   true "刷新token"
+// @success     200           {object} mymodel.LogRep " "
 func (this *RefreshToken) Do() error {
 
 	form := &mymodel.RefreshTokeForm{}

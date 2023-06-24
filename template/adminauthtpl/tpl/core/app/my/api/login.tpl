@@ -23,13 +23,13 @@ type Login struct {
 	sc  *ctx.ServerContext
 }
 
-//	@tags			系统我的
-//	@summary		登  录
-//	@router			/api/login [post]
-//	@description	errmsg1:400 登陆失败
-//	@description	errmsg2:400 密码错误
-//	@param			root	body		mymodel.LoginForm	true	"登陆账号密码"
-//	@success		200		{object}	mymodel.LogRep		"登陆返回"
+// @x-group		{"key":"my","name":"系统我的","order":0,"desc":"系统我的","inorder":1}
+// @tags        系统我的
+// @summary     登  录
+// @router      /api/login [post]
+// @param       root body     mymodel.LoginForm         true " "
+// @success     200  {object} mymodel.LogRep " "
+// @success     400  {string} string "msg=登陆失败|密码错误"
 func NewLogin(c *gin.Context, sc *ctx.ServerContext) irouter.IHandler {
 	return &Login{hd.NewHd(c), c, sc}
 }
@@ -79,7 +79,7 @@ func (this *Login) Login(form *mymodel.LoginForm) (interface{}, error) {
 	); err != nil {
 		return nil, this.ErrMsg("登陆失败", "jwt:"+err.Error())
 	} else {
-		// this.ctx.Header("Authorization", token)
+
 		refleshToken, err := this.newRefreshToken(po.ID)
 		if err != nil {
 			return nil, err

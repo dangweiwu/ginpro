@@ -24,11 +24,12 @@ func NewMyInfo(c *gin.Context, sc *ctx.ServerContext) irouter.IHandler {
 	return &MyInfo{hd.NewHd(c), c, sc}
 }
 
-//	@tags		系统我的
-//	@summary	查询信息
-//	@router		/api/my [get]
-//	@param		Authorization	header		string			true	"token"
-//	@success	200				{object}	mymodel.MyInfo	"ok"
+// @x-group		{"key":"my","name":"系统我的","order":0,"desc":"系统我的","inorder":3}
+// @tags    系统我的
+// @summary 查询信息
+// @router  /api/my [get]
+// @param   Authorization header   string              true " " extensions(x-name=鉴权,x-value=[TOKEN])
+// @success 200           {object} mymodel.MyInfo " "
 func (this *MyInfo) Do() error {
 
 	uid, err := jwtx.GetUid(this.ctx)

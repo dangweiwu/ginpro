@@ -64,10 +64,10 @@ func (this *MyUpdate) Update(rawpo *mymodel.MyForm) error {
 			return r.Error
 		}
 	}
-
+    /*
 	if err := this.valid(rawpo); err != nil {
 		return err
-	}
+	}*/
 	//更新
 	if r := this.sc.Db.Model(rawpo).Select("phone", "name", "memo", "email").Updates(rawpo); r.Error != nil {
 		return r.Error

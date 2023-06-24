@@ -66,6 +66,9 @@ var (
 	//go:embed tpl/core/pkg/lg/lg.tpl
 	LgTpl string
 
+	//go:embed tpl/core/pkg/tel/otel_http.tpl
+	OtelHttpTpl string
+
 	//go:embed tpl/core/pkg/fullurl/fullUrl.tpl
 	PkgFullUrlTpl string
 

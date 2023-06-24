@@ -12,6 +12,7 @@ import (
 	"{{.Host}}/pkg/yamconfig"
     "go.opentelemetry.io/contrib/instrumentation/github.com/gin-gonic/gin/otelgin"
     "{{.Module}}/internal/pkg/tel"
+    "go.uber.org/zap"
 )
 
 type RunServe struct {

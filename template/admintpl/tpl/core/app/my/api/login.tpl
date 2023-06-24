@@ -77,7 +77,7 @@ func (this *Login) Login(form *mymodel.LoginForm) (interface{}, error) {
 	); err != nil {
 		return nil, this.ErrMsg("登陆失败", "jwt:"+err.Error())
 	} else {
-		// this.ctx.Header("Authorization", token)
+
 		refleshToken, err := this.newRefreshToken(po.ID)
 		if err != nil {
 			return nil, err

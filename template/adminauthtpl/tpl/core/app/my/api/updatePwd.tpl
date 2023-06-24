@@ -27,12 +27,13 @@ func NewMyUpdatePwd(c *gin.Context, sc *ctx.ServerContext) irouter.IHandler {
 	return &UpdatePwd{hd.NewHd(c), c, sc}
 }
 
-//	@tags		系统我的
-//	@summary	修改密码
-//	@router		/api/admin/my/password [post]
-//	@param		Authorization	header		string						true	"token"
-//	@param		root			body		mymodel.LoginForm			true	"修改密码"
-//	@success	200				{object}	hd.Response{data=string}	"data=ok"
+// @x-group		{"key":"my","name":"系统我的","order":0,"desc":"系统我的","inorder":4}
+// @tags    系统我的
+// @summary 修改密码
+// @router  /api/admin/my/password [post]
+// @param   Authorization header   string              true " " extensions(x-name=鉴权,x-value=[TOKEN])
+// @param   root          body     mymodel.LoginForm               true " "
+// @success 200           {string} string  "{data:'ok'}"
 func (this *UpdatePwd) Do() error {
 	var err error
 	uid, err := jwtx.GetUid(this.ctx)

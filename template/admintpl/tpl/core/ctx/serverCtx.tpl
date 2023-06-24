@@ -52,6 +52,7 @@ func NewServerContext(c config.Config) (*ServerContext, error) {
 
 	}
 
+    //追踪
 	if c.Trace.Enable {
 		sc.EnableTrace = true
 		sc.Tracer = otel.Tracer("ogm2")

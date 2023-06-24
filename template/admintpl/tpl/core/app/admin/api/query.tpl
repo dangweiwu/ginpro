@@ -7,6 +7,7 @@ import (
 	"{{.Host}}/api/hd"
 	"{{.Host}}/api/query"
 	"github.com/gin-gonic/gin"
+    "go.opentelemetry.io/otel/trace"
 )
 
 type AdminQuery struct {
