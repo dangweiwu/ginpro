@@ -16,7 +16,5 @@ func Route(r *router.Router, sc *ctx.ServerContext) {
 
 	r.Auth.DELETE("/auth/:id", router.Do(sc, api.NewAuthDel))
 
-	r.Root.GET("/auth/tree", router.Do(sc, api.NewAuthTree))
-
 	r.Root.GET("/allurl", router.Do(sc, api.NewGetFullUrl))
 }

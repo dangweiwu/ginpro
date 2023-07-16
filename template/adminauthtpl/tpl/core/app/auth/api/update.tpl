@@ -9,7 +9,6 @@ import (
 	"gorm.io/gorm"
 	"{{.Host}}/api/hd"
 )
-
 type AuthUpdate struct {
 	*hd.Hd
 	ctx *gin.Context
@@ -23,10 +22,11 @@ func NewAuthUpdate(c *gin.Context, sc *ctx.ServerContext) irouter.IHandler {
 //	@tags		权限管理
 //	@summary	修改权限
 //	@router		/api/auth/:id [put]
-//	@param		id				path		int							true	"用户ID"
-//	@param		Authorization	header		string						true	"token"
-//	@param		root			body		authmodel.AuthUpdateForm	true	"修改信息"
-//	@success	200				{object}	hd.Response{data=string}	"ok"
+//	@x-group	{"key":"auth","inorder":3}
+//	@param		id				path		int							true	" "	extensions(x-name=用户ID,x-value=1)
+//	@param		Authorization	header		string						true	" "	extensions(x-name=鉴权,x-value=[TOKEN])
+//	@param		root			body		authmodel.AuthUpdateForm	true	" "
+//	@success	200				{object}	string						"ok"
 func (this *AuthUpdate) Do() error {
 	var err error
 	id, err := this.GetId()
@@ -60,8 +60,6 @@ func (this *AuthUpdate) Update(po *authmodel.AuthUpdateForm) error {
 			return r.Error
 		}
 	}
-	//其他校验
-
 	//更新
 	if r := db.Updates(po); r.Error != nil {
 		return r.Error

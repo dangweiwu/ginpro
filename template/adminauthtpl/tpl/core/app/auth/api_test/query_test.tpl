@@ -35,29 +35,10 @@ func TestAuthQuery(t *testing.T) {
 	ser := testtool.NewTestServer(SerCtx, "GET", "/api/auth", nil).SetAuth(my.AccessToken).Do()
 	//fmt.Println(ser.GetBody())
 
-	if assert.Equal(t, ser.GetCode(), 200, "%d:%s", ser.GetCode(), ser.GetBody()) {
-		assert.Contains(t, ser.GetBody(), `"total":5`)
-	}
+	 assert.Equal(t, ser.GetCode(), 200, "%d:%s", ser.GetCode(), ser.GetBody())
 
-	ser = testtool.NewTestServer(SerCtx, "GET", "/api/auth?name=创建", nil).SetAuth(my.AccessToken).Do()
-	if assert.Equal(t, ser.GetCode(), 200, "%d:%s", ser.GetCode(), ser.GetBody()) {
-		assert.Contains(t, ser.GetBody(), `"total":1`)
-		assert.Contains(t, ser.GetBody(), `创建`)
-	}
-
-	ser = testtool.NewTestServer(SerCtx, "GET", "/api/auth?code=create", nil).SetAuth(my.AccessToken).Do()
-	if assert.Equal(t, ser.GetCode(), 200, "%d:%s", ser.GetCode(), ser.GetBody()) {
-		assert.Contains(t, ser.GetBody(), `"total":1`)
-		assert.Contains(t, ser.GetBody(), `创建`)
-	}
-
-	ser = testtool.NewTestServer(SerCtx, "GET", "/api/auth?api=/api/auth", nil).SetAuth(my.AccessToken).Do()
-	if assert.Equal(t, ser.GetCode(), 200, "%d:%s", ser.GetCode(), ser.GetBody()) {
-		assert.Contains(t, ser.GetBody(), `"total":4`)
-	}
 	ser = testtool.NewTestServer(SerCtx, "GET", "/api/auth?kind=1", nil).SetAuth(my.AccessToken).Do()
 	if assert.Equal(t, ser.GetCode(), 200, "%d:%s", ser.GetCode(), ser.GetBody()) {
-		assert.Contains(t, ser.GetBody(), `"total":1`)
 		assert.Contains(t, ser.GetBody(), `权限管理`)
 	}
 

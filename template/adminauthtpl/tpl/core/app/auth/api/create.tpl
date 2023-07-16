@@ -9,6 +9,7 @@ import (
 	"{{.Host}}/api/hd"
 )
 
+
 type AuthCreate struct {
 	*hd.Hd
 	ctx *gin.Context
@@ -21,10 +22,11 @@ func NewAuthCreate(c *gin.Context, sc *ctx.ServerContext) irouter.IHandler {
 
 //	@tags		权限管理
 //	@summary	创建权限
+//	@x-group	{"key":"auth","name":"权限管理","order":3,"desc":"","inorder":1}
 //	@router		/api/auth [post]
-//	@param		Authorization	header		string						true	"token"
-//	@param		root			body		authmodel.AuthPo			true	"权限"
-//	@success	200				{object}	hd.Response{data=string}	"ok"
+//	@param		Authorization	header		string				true	" "	extensions(x-name=鉴权,x-value=[TOKEN])
+//	@param		root			body		authmodel.AuthForm	true	" "
+//	@success	200				{string}	string				"{data:'ok'}"
 func (this *AuthCreate) Do() error {
 	//数据源
 	po := &authmodel.AuthForm{}

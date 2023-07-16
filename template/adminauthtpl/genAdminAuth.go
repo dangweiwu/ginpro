@@ -99,13 +99,11 @@ func (this *GenAdminAuthServer) InitFile() error {
 		{"updatePwd_test.go", []string{internal, "app", "my", "api_test"}, TestMyUpdatePwdTpl},
 
 		//auth
-		{"authThree.go", []string{internal, app, "auth", "api"}, AuthTreeTpl},
 		{"create.go", []string{internal, app, "auth", "api"}, AuthCreateTpl},
 		{"delete.go", []string{internal, app, "auth", "api"}, AuthDeleteTpl},
 		{"getUrl.go", []string{internal, app, "auth", "api"}, AuthGetUrlTpl},
 		{"query.go", []string{internal, app, "auth", "api"}, AuthQueryTpl},
 		{"update.go", []string{internal, app, "auth", "api"}, AuthUpdateTpl},
-		{"authThree_test.go", []string{internal, app, "auth", "api_test"}, AuthTreeTestTpl},
 		{"create_test.go", []string{internal, app, "auth", "api_test"}, AuthCreateTestTpl},
 		{"delete_test.go", []string{internal, app, "auth", "api_test"}, AuthDeleteTestTpl},
 		{"main_test.go", []string{internal, app, "auth", "api_test"}, AuthMainTestTpl},
@@ -117,7 +115,6 @@ func (this *GenAdminAuthServer) InitFile() error {
 		{"authCheck.go", []string{internal, app, "auth", "authcheck"}, AuthCheckTpl},
 		{"types.go", []string{internal, app, "auth", "authcheck"}, AuthTypesTpl},
 		{"authModel.go", []string{internal, app, "auth", "authmodel"}, AuthModelTpl},
-		{"authTreeModel.go", []string{internal, app, "auth", "authmodel"}, AuthTreeModelTpl},
 		{"apiRouter.go", []string{internal, app, "auth"}, AuthApiRouterTpl},
 
 		//role

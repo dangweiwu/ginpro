@@ -22,10 +22,11 @@ func NewRoleDel(c *gin.Context, sc *ctx.ServerContext) irouter.IHandler {
 
 //	@tags		角色管理
 //	@summary	删除角色
+//	@x-group	{"key":"role","inorder":2}
 //	@router		/api/role/:id [delete]
-//	@param		id				path		int							true	"用户ID"
-//	@param		Authorization	header		string						true	"token"
-//	@success	200				{object}	hd.Response{data=string}	"ok"
+//	@param		Authorization	header		string	true	" "	extensions(x-name=鉴权,x-value=[TOKEN])
+//	@param		id				path		int		true	" "	extensions(x-name=用户ID,x-value=1)
+//	@success	200				{string}	string	"{data:'ok'}"
 func (this *RoleDel) Do() error {
 	var err error
 	id, err := this.GetId()

@@ -5,9 +5,7 @@ import (
 	"{{.Module}}/internal/ctx"
 	"{{.Module}}/internal/router/irouter"
 	"github.com/gin-gonic/gin"
-	"gorm.io/gorm"
 	"{{.Host}}/api/hd"
-	"{{.Host}}/api/query"
 )
 
 type AuthQuery struct {
@@ -23,35 +21,39 @@ func NewAuthQuery(c *gin.Context, sc *ctx.ServerContext) irouter.IHandler {
 //	@tags		权限管理
 //	@summary	查询权限
 //	@router		/api/auth [get]
-//	@param		name	query		string									false	"权限"
-//	@param		code	query		string									false	"编码"
-//	@param		api		query		string									false	"api"
-//	@param		kind	query		string									false	"类型 0 按钮 1 页面"
-//	@success	200		{object}	query.PageData{data=[]authmodel.AuthPo}	"ok"
+//	@x-group	{"key":"auth","inorder":4}
+//	@param		Authorization	header		string				true	" "			extensions(x-name=鉴权,x-value=[TOKEN])
+//	@param		kind			query		string				false	"0 按钮 1 页面"	extensions(x-name=类型,x-value=)
+//	@success	200				{object}	authmodel.AuthPo	"非分页数据，数组嵌套类型"
 func (this *AuthQuery) Do() error {
 
 	data, err := this.Query()
 	if err != nil {
 		return err
 	} else {
-		this.Rep(data)
+		this.Rep(hd.Response{data})
 		return nil
 	}
 }
 
 var QueryRule = map[string]string{
-	"name": "like",
-	"code": "like",
-	"api":  "like",
 	"kind": "like",
 }
 
 func (this *AuthQuery) Query() (interface{}, error) {
-	po := &authmodel.AuthPo{}
-	pos := []authmodel.AuthPo{}
-	q := query.NewQuery(this.ctx, this.sc.Db, QueryRule, po, &pos)
-	q.SetOrder(func(db *gorm.DB) (r *gorm.DB) {
-		return db.Order("order_num")
-	})
-	return q.Do()
+	po := &authmodel.AuthVo{}
+	pos := []authmodel.AuthVo{}
+
+	kind := this.ctx.Query("kind")
+	if kind != "" {
+		if err := this.sc.Db.Model(po).Where("parent_id=0 and kind= ?", kind).Preload("Children", "kind=?", kind).Order("order_num").Find(&pos).Error; err != nil {
+			return nil, err
+		}
+	} else {
+		if err := this.sc.Db.Model(po).Where("parent_id=0").Preload("Children").Order("order_num").Find(&pos).Error; err != nil {
+			return nil, err
+		}
+	}
+
+	return pos, nil
 }

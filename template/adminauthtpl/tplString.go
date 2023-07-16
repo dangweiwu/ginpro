@@ -182,11 +182,6 @@ var (
 	//go:embed tpl/core/app/my/api/refreshToken.tpl
 	RefreshTokenTpl string
 
-	//auth
-
-	//go:embed tpl/core/app/auth/api/authTree.tpl
-	AuthTreeTpl string
-
 	//go:embed tpl/core/app/auth/api/create.tpl
 	AuthCreateTpl string
 
@@ -201,9 +196,6 @@ var (
 
 	//go:embed tpl/core/app/auth/api/update.tpl
 	AuthUpdateTpl string
-
-	//go:embed tpl/core/app/auth/api_test/authtree_test.tpl
-	AuthTreeTestTpl string
 
 	//go:embed tpl/core/app/auth/api_test/create_test.tpl
 	AuthCreateTestTpl string
@@ -234,9 +226,6 @@ var (
 
 	//go:embed tpl/core/app/auth/authmodel/authModel.tpl
 	AuthModelTpl string
-
-	//go:embed tpl/core/app/auth/authmodel/authTreeModel.tpl
-	AuthTreeModelTpl string
 
 	//go:embed tpl/core/app/auth/apiRouter.tpl
 	AuthApiRouterTpl string

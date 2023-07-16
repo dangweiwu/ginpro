@@ -23,9 +23,11 @@ func NewRoleQuery(c *gin.Context, sc *ctx.ServerContext) irouter.IHandler {
 //	@tags		角色管理
 //	@summary	查询角色
 //	@router		/api/role [get]
-//	@param		code	query		string									false	"角色编码"
-//	@param		name	query		string									false	"角色名称"
-//	@success	200		{object}	query.PageData{data=[]rolemodel.RolePo}	"ok"
+//	@x-group	{"key":"role","inorder":4}
+//	@param		Authorization	header		string				true	" "	extensions(x-name=鉴权,x-value=[TOKEN])
+//	@param		code			query		string				false	" "	extensions(x-name=编码,x-value=)
+//	@param		name			query		string				false	" "	extensions(x-name=名称,x-value=)
+//	@success	200				{object}	rolemodel.RolePo	"ok"
 func (this *RoleQuery) Do() error {
 
 	data, err := this.Query()

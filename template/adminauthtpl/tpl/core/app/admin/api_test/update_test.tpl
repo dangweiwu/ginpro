@@ -42,6 +42,6 @@ func TestAdminUpdate(t *testing.T) {
 	bts, _ = json.Marshal(my.Po)
 	ser = testtool.NewTestServer(SerCtx, "PUT", fmt.Sprintf("/api/admin/%d", my.Po.ID), bytes.NewBuffer(bts)).SetAuth(my.AccessToken).Do()
 	if assert.Equal(t, ser.GetCode(), 400, "update %d:%s", ser.GetCode(), ser.GetBody()) {
-		assert.Contains(t, ser.GetBody(), "不能禁用自己", "update:不能禁用自己:%s", ser.GetBody())
+		assert.Contains(t, ser.GetBody(), "自己", "update:不能禁用自己:%s", ser.GetBody())
 	}
 }

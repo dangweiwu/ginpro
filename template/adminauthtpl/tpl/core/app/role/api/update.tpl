@@ -22,11 +22,13 @@ func NewRoleUpdate(c *gin.Context, sc *ctx.ServerContext) irouter.IHandler {
 
 //	@tags		角色管理
 //	@summary	修改角色
+//	@x-group	{"key":"role","inorder":3}
 //	@router		/api/role/:id [put]
-//	@param		id				path		int							true	"ID"
-//	@param		Authorization	header		string						true	"token"
-//	@param		root			body		rolemodel.RoleUpdate		true	"修改角色"
-//	@success	200				{object}	hd.Response{data=string}	"ok"
+//	@param		id				path		int						true	" "	extensions(x-name=用户ID,x-value=1)
+//	@param		Authorization	header		string					true	" "	extensions(x-name=鉴权,x-value=[TOKEN])
+//	@param		root			body		rolemodel.RoleUpdate	true	" "
+//
+//	@success	200				{object}	string					"ok"
 func (this *RoleUpdate) Do() error {
 	var err error
 	id, err := this.GetId()

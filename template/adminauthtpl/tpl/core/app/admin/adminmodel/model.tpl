@@ -1,7 +1,6 @@
 package adminmodel
 
 import (
-	"{{.Module}}/internal/app/role/rolemodel"
 	"{{.Host}}/pkg/dbtype"
 )
 type AdminPo struct {
@@ -53,7 +52,6 @@ type AdminVo struct {
 	Email        string            `json:"email" gorm:"type:varchar(100);default:'';comment:邮件" binding:"omitempty,email" extensions:"x-name=Email,x-value=2@qq.com"`
 	IsSuperAdmin string            `json:"is_super_admin" gorm:"type:enum('1','0');default:'0';comment:是否超级管理员" binding:"oneof=0 1" extensions:"x-name=是否超级管理员,x-value:'1',x-valid=oneof='0''1'"`
 	Role         string            `json:"role" gorm:"size:100;not null;index;comment:角色" binding:"max=100" extensions:"x-name:角色,x-value:admin,x-valid:max=100"`
-	//RolePo       *rolemodel.RolePo `json:"rolepo" gorm:"foreignKey:Code;references:Role" extensions:"x-name:权限,x-value:[]"` //角色对应的权限
 }
 
 func (AdminVo) TableName() string {

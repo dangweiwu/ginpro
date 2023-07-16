@@ -5,7 +5,6 @@ import (
 	"{{.Module}}/internal/ctx"
 	"{{.Module}}/internal/router/irouter"
 	"github.com/gin-gonic/gin"
-	"gorm.io/gorm"
 	"{{.Host}}/api/hd"
 	"{{.Host}}/api/query"
     "go.opentelemetry.io/otel/trace"

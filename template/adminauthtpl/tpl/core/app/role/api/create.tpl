@@ -17,10 +17,12 @@ type RoleCreate struct {
 
 //	@tags		角色管理
 //	@summary	创建角色
-//	@router		/api/ole [post]
-//	@param		Authorization	header		string						true	"token"
-//	@param		root			body		rolemodel.RoleForm			true	"登陆账号密码"
-//	@success	200				{object}	hd.Response{data=string}	"ok"
+//	@x-group	{"key":"role","name":"角色管理","order":4,"desc":"","inorder":1}
+//	@param		Authorization	header	string	true	" "	extensions(x-name=鉴权,x-value=[TOKEN])
+//	@router		/api/role [post]
+//	@param		Authorization	header		string				true	"token"
+//	@param		root			body		rolemodel.RoleForm	true	" "
+//	@success	200				{string}	string				"{data:'ok'}"
 func NewRoleCreate(c *gin.Context, sc *ctx.ServerContext) irouter.IHandler {
 	return &RoleCreate{hd.NewHd(c), c, sc}
 }
