@@ -153,19 +153,19 @@
 
     const densityList = computed(() => [
         {
-            name: t('searchTable.size.mini'),
+            name: '迷你',
             value: 'mini',
         },
         {
-            name: t('searchTable.size.small'),
+            name: '偏小',
             value: 'small',
         },
         {
-            name: t('searchTable.size.medium'),
+            name: '中等',
             value: 'medium',
         },
         {
-            name: t('searchTable.size.large'),
+            name: '偏大',
             value: 'large',
         },
     ]);
@@ -286,11 +286,16 @@
     //删除
     const onDel = async function (record) {
         try {
-            //Xxx替换api
+            setLoading(true);
             await apiDel[[UpFirst .Name]](record.id);
             Message.success('删除成功');
             fetchData();
-        } catch (err) {}
+        } catch (err) {
+          console.log(err)
+        }finally{
+          setLoading(false);
+
+        }
         console.log('record', record);
     };
 </script>

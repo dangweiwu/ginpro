@@ -50,7 +50,7 @@ func (this List[T]) Value() (driver.Value, error) {
 }
 
 func (List[T]) GormDataType() string {
-	return "list"
+	return "string"
 }
 
 func (List[T]) GormDBDataType(db *gorm.DB, field *schema.Field) string {

@@ -19,6 +19,7 @@ func (RolePo) TableName() string {
 }
 
 type RoleForm struct {
+	dbtype.Base
 	Code     string `json:"code" gorm:"size:100;not null;unique;comment:角色ID" binding:"required,max=100"`
 	Name     string `json:"name" gorm:"size:100;comment:角色名称" binding:"max=100"`
 	OrderNum int    `json:"order_num" gorm:"default:0;comment:排序"`

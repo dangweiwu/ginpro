@@ -1,15 +1,14 @@
 <template>
   <div>
     <!--对话文档 https://arco.design/vue/component/modal-->
-    <a-modal v-model:visible="proxy" title="更新" title-align="start"  :align-center="false" :top="200">
+    <a-modal v-model:visible="proxy" title="更新" title-align="start" :align-center="false" :top="200">
       <div>
         <!-- form文档 https://arco.design/vue/component/form -->
         <a-form ref="formRef" :model="form" :label-col-props="{ span: 5 }">
           [[range $k,$v := .Create]]
-          <a-form-item field="[[$v.Key]]" label="[[$v.Name]]" :rules="[  [[- if ListHas $v.Rule "required" -]]
-           { required:true,message:'缺少'+[[$v.Name]],}
-           [[- end -]] ]">
-            <a-input v-model="form.[[$v.Key]]" />
+          <a-form-item field="[[$v.Key]]" label="[[$v.Name]]" :rules="[[- if ListHas $v.Rule " required" -]] {
+            required:true,message:'缺少'+[[$v.Name]],} [[- end -]] ]">
+            <a-input v-model=" form.[[$v.Key]] " />
           </a-form-item>
           [[- end]]
           <!--eg
@@ -30,12 +29,12 @@
         </a-form>
       </div>
       <template #footer>
-        <div >
+        <div>
           <a-space>
-            <a-button @click="handleCancel">
+            <a-button @click=" handleCancel ">
               取消
             </a-button>
-            <a-button type="primary" :loading="loading" @click="submit">
+            <a-button type="primary" :loading=" loading " @click=" submit ">
               确定
             </a-button>
           </a-space>
@@ -48,7 +47,7 @@
 import { ref, computed } from 'vue';
 import { apiUpdate[[UpFirst .Name]] } from '@/api/[[.Name]]';
 import { Message } from '@arco-design/web-vue';
-
+import useLoading from '@/hooks/loading';
 const { loading, setLoading } = useLoading();
 //show
 
@@ -56,9 +55,9 @@ const { loading, setLoading } = useLoading();
 const id = ref(0);
 const baseForm = function () {
   const _t = {
-    [[ range $k,$v := .Update -]]
-  [[$v.Key]]: [[if IsNumber $v.Type ]] 0 [[ else ]] "" [[end]],
-      [[ end ]]
+    [[range $k, $v := .Update -]]
+  [[$v.Key]]: [[if IsNumber $v.Type ]]0 [[ else ]]"" [[end]],
+    [[end]]
 }
   id.value = props.data["id"]
   Object.keys(_t).map(function (key) {
@@ -116,11 +115,12 @@ const submit = async () => {
     throw Error("invalid")
   }
   setLoading(true)
-  try{
-    await apiUpdateUser(id.value,form.value)
+  try {
+    await apiUpdate[[ UpFirst .Name]](id.value, form.value)
     Message.success("修改成功")
     props.reload();
-  }finally {
+    proxy.value = false;
+  } finally {
     setLoading(false)
   }
 }
