@@ -1,9 +1,11 @@
 package api
 
 import (
+	"{{.Module}}/internal/app/my/mymodel"
 	"{{.Module}}/internal/app/role/rolemodel"
 	"{{.Module}}/internal/ctx"
 	"{{.Module}}/internal/router/irouter"
+	"context"
 	"errors"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
@@ -64,7 +66,8 @@ func (this *SetAuth) Update(po *rolemodel.RoleAuthForm) error {
 	if r := db.Updates(po); r.Error != nil {
 		return r.Error
 	}
-
+	//删除
+	this.sc.Redis.Del(context.Background(), mymodel.ROLE_AUTH+tmpPo.Code)
 	this.sc.AuthCheck.LoadPolicy()
 	return nil
 }

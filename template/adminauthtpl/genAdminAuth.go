@@ -89,6 +89,7 @@ func (this *GenAdminAuthServer) InitFile() error {
 		{"updatePwd.go", []string{internal, app, "my", "api"}, MyUpdatePwdTpl},
 		{"login.go", []string{internal, app, "my", "api"}, LoginTpl},
 		{"logout.go", []string{internal, app, "my", "api"}, LogoutTpl},
+		{"getAuth.go", []string{internal, app, "my", "api"}, GetAuthTpl},
 		{"refreshToken.go", []string{internal, app, "my", "api"}, RefreshTokenTpl},
 		{"info_test.go", []string{internal, "app", "my", "api_test"}, TestMyInfoTpl},
 		{"login_test.go", []string{internal, "app", "my", "api_test"}, TestMyLoginTpl},
@@ -97,6 +98,7 @@ func (this *GenAdminAuthServer) InitFile() error {
 		{"refreshToken_test.go", []string{internal, "app", "my", "api_test"}, TestMyRefreshTokenTpl},
 		{"update_test.go", []string{internal, "app", "my", "api_test"}, TestMyUpdateTpl},
 		{"updatePwd_test.go", []string{internal, "app", "my", "api_test"}, TestMyUpdatePwdTpl},
+
 
 		//auth
 		{"create.go", []string{internal, app, "auth", "api"}, AuthCreateTpl},

@@ -17,3 +17,9 @@ func GetAdminRedisLoginId(appName string, id int) string {
 func GetAdminRedisRefreshTokenId(appName string, id int) string {
 	return appName + "rft:" + GetAdminRedisId(id)
 }
+
+
+const (
+	ROLE_STATUS = "role:status:"
+	ROLE_AUTH   = "role:auth:"
+)

@@ -25,7 +25,7 @@ func NewRefreshToken(c *gin.Context, sc *ctx.ServerContext) irouter.IHandler {
 	return &RefreshToken{hd.NewHd(c), c, sc}
 }
 
-// @x-group		{"key":"my","name":"系统我的","order":0,"desc":"系统我的","inorder":5}
+// @x-group		{"key":"my","inorder":6}
 // @tags        系统我的
 // @summary     刷新token
 // @router      /api/token/refresh [post]

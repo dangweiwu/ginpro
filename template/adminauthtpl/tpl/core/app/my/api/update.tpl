@@ -27,7 +27,7 @@ func NewMyUpdate(c *gin.Context, sc *ctx.ServerContext) irouter.IHandler {
 	return &MyUpdate{hd.NewHd(c), c, sc}
 }
 
-// @x-group		{"key":"my","name":"系统我的","order":0,"desc":"系统我的","inorder":2}
+// @x-group		{"key":"my","inorder":4}
 // @tags    系统我的
 // @summary 修改信息
 // @router  /api/my [put]

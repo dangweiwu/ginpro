@@ -36,7 +36,7 @@ func CheckAuth(sc *ctx.ServerContext) gin.HandlerFunc {
 		} else if err != nil {
 			NoAuthErrResponse(context, err.Error())
 		} else {
-			NoAuthErrResponse(context, "")
+		    NoAuthErrResponse(context, fmt.Sprintf("%s:%s", context.Request.Method, context.FullPath()))
 		}
 	}
 }

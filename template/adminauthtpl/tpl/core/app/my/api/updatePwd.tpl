@@ -27,7 +27,7 @@ func NewMyUpdatePwd(c *gin.Context, sc *ctx.ServerContext) irouter.IHandler {
 	return &UpdatePwd{hd.NewHd(c), c, sc}
 }
 
-// @x-group		{"key":"my","name":"系统我的","order":0,"desc":"系统我的","inorder":4}
+// @x-group		{"key":"my","inorder":5}
 // @tags    系统我的
 // @summary 修改密码
 // @router  /api/admin/my/password [post]

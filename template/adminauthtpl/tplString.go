@@ -182,6 +182,9 @@ var (
 	//go:embed tpl/core/app/my/api/refreshToken.tpl
 	RefreshTokenTpl string
 
+	//go:embed tpl/core/app/my/api/getauth.tpl
+	GetAuthTpl string
+
 	//go:embed tpl/core/app/auth/api/create.tpl
 	AuthCreateTpl string
 

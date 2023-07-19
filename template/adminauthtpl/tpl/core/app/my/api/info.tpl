@@ -24,7 +24,7 @@ func NewMyInfo(c *gin.Context, sc *ctx.ServerContext) irouter.IHandler {
 	return &MyInfo{hd.NewHd(c), c, sc}
 }
 
-// @x-group		{"key":"my","name":"系统我的","order":0,"desc":"系统我的","inorder":3}
+// @x-group		{"key":"my","inorder":3}
 // @tags    系统我的
 // @summary 查询信息
 // @router  /api/my [get]

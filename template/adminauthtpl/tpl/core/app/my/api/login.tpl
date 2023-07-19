@@ -23,7 +23,7 @@ type Login struct {
 	sc  *ctx.ServerContext
 }
 
-// @x-group		{"key":"my","name":"系统我的","order":0,"desc":"系统我的","inorder":1}
+// @x-group		{"key":"my","inorder":1,"name":"系统我的","order":1,"desc":"系统我的"}
 // @tags        系统我的
 // @summary     登  录
 // @router      /api/login [post]

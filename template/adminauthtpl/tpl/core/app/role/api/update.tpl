@@ -1,9 +1,11 @@
 package api
 
 import (
+	"{{.Module}}/internal/app/my/mymodel"
 	"{{.Module}}/internal/app/role/rolemodel"
 	"{{.Module}}/internal/ctx"
 	"{{.Module}}/internal/router/irouter"
+	"context"
 	"errors"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
@@ -27,7 +29,6 @@ func NewRoleUpdate(c *gin.Context, sc *ctx.ServerContext) irouter.IHandler {
 //	@param		id				path		int						true	" "	extensions(x-name=用户ID,x-value=1)
 //	@param		Authorization	header		string					true	" "	extensions(x-name=鉴权,x-value=[TOKEN])
 //	@param		root			body		rolemodel.RoleUpdate	true	" "
-//
 //	@success	200				{object}	string					"ok"
 func (this *RoleUpdate) Do() error {
 	var err error
@@ -67,6 +68,8 @@ func (this *RoleUpdate) Update(po *rolemodel.RoleUpdate) error {
 
 	if tmpPo.Status != po.Status {
 		this.sc.AuthCheck.LoadPolicy()
+        //删除缓存状态
+        this.sc.Redis.Del(context.Background(), mymodel.ROLE_STATUS+tmpPo.Code)
 	}
 
 	return nil
