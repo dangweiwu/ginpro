@@ -3,7 +3,7 @@ package option
 import (
 	"errors"
 	"fmt"
-	"gs/template/frontHtml"
+	"gs/template/htmladmin"
 )
 
 type FrontHtml struct {
@@ -21,7 +21,7 @@ func (this *FrontHtml) Execute(args []string) error {
 		return errors.New("缺少工程名称")
 	}
 	modelName := args[0]
-	err := frontHtml.GenFront(modelName)
+	err := htmladmin.GenFront(modelName)
 	if err != nil {
 		return err
 	}

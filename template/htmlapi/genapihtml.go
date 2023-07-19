@@ -1,4 +1,4 @@
-package apihtml
+package htmlapi
 
 import (
 	_ "embed"

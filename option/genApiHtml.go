@@ -3,7 +3,7 @@ package option
 import (
 	"errors"
 	"fmt"
-	"gs/template/apihtml"
+	"gs/template/htmlapi"
 )
 
 type ApiHtml struct {
@@ -26,7 +26,7 @@ func (this *ApiHtml) Execute(args []string) error {
 		return errors.New("缺少模块名称")
 	}
 	modelName := args[0]
-	err := apihtml.GenCode(modelName)
+	err := htmlapi.GenCode(modelName)
 	if err != nil {
 		return err
 	}

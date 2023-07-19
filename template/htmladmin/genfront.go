@@ -1,4 +1,4 @@
-package frontHtml
+package htmladmin
 
 import (
 	"archive/tar"
