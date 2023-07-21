@@ -13,7 +13,7 @@ var TestCtx *testctx.TestContext
 func TestMain(m *testing.M) {
 	config := testtool.NewTestConfig()
 	//单元测试并发执行 防止数据库端口冲突
-	config.Mysql.Host = "127.0.0.1:3307"
+	config.Mysql.Host = "127.0.0.1:4307"
 	//config.Mysql.LogLevel = 4
 	ctx, err := testctx.NewTestContext(config)
 

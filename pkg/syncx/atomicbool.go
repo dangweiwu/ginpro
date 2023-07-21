@@ -39,6 +39,6 @@ func (b *AtomicBool) Set(v bool) {
 }
 
 // True returns true if current value is true.
-func (b *AtomicBool) True() bool {
+func (b *AtomicBool) IsTrue() bool {
 	return atomic.LoadUint32((*uint32)(b)) == 1
 }

@@ -7,6 +7,7 @@ import (
 	"{{.Module}}/internal/app/role"
 	"{{.Module}}/internal/ctx"
 	"{{.Module}}/internal/router"
+    "{{.Module}}/internal/app/sys"
 	"github.com/gin-gonic/gin"
 )
 
@@ -15,6 +16,7 @@ var routes = []func(r *router.Router, sc *ctx.ServerContext){
 	my.Route,
 	auth.Route,
 	role.Route,
+	sys.Route,
 }
 
 func RegisterRoute(engine *gin.Engine, sc *ctx.ServerContext) {

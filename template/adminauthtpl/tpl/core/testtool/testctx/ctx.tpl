@@ -15,6 +15,7 @@ import (
 	"{{.Host}}/pkg/mysqlx"
 	"{{.Host}}/pkg/mysqlx/mysqlfake"
 	"{{.Host}}/pkg/redisx"
+    "{{.Host}}/pkg/syncx"
 )
 
 type TestContext struct {
@@ -66,6 +67,8 @@ func (this *TestContext) GetServerCtx() (*ctx.ServerContext, error) {
 	a.Config = this.Config
 	a.Db = this.Db
 	a.Redis = this.Redis
+    a.OpenTrace = syncx.NewAtomicBool()
+    a.OpenMetric = syncx.NewAtomicBool()
 
 	//注册数据库
 	app.Regdb(a)

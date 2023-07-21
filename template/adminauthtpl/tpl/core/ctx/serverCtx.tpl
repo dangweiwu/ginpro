@@ -12,23 +12,31 @@ import (
 	"{{.Host}}/pkg/logx"
 	"{{.Host}}/pkg/mysqlx"
 	"{{.Host}}/pkg/redisx"
+    "{{.Host}}/pkg/syncx"
+	"time"
 )
 
 // 所有资源放在此处
 type ServerContext struct {
+	StartTime  time.Time
 	Config    config.Config
 	Log       *logx.Logx
 	Db        *gorm.DB
 	Redis     *redis.Client
 	AuthCheck *authcheck.AuthCheck
-    Tracer       trace.Tracer
-    EnableTrace bool
+	Tracer     trace.Tracer
+	OpenTrace  *syncx.AtomicBool //链路追踪
+	OpenMetric *syncx.AtomicBool //指标采集
 }
 
 func NewServerContext(c config.Config) (*ServerContext, error) {
 	//初始化日志
 	sc := &ServerContext{}
+	sc.StartTime = time.Now()
+	sc.OpenTrace = syncx.NewAtomicBool()
+	sc.OpenMetric = syncx.NewAtomicBool()
 	sc.Config = c
+
 	if lg, err := logx.NewLogx(c.Log); err != nil {
 		return nil, err
 	} else {
@@ -63,8 +71,8 @@ func NewServerContext(c config.Config) (*ServerContext, error) {
 
     //追踪
     if c.Trace.Enable {
-        sc.EnableTrace = true
-        sc.Tracer = otel.Tracer("ogm2")
+        sc.OpenTrace.Set(true)
+        sc.Tracer = otel.Tracer(sc.Config.App.Name)
     }
 
 

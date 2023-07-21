@@ -12,7 +12,7 @@ type AdminAuthServer struct {
 func (this *AdminAuthServer) Usage() string {
 	return `project-name
 
-  生成admin sys server框架`
+  生成admin auth sys server框架`
 	//1: mysql模块
 	//2: redis模块
 	//3: 登陆及jwt

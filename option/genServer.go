@@ -8,6 +8,7 @@ import (
 
 // 生成 server
 type ServerOption struct {
+	Name string `long:"name" description:"name"`
 }
 
 func (this *ServerOption) Usage() string {

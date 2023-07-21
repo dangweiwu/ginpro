@@ -12,6 +12,7 @@ func RegMiddler(sc *ctx.ServerContext) []gin.HandlerFunc {
 	return []gin.HandlerFunc{
 		requestid.New(),
         Recovery(sc),
+        Trace(sc),
         HttpLog(sc),
         Cors(),
         middlerx.PrometheusMiddler(map[string]struct{}{}),

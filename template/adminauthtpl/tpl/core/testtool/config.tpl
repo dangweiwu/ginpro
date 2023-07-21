@@ -10,7 +10,7 @@ import (
 
 func NewTestConfig() config.Config {
 	a := config.Config{}
-	a.App = config.App{"test"}
+	a.App = config.App{Name:"test"}
 	a.Log = logx.LogxConfig{Level: "error", OutType: "console", Formatter: "json"}
 	a.Redis = redisconfig.RedisConfig{}
 	a.Mysql = mysqlxconfig.Mysql{Host: "localhost:4417", DbName: "test"}

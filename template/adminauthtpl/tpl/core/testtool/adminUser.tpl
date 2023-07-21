@@ -82,6 +82,28 @@ func (this *MockUser) Mock() *MockUser {
 	this.Po = po
 	return this
 }
+func (this *MockUser) MockRole(role string) *MockUser {
+	if this.Err != nil {
+		return this
+	}
+	po := &adminmodel.AdminPo{}
+	po.Account = "admin"
+	po.Password = pkg.GetPassword("123456")
+	po.IsSuperAdmin = "0"
+	po.Role = role
+	r := this.Ctx.Db.Create(po)
+
+	this.Account = po.Account
+	this.Password = "123456"
+	this.IsSuper = po.IsSuperAdmin
+	if r.Error != nil {
+		this.Err = r.Error
+		return this
+	}
+	this.Po = po
+	return this
+}
+
 
 // 数据库和缓存增加数据 涉及中间件包括login
 func (this *MockUser) Login() *MockUser {

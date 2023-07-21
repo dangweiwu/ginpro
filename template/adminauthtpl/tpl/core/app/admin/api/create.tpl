@@ -23,7 +23,7 @@ func NewAdminCreate(c *gin.Context, sc *ctx.ServerContext) irouter.IHandler {
 
 // @tags    系统用户
 // @summary 创建用户
-// @x-group		{"key":"adminuser","name":"系统用户","order":1,"desc":"系统用户管理","inorder":1}
+// @x-group		{"key":"adminuser","name":"系统用户","order":2,"desc":"系统用户管理","inorder":1}
 // @router  /api/admin [post]
 // @param   Authorization header   string                 true " " extensions(x-name=鉴权,x-value=[TOKEN])
 // @param   root          body     adminmodel.AdminForm   true " "

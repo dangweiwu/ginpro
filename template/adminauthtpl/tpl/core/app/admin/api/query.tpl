@@ -3,6 +3,7 @@ package api
 import (
 	"{{.Module}}/internal/app/admin/adminmodel"
 	"{{.Module}}/internal/ctx"
+    "{{.Module}}/internal/pkg/tracex"
 	"{{.Module}}/internal/router/irouter"
 	"github.com/gin-gonic/gin"
 	"{{.Host}}/api/hd"
@@ -33,11 +34,6 @@ func NewAdminQuery(c *gin.Context, sc *ctx.ServerContext) irouter.IHandler {
 // @param   name    query    string        false " "  extensions(x-name=姓名,x-value=)
 // @success 200     {object} adminmodel.AdminVo " "
 func (this *AdminQuery) Do() error {
-	if this.sc.EnableTrace {
-		_tx, span := this.sc.Tracer.Start(this.ctx.Request.Context(), "Do")
-		this.ctx.Request = this.ctx.Request.WithContext(_tx)
-		defer span.End()
-	}
 	data, err := this.Query()
 	if err != nil {
 		return err
@@ -56,11 +52,10 @@ var QueryRule = map[string]string{
 
 func (this *AdminQuery) Query() (interface{}, error) {
 	var span trace.Span
-	if this.sc.EnableTrace {
-		_tx, _span := this.sc.Tracer.Start(this.ctx.Request.Context(), "DoQuery")
-		span = _span
-		this.ctx.Request = this.ctx.Request.WithContext(_tx)
-		defer _span.End()
+	traceOk := this.sc.OpenTrace.IsTrue()
+	if traceOk {
+		span = tracex.Start(this.ctx, this.sc.Tracer, "queryDb")
+		defer span.End()
 	}
 	po := &adminmodel.AdminVo{}
 	pos := []adminmodel.AdminVo{}
@@ -71,8 +66,8 @@ func (this *AdminQuery) Query() (interface{}, error) {
 		return q.Where(db)
 	})
 	*/
-    if this.sc.EnableTrace {
-        span.AddEvent("dbstart")
-    }
+	if traceOk {
+		span.AddEvent("dbstart")
+	}
 	return q.Do()
 }

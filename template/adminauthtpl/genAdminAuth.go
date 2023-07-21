@@ -43,6 +43,7 @@ func (this *GenAdminAuthServer) InitFile() error {
 		{"token.go", []string{internal, "middler"}, MiddlerTokenTpl},
 		{"regMiddler.go", []string{internal, "middler"}, MiddlerRegMiddler},
 		{"auth.go", []string{internal, "middler"}, MiddlerAuthTpl},
+		{"trace.go", []string{internal, "middler"}, MiddlerTraceTpl},
 
 		{"option.go", []string{"option"}, OptionTpl},
 		{"initTable.go", []string{"option"}, OptionInitTableTpl},
@@ -55,6 +56,7 @@ func (this *GenAdminAuthServer) InitFile() error {
 		{"lg.go", []string{internal, "pkg", "lg"}, LgTpl},
 		{"fullUrl.go", []string{internal, "pkg", "fullurl"}, PkgFullUrlTpl},
 		{"otel_http.go", []string{internal, "pkg", "tel"}, OtelHttpTpl},
+		{"tracex.go", []string{internal, "pkg", "tracex"}, PkgTracexTpl},
 
 		{"do.go", []string{internal, "router"}, RouterDoTpl},
 		{"router.go", []string{internal, "router"}, RouterTpl},
@@ -98,7 +100,7 @@ func (this *GenAdminAuthServer) InitFile() error {
 		{"refreshToken_test.go", []string{internal, "app", "my", "api_test"}, TestMyRefreshTokenTpl},
 		{"update_test.go", []string{internal, "app", "my", "api_test"}, TestMyUpdateTpl},
 		{"updatePwd_test.go", []string{internal, "app", "my", "api_test"}, TestMyUpdatePwdTpl},
-
+		{"getauth_test.go", []string{internal, "app", "my", "api_test"}, TestGetAuthTpl},
 
 		//auth
 		{"create.go", []string{internal, app, "auth", "api"}, AuthCreateTpl},
@@ -133,6 +135,17 @@ func (this *GenAdminAuthServer) InitFile() error {
 		{"update_test.go", []string{internal, app, "role", "api_test"}, RoleUpdateTestTpl},
 		{"model.go", []string{internal, app, "role", "rolemodel"}, RoleModelTpl},
 		{"apiRouter.go", []string{internal, app, "role"}, RoleApiRouterTpl},
+
+		//sys
+		{"apiRouter.go", []string{internal, app, "sys"}, SysApiRouteTpl},
+		{"act.go", []string{internal, app, "sys", "api"}, SysApiActTpl},
+		{"info.go", []string{internal, app, "sys", "api"}, SysApiInfoTpl},
+		{"valid.go", []string{internal, app, "sys", "api"}, SysApiValidTpl},
+		{"act_test.go", []string{internal, app, "sys", "api_test"}, SysApiActTestTpl},
+		{"info_test.go", []string{internal, app, "sys", "api_test"}, SysApiInfoTestTpl},
+		{"main_test.go", []string{internal, app, "sys", "api_test"}, SysApiMainTestTpl},
+		{"act.go", []string{internal, app, "sys", "sysmodel"}, SysModelActTpl},
+		{"vo.go", []string{internal, app, "sys", "sysmodel"}, SysModelVoTpl},
 	}
 	this.code.SetFileItem(fileItems)
 	copyFile := []gencode.CopyFile{

@@ -15,7 +15,7 @@ var (
 
 // Enabled returns if prometheus is enabled.
 func Enabled() bool {
-	return enabled.True()
+	return enabled.IsTrue()
 }
 
 // StartAgent starts a prometheus agent.

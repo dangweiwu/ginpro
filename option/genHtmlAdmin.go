@@ -12,7 +12,7 @@ type FrontHtml struct {
 func (this *FrontHtml) Usage() string {
 	return ` project_name
 
-  生成前端基础框架
+  生成前端admin基础框架
 `
 }
 

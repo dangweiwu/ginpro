@@ -5,6 +5,7 @@ import (
 	"{{.Module}}/internal/pkg/jwtx"
 	"github.com/gin-gonic/gin"
 	"{{.Host}}/api/hd"
+	"fmt"
 )
 
 func NoAuthErrResponse(c *gin.Context, data string) {

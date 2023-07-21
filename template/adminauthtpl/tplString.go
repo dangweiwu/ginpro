@@ -34,6 +34,9 @@ var (
 	//go:embed tpl/core/middler/token.tpl
 	MiddlerTokenTpl string
 
+	//go:embed tpl/core/middler/trace.tpl
+	MiddlerTraceTpl string
+
 	//go:embed tpl/core/middler/regMiddler.tpl
 	MiddlerRegMiddler string
 
@@ -71,6 +74,9 @@ var (
 
 	//go:embed tpl/core/pkg/fullurl/fullUrl.tpl
 	PkgFullUrlTpl string
+
+	//go:embed tpl/core/pkg/tracex/tracex.tpl
+	PkgTracexTpl string
 
 	//go:embed tpl/core/router/do.tpl
 	RouterDoTpl string
@@ -127,6 +133,8 @@ var (
 	TestMyRefreshTokenTpl string
 	//go:embed tpl/core/app/my/api_test/updatePwd_test.tpl
 	TestMyUpdatePwdTpl string
+	//go:embed tpl/core/app/my/api_test/getauth_test.tpl
+	TestGetAuthTpl string
 
 	//go:embed tpl/core/app/regDb.tpl
 	RedDbTpl string
@@ -272,4 +280,29 @@ var (
 
 	//go:embed tpl/core/app/role/apiRouter.tpl
 	RoleApiRouterTpl string
+
+	//go:embed tpl/core/app/sys/api/info.tpl
+	SysApiInfoTpl string
+
+	//go:embed tpl/core/app/sys/api/act.tpl
+	SysApiActTpl string
+
+	//go:embed tpl/core/app/sys/api/valid.tpl
+	SysApiValidTpl string
+
+	//go:embed tpl/core/app/sys/api_test/info_test.tpl
+	SysApiInfoTestTpl string
+
+	//go:embed tpl/core/app/sys/api_test/act_test.tpl
+	SysApiActTestTpl string
+
+	//go:embed tpl/core/app/sys/api_test/main_test.tpl
+	SysApiMainTestTpl string
+	//go:embed tpl/core/app/sys/apiRoute.tpl
+	SysApiRouteTpl string
+
+	//go:embed tpl/core/app/sys/sysmodel/act.tpl
+	SysModelActTpl string
+	//go:embed tpl/core/app/sys/sysmodel/vo.tpl
+	SysModelVoTpl string
 )

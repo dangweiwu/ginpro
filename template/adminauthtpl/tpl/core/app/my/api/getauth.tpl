@@ -28,7 +28,7 @@ func NewMyAuth(c *gin.Context, sc *ctx.ServerContext) irouter.IHandler {
 	return &MyAuth{hd.NewHd(c), c, sc}
 }
 
-// @x-group	{"key":"my","name":"系统我的","inorder":7}
+// @x-group	{"key":"my","inorder":7}
 // @tags		系统我的
 // @summary	获取权限
 // @router		/api/my-auth [get]
