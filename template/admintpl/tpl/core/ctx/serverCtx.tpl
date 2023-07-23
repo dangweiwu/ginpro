@@ -5,28 +5,32 @@ import (
 	"{{.Module}}/internal/pkg/lg"
 	"github.com/go-redis/redis/v8"
 	errs "github.com/pkg/errors"
-    "go.opentelemetry.io/otel"
-    "go.opentelemetry.io/otel/trace"
 	"gorm.io/gorm"
 	"{{.Host}}/pkg/logx"
 	"{{.Host}}/pkg/mysqlx"
 	"{{.Host}}/pkg/redisx"
+	"{{.Host}}/pkg/tracex"
+    "{{.Host}}/pkg/metric"
+    "time"
 )
 
 // 所有资源放在此处
 type ServerContext struct {
+    StartTime    time.Time
 	Config       config.Config
 	Log          *logx.Logx
 	Db           *gorm.DB
 	Redis        *redis.Client
-	Tracer       trace.Tracer
-	EnableTrace bool
+    Tracer       *tracex.Tracex
 }
 
 func NewServerContext(c config.Config) (*ServerContext, error) {
 	//初始化日志
 	sc := &ServerContext{}
 	sc.Config = c
+	sc.StartTime = time.Now()
+	sc.Tracer = tracex.NewTrace(c.App.Name)
+
 	if lg, err := logx.NewLogx(c.Log); err != nil {
 		return nil, err
 	} else {
@@ -52,10 +56,19 @@ func NewServerContext(c config.Config) (*ServerContext, error) {
 
 	}
 
-    //追踪
+
+	//追踪启动
 	if c.Trace.Enable {
-		sc.EnableTrace = true
-		sc.Tracer = otel.Tracer("ogm2")
+		sc.Tracer.SetEnable(true)
+	} else {
+		sc.Tracer.SetEnable(false)
+	}
+
+	//指标采集启动
+	if c.Prom.Enable {
+		metric.SetEnable(true)
+	} else {
+		metric.SetEnable(false)
 	}
 
 	return sc, nil

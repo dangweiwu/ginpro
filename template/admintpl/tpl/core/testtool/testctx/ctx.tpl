@@ -13,6 +13,7 @@ import (
 	"{{.Host}}/pkg/mysqlx"
 	"{{.Host}}/pkg/mysqlx/mysqlfake"
 	"{{.Host}}/pkg/redisx"
+	"{{.Host}}/pkg/tracex"
 )
 
 type TestContext struct {
@@ -63,7 +64,7 @@ func (this *TestContext) GetServerCtx() (*ctx.ServerContext, error) {
 	a.Config = this.Config
 	a.Db = this.Db
 	a.Redis = this.Redis
-
+	a.Tracer = tracex.NewTrace("xx")
 	//注册数据库
 	app.Regdb(a)
 	return a, nil

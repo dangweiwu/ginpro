@@ -11,6 +11,7 @@ func RegMiddler(sc *ctx.ServerContext) []gin.HandlerFunc {
 	return []gin.HandlerFunc{
 		requestid.New(),
         Recovery(sc),
+        sc.Tracer.GinMiddler(),
         HttpLog(sc),
         Cors(),
         PromMiddler(sc),

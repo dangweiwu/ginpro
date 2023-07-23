@@ -115,9 +115,6 @@ var (
 	//go:embed tpl/core/pkg/jwtx/jwt.tpl
 	JwtTpl string
 
-	//go:embed tpl/core/pkg/tel/otel_http.tpl
-	OtelHttpTpl string
-
 	//go:embed tpl/core/router/do.tpl
 	RouterDoTpl string
 
@@ -176,4 +173,27 @@ var (
 
 	//go:embed tpl/core/pkg/lg/lg.tpl
 	LgTpl string
+
+	//role
+	//go:embed tpl/core/app/sys/api/info.tpl
+	SysApiInfoTpl string
+
+	//go:embed tpl/core/app/sys/api/act.tpl
+	SysApiActTpl string
+
+	//go:embed tpl/core/app/sys/api_test/info_test.tpl
+	SysApiInfoTestTpl string
+
+	//go:embed tpl/core/app/sys/api_test/act_test.tpl
+	SysApiActTestTpl string
+
+	//go:embed tpl/core/app/sys/api_test/main_test.tpl
+	SysApiMainTestTpl string
+	//go:embed tpl/core/app/sys/apiRoute.tpl
+	SysApiRouteTpl string
+
+	//go:embed tpl/core/app/sys/sysmodel/act.tpl
+	SysModelActTpl string
+	//go:embed tpl/core/app/sys/sysmodel/vo.tpl
+	SysModelVoTpl string
 )

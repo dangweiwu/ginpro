@@ -67,7 +67,6 @@ func (this *GenAdminServer) InitFile() error {
 		{"config.go", []string{internal, "pkg", "jwtx", "jwtconfig"}, JwtConfigTpl},
 		{"jwt.go", []string{internal, "pkg", "jwtx"}, JwtTpl},
 		{"lg.go", []string{internal, "pkg", "lg"}, LgTpl},
-		{"otel_http.go", []string{internal, "pkg", "tel"}, OtelHttpTpl},
 
 		{"do.go", []string{internal, "router"}, RouterDoTpl},
 		{"router.go", []string{internal, "router"}, RouterTpl},
@@ -92,6 +91,16 @@ func (this *GenAdminServer) InitFile() error {
 		{"refreshToken_test.go", []string{internal, "app", "my", "api_test"}, TestMyRefreshTokenTpl},
 		{"update_test.go", []string{internal, "app", "my", "api_test"}, TestMyUpdateTpl},
 		{"updatePwd_test.go", []string{internal, "app", "my", "api_test"}, TestMyUpdatePwdTpl},
+
+		//sys
+		{"apiRouter.go", []string{internal, app, "sys"}, SysApiRouteTpl},
+		{"act.go", []string{internal, app, "sys", "api"}, SysApiActTpl},
+		{"info.go", []string{internal, app, "sys", "api"}, SysApiInfoTpl},
+		{"act_test.go", []string{internal, app, "sys", "api_test"}, SysApiActTestTpl},
+		{"info_test.go", []string{internal, app, "sys", "api_test"}, SysApiInfoTestTpl},
+		{"main_test.go", []string{internal, app, "sys", "api_test"}, SysApiMainTestTpl},
+		{"act.go", []string{internal, app, "sys", "sysmodel"}, SysModelActTpl},
+		{"vo.go", []string{internal, app, "sys", "sysmodel"}, SysModelVoTpl},
 	}
 	this.code.SetFileItem(fileItems)
 	copyFile := []gencode.CopyFile{

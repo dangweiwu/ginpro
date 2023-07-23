@@ -3,6 +3,7 @@ package testtool
 import (
 	"{{.Module}}/internal/app"
 	"{{.Module}}/internal/ctx"
+	"encoding/base64"
 	"github.com/gin-gonic/gin"
 	"io"
 	"net/http"
@@ -30,6 +31,13 @@ func NewTestServer(c *ctx.ServerContext, method string, target string, body io.R
 
 func (this *TestServer) SetAuth(token string) *TestServer {
 	this.Request.Header.Add("Authorization", token)
+	return this
+}
+
+func (this *TestServer) SetBaseAuth(user, password string) *TestServer {
+	base := user + ":" + password
+	t := "Basic " + base64.StdEncoding.EncodeToString([]byte(base))
+	this.Request.Header.Add("Authorization", t)
 	return this
 }
 

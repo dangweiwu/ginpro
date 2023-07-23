@@ -7,7 +7,6 @@ import (
 	"{{.Host}}/api/hd"
 	"{{.Host}}/api/query"
 	"github.com/gin-gonic/gin"
-    "go.opentelemetry.io/otel/trace"
 )
 
 type AdminQuery struct {
@@ -33,11 +32,6 @@ func NewAdminQuery(c *gin.Context, sc *ctx.ServerContext) irouter.IHandler {
 // @param   name    query    string        false " "  extensions(x-name=姓名,x-value=)
 // @success 200     {object} adminmodel.AdminVo " "
 func (this *AdminQuery) Do() error {
-	if this.sc.EnableTrace {
-		_tx, span := this.sc.Tracer.Start(this.ctx.Request.Context(), "Do")
-		this.ctx.Request = this.ctx.Request.WithContext(_tx)
-		defer span.End()
-	}
 	data, err := this.Query()
 	if err != nil {
 		return err
@@ -55,18 +49,11 @@ var QueryRule = map[string]string{
 }
 
 func (this *AdminQuery) Query() (interface{}, error) {
-	var span trace.Span
-	if this.sc.EnableTrace {
-		_tx, _span := this.sc.Tracer.Start(this.ctx.Request.Context(), "DoQuery")
-		span = _span
-		this.ctx.Request = this.ctx.Request.WithContext(_tx)
-		defer _span.End()
-	}
+	span := this.sc.Tracer.GinStart(this.ctx, "dbstart")
+	defer span.End()
 	po := &adminmodel.AdminVo{}
 	pos := []adminmodel.AdminVo{}
 	q := query.NewQuery(this.ctx, this.sc.Db, QueryRule, po, &pos)
-    if this.sc.EnableTrace {
-        span.AddEvent("dbstart")
-    }
+	span.AddEvent("dbstart")
 	return q.Do()
 }

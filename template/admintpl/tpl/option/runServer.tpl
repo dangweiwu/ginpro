@@ -8,12 +8,10 @@ import (
 	"{{.Module}}/internal/middler"
 	"github.com/gin-gonic/gin"
 	"{{.Host}}/api/apiserver"
-	"{{.Host}}/pkg/metric"
 	"{{.Host}}/pkg/yamconfig"
-    "go.opentelemetry.io/contrib/instrumentation/github.com/gin-gonic/gin/otelgin"
     "github.com/prometheus/client_golang/prometheus/promhttp"
-    "{{.Module}}/internal/pkg/tel"
     "go.uber.org/zap"
+    "{{.Host}}/pkg/tracex"
 )
 
 type RunServe struct {
@@ -38,15 +36,13 @@ func (this *RunServe) Execute(args []string) error {
     engine := gin.New()
 	//trace
 	if c.Trace.Enable {
-		tp := tel.InitTracerHTTP(c.Trace.Endpoint, c.Trace.UrlPath, c.Trace.Auth)
+		tp := tracex.InitTracerHTTP(c.Trace.Endpoint, c.Trace.UrlPath, c.Trace.Auth, c.App.Name)
 		defer func() {
 			if err := tp.Shutdown(context.Background()); err != nil {
 				sc.Log.Error("Error shutting down tracer provider", zap.Error(err))
 			}
 		}()
-		engine.Use(otelgin.Middleware("{{.Module}}"))
 	}
-
 	//服务 中间件
 	//engine := gin.Default()
 
