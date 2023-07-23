@@ -37,6 +37,9 @@ var (
 	//go:embed tpl/core/middler/trace.tpl
 	MiddlerTraceTpl string
 
+	//go:embed tpl/core/middler/prom.tpl
+	MiddlerPromTpl string
+
 	//go:embed tpl/core/middler/regMiddler.tpl
 	MiddlerRegMiddler string
 
@@ -286,9 +289,6 @@ var (
 
 	//go:embed tpl/core/app/sys/api/act.tpl
 	SysApiActTpl string
-
-	//go:embed tpl/core/app/sys/api/valid.tpl
-	SysApiValidTpl string
 
 	//go:embed tpl/core/app/sys/api_test/info_test.tpl
 	SysApiInfoTestTpl string

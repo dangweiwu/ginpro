@@ -10,6 +10,7 @@ import (
     "go.opentelemetry.io/otel/trace"
 	"gorm.io/gorm"
 	"{{.Host}}/pkg/logx"
+	"{{.Host}}/pkg/metric"
 	"{{.Host}}/pkg/mysqlx"
 	"{{.Host}}/pkg/redisx"
     "{{.Host}}/pkg/syncx"
@@ -26,7 +27,6 @@ type ServerContext struct {
 	AuthCheck *authcheck.AuthCheck
 	Tracer     trace.Tracer
 	OpenTrace  *syncx.AtomicBool //链路追踪
-	OpenMetric *syncx.AtomicBool //指标采集
 }
 
 func NewServerContext(c config.Config) (*ServerContext, error) {
@@ -34,7 +34,6 @@ func NewServerContext(c config.Config) (*ServerContext, error) {
 	sc := &ServerContext{}
 	sc.StartTime = time.Now()
 	sc.OpenTrace = syncx.NewAtomicBool()
-	sc.OpenMetric = syncx.NewAtomicBool()
 	sc.Config = c
 
 	if lg, err := logx.NewLogx(c.Log); err != nil {
@@ -75,6 +74,8 @@ func NewServerContext(c config.Config) (*ServerContext, error) {
         sc.Tracer = otel.Tracer(sc.Config.App.Name)
     }
 
+    //指标采集
+    metric.SetEnable(true)
 
 	return sc, nil
 }

@@ -1,19 +1,18 @@
 package option
 
 import (
-    "context"
 	"{{.Module}}/internal/app"
 	"{{.Module}}/internal/config"
 	"{{.Module}}/internal/ctx"
 	"{{.Module}}/internal/middler"
 	"{{.Module}}/internal/pkg/fullurl"
+	"{{.Module}}/internal/pkg/tel"
+	"context"
 	"github.com/gin-gonic/gin"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
+	"go.uber.org/zap"
 	"{{.Host}}/api/apiserver"
-	"{{.Host}}/pkg/metric"
 	"{{.Host}}/pkg/yamconfig"
-    "go.opentelemetry.io/contrib/instrumentation/github.com/gin-gonic/gin/otelgin"
-    "{{.Module}}/internal/pkg/tel"
-    "go.uber.org/zap"
 )
 
 type RunServe struct {
@@ -46,12 +45,12 @@ func (this *RunServe) Execute(args []string) error {
                 sc.Log.Error("Error shutting down tracer provider", zap.Error(err))
             }
         }()
-        engine.Use(otelgin.Middleware("{{.Module}}"))
     }
 
-
 	//启动promagent
-	metric.StartAgent(engine, "/metrics", sc.Config.Prom.UserName, sc.Config.Prom.Password)
+	engine.GET("/metrics", gin.BasicAuth(gin.Accounts{c.Prom.UserName: c.Prom.Password}), gin.WrapH(promhttp.Handler()))
+
+    //中间件
 	apiserver.RegMiddler(engine,
 		apiserver.WithStatic("/view", c.Api.ViewDir),
 		apiserver.WithMiddle(middler.RegMiddler(sc)...),

@@ -10,10 +10,15 @@ import (
 
 var SerCtx *ctx.ServerContext
 var TestCtx *testctx.TestContext
+var (
+	Name     = "name"
+	Password = "123456"
+)
 
 func TestMain(m *testing.M) {
 	config := testtool.NewTestConfig()
-	config.App.Password = "123456"
+	config.App.Name = Name
+	config.App.Password = Password
 	config.Trace.Enable = true
 	config.Prom.Enable = true
 	//单元测试并发执行 防止数据库端口冲突
@@ -32,7 +37,6 @@ func TestMain(m *testing.M) {
 
 	TestCtx = ctx
 	SerCtx.OpenTrace = syncx.NewAtomicBool()
-	SerCtx.OpenMetric = syncx.NewAtomicBool()
 	if err != nil {
 		panic(err)
 	}

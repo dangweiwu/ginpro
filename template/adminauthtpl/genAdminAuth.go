@@ -44,6 +44,7 @@ func (this *GenAdminAuthServer) InitFile() error {
 		{"regMiddler.go", []string{internal, "middler"}, MiddlerRegMiddler},
 		{"auth.go", []string{internal, "middler"}, MiddlerAuthTpl},
 		{"trace.go", []string{internal, "middler"}, MiddlerTraceTpl},
+		{"prom.go", []string{internal, "middler"}, MiddlerPromTpl},
 
 		{"option.go", []string{"option"}, OptionTpl},
 		{"initTable.go", []string{"option"}, OptionInitTableTpl},
@@ -140,7 +141,6 @@ func (this *GenAdminAuthServer) InitFile() error {
 		{"apiRouter.go", []string{internal, app, "sys"}, SysApiRouteTpl},
 		{"act.go", []string{internal, app, "sys", "api"}, SysApiActTpl},
 		{"info.go", []string{internal, app, "sys", "api"}, SysApiInfoTpl},
-		{"valid.go", []string{internal, app, "sys", "api"}, SysApiValidTpl},
 		{"act_test.go", []string{internal, app, "sys", "api_test"}, SysApiActTestTpl},
 		{"info_test.go", []string{internal, app, "sys", "api_test"}, SysApiInfoTestTpl},
 		{"main_test.go", []string{internal, app, "sys", "api_test"}, SysApiMainTestTpl},

@@ -7,6 +7,7 @@ import (
 	"errors"
 	"github.com/gin-gonic/gin"
 	"{{.Host}}/api/hd"
+	"{{.Host}}/pkg/metric"
 )
 
 type SysAct struct {
@@ -26,9 +27,6 @@ func NewSysAct(c *gin.Context, sc *ctx.ServerContext) irouter.IHandler {
 // @param		root			body		sysmodel.SysActForm	true	" "
 // @success	200				{string}	string	"{data:'ok'}"
 func (this *SysAct) Do() error {
-	if !AuthSysPassword(this.ctx, this.sc) {
-		return nil
-	}
 	form := &sysmodel.SysActForm{}
 	err := this.Bind(form)
 	if err != nil {
@@ -56,9 +54,9 @@ func (this *SysAct) Do() error {
 	case "metric":
 		if this.sc.Config.Prom.Enable {
 			if form.Act == "0" {
-				this.sc.OpenMetric.Set(false)
+				metric.SetEnable(false)
 			} else if form.Act == "1" {
-				this.sc.OpenMetric.Set(true)
+				metric.SetEnable(true)
 			} else {
 				return errors.New("未知指令")
 			}

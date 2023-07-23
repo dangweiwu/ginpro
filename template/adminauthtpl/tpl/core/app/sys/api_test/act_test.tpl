@@ -16,12 +16,12 @@ func TestAct(t *testing.T) {
 	form.Name = "trace"
 	body, _ := json.Marshal(form)
 
-	ser := testtool.NewTestServer(SerCtx, "PUT", "/api/sys", bytes.NewBuffer(body)).SetAuth("123456").Do()
+	ser := testtool.NewTestServer(SerCtx, "PUT", "/api/sys", bytes.NewBuffer(body)).SetBaseAuth(Name, Password).Do()
 	assert.Equal(t, 200, ser.GetCode(), "%s:%s", "act", ser.GetBody())
 
 	form.Name = "metric"
 	body, _ = json.Marshal(form)
 
-	ser = testtool.NewTestServer(SerCtx, "PUT", "/api/sys", bytes.NewBuffer(body)).SetAuth("123456").Do()
+	ser = testtool.NewTestServer(SerCtx, "PUT", "/api/sys", bytes.NewBuffer(body)).SetBaseAuth(Name, Password).Do()
 	assert.Equal(t, 200, ser.GetCode(), "%s:%s", "act", ser.GetBody())
 }

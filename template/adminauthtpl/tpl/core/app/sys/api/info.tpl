@@ -7,6 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"{{.Host}}/api/hd"
 	"time"
+	"{{.Host}}/pkg/metric"
 )
 
 type SysQuery struct {
@@ -25,9 +26,6 @@ func NewSysQuery(c *gin.Context, sc *ctx.ServerContext) irouter.IHandler {
 // @param   Authorization header   string                   true " " extensions(x-name=鉴权,x-value=password)
 // @success	200		{object}	sysmodel.SysVo	" "
 func (this *SysQuery) Do() error {
-	if !AuthSysPassword(this.ctx, this.sc) {
-		return nil
-	}
 	vo := &sysmodel.SysVo{}
 	vo.StartTime = this.sc.StartTime.String()
 	vo.RunTime = time.Now().Sub(this.sc.StartTime).String()
@@ -37,7 +35,7 @@ func (this *SysQuery) Do() error {
 		vo.OpenTrace = "0"
 	}
 
-	if this.sc.OpenMetric.IsTrue() {
+	if metric.Enabled() {
 		vo.OpenMetric = "1"
 	} else {
 		vo.OpenMetric = "0"
