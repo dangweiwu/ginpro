@@ -1,4 +1,4 @@
-package tel
+package tracex
 
 import (
 	"context"
@@ -13,7 +13,7 @@ import (
 	semconv "go.opentelemetry.io/otel/semconv/v1.4.0"
 )
 
-func InitTracerHTTP(endpoint, urlpath, Authorization string) *sdktrace.TracerProvider {
+func InitTracerHTTP(endpoint, urlpath, Authorization, name string) *sdktrace.TracerProvider {
 	otel.SetTextMapPropagator(propagation.NewCompositeTextMapPropagator(
 		propagation.TraceContext{},
 		propagation.Baggage{},
@@ -50,7 +50,7 @@ func InitTracerHTTP(endpoint, urlpath, Authorization string) *sdktrace.TracerPro
 	res := resource.NewWithAttributes(
 		semconv.SchemaURL,
 		// the service name used to display traces in backends
-		semconv.ServiceNameKey.String("{{.Module}}"),
+		semconv.ServiceNameKey.String(name),
 		semconv.ServiceVersionKey.String("0.0.1"),
 		//attribute.String("environment", "test"),
 	)

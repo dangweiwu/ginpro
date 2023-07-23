@@ -22,6 +22,19 @@ tasks:
     vars:
       pkgs:
         sh: go list ./... |grep 'api' | grep -v 'api_test'| tr '\n' ',' | sed 's/.$//g'
+
+  testx:
+     cmds:
+       - go install github.com/jstemmer/go-junit-report@latest
+
+       - go test -cover -v
+         -coverprofile="{{.coverout}}"
+         -coverpkg={{.pkgs}}
+         ./...
+
+     vars:
+       pkgs:
+         sh: go list ./... |grep 'api' | grep -v 'api_test'| tr '\n' ',' | sed 's/.$//g'
   # 文档
   swag:
     - go install github.com/swaggo/swag/cmd/swag@latest

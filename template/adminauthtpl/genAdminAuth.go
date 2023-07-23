@@ -43,7 +43,6 @@ func (this *GenAdminAuthServer) InitFile() error {
 		{"token.go", []string{internal, "middler"}, MiddlerTokenTpl},
 		{"regMiddler.go", []string{internal, "middler"}, MiddlerRegMiddler},
 		{"auth.go", []string{internal, "middler"}, MiddlerAuthTpl},
-		{"trace.go", []string{internal, "middler"}, MiddlerTraceTpl},
 		{"prom.go", []string{internal, "middler"}, MiddlerPromTpl},
 
 		{"option.go", []string{"option"}, OptionTpl},
@@ -56,8 +55,6 @@ func (this *GenAdminAuthServer) InitFile() error {
 		{"jwt.go", []string{internal, "pkg", "jwtx"}, JwtTpl},
 		{"lg.go", []string{internal, "pkg", "lg"}, LgTpl},
 		{"fullUrl.go", []string{internal, "pkg", "fullurl"}, PkgFullUrlTpl},
-		{"otel_http.go", []string{internal, "pkg", "tel"}, OtelHttpTpl},
-		{"tracex.go", []string{internal, "pkg", "tracex"}, PkgTracexTpl},
 
 		{"do.go", []string{internal, "router"}, RouterDoTpl},
 		{"router.go", []string{internal, "router"}, RouterTpl},

@@ -56,6 +56,7 @@ func (this *GenAdminServer) InitFile() error {
 		{"httpLog.go", []string{internal, "middler"}, MiddlerHttpLogTpl},
 		{"recover.go", []string{internal, "middler"}, MiddlerRecoverTpl},
 		{"token.go", []string{internal, "middler"}, MiddlerTokenTpl},
+		{"prom.go", []string{internal, "middler"}, MiddlerPromTpl},
 		{"regMiddler.go", []string{internal, "middler"}, MiddlerRegMiddler},
 		{"option.go", []string{"option"}, OptionTpl},
 		{"initTable.go", []string{"option"}, OptionInitTableTpl},

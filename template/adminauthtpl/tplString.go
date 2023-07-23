@@ -34,9 +34,6 @@ var (
 	//go:embed tpl/core/middler/token.tpl
 	MiddlerTokenTpl string
 
-	//go:embed tpl/core/middler/trace.tpl
-	MiddlerTraceTpl string
-
 	//go:embed tpl/core/middler/prom.tpl
 	MiddlerPromTpl string
 
@@ -72,14 +69,8 @@ var (
 	//go:embed tpl/core/pkg/lg/lg.tpl
 	LgTpl string
 
-	//go:embed tpl/core/pkg/tel/otel_http.tpl
-	OtelHttpTpl string
-
 	//go:embed tpl/core/pkg/fullurl/fullUrl.tpl
 	PkgFullUrlTpl string
-
-	//go:embed tpl/core/pkg/tracex/tracex.tpl
-	PkgTracexTpl string
 
 	//go:embed tpl/core/router/do.tpl
 	RouterDoTpl string

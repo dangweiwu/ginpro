@@ -1,17 +1,17 @@
 package option
 
 import (
+	"context"
 	"{{.Module}}/internal/app"
 	"{{.Module}}/internal/config"
 	"{{.Module}}/internal/ctx"
 	"{{.Module}}/internal/middler"
 	"{{.Module}}/internal/pkg/fullurl"
-	"{{.Module}}/internal/pkg/tel"
-	"context"
 	"github.com/gin-gonic/gin"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"go.uber.org/zap"
 	"{{.Host}}/api/apiserver"
+	"{{.Host}}/pkg/tracex"
 	"{{.Host}}/pkg/yamconfig"
 )
 
@@ -37,20 +37,20 @@ func (this *RunServe) Execute(args []string) error {
 	//engine := gin.Default()
 
 	engine := gin.New()
-    //trace
-    if c.Trace.Enable {
-        tp := tel.InitTracerHTTP(c.Trace.Endpoint, c.Trace.UrlPath, c.Trace.Auth)
-        defer func() {
-            if err := tp.Shutdown(context.Background()); err != nil {
-                sc.Log.Error("Error shutting down tracer provider", zap.Error(err))
-            }
-        }()
-    }
+	//trace
+	if c.Trace.Enable {
+		tp := tracex.InitTracerHTTP(c.Trace.Endpoint, c.Trace.UrlPath, c.Trace.Auth, c.App.Name)
+		defer func() {
+			if err := tp.Shutdown(context.Background()); err != nil {
+				sc.Log.Error("Error shutting down tracer provider", zap.Error(err))
+			}
+		}()
+	}
 
 	//启动promagent
 	engine.GET("/metrics", gin.BasicAuth(gin.Accounts{c.Prom.UserName: c.Prom.Password}), gin.WrapH(promhttp.Handler()))
 
-    //中间件
+	//中间件
 	apiserver.RegMiddler(engine,
 		apiserver.WithStatic("/view", c.Api.ViewDir),
 		apiserver.WithMiddle(middler.RegMiddler(sc)...),

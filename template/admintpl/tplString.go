@@ -88,6 +88,9 @@ var (
 	//go:embed tpl/core/middler/token.tpl
 	MiddlerTokenTpl string
 
+	//go:embed tpl/core/middler/prom.tpl
+	MiddlerPromTpl string
+
 	//go:embed tpl/core/middler/regMidler.tpl
 	MiddlerRegMiddler string
 

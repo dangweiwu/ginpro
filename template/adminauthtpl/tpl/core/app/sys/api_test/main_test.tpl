@@ -4,7 +4,7 @@ import (
 	"{{.Module}}/internal/ctx"
 	"{{.Module}}/internal/testtool"
 	"{{.Module}}/internal/testtool/testctx"
-	"gs/pkg/syncx"
+	"{{.Host}}/pkg/tracex"
 	"testing"
 )
 
@@ -34,9 +34,8 @@ func TestMain(m *testing.M) {
 	}
 
 	SerCtx, err = ctx.GetServerCtx()
-
+	SerCtx.Tracer = tracex.NewTrace("test")
 	TestCtx = ctx
-	SerCtx.OpenTrace = syncx.NewAtomicBool()
 	if err != nil {
 		panic(err)
 	}

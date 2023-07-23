@@ -6,34 +6,31 @@ import (
 	"{{.Module}}/internal/pkg/lg"
 	"github.com/go-redis/redis/v8"
 	errs "github.com/pkg/errors"
-    "go.opentelemetry.io/otel"
-    "go.opentelemetry.io/otel/trace"
 	"gorm.io/gorm"
 	"{{.Host}}/pkg/logx"
 	"{{.Host}}/pkg/metric"
 	"{{.Host}}/pkg/mysqlx"
 	"{{.Host}}/pkg/redisx"
-    "{{.Host}}/pkg/syncx"
+	"{{.Host}}/pkg/tracex"
 	"time"
 )
 
 // 所有资源放在此处
 type ServerContext struct {
-	StartTime  time.Time
+	StartTime time.Time
 	Config    config.Config
 	Log       *logx.Logx
 	Db        *gorm.DB
 	Redis     *redis.Client
 	AuthCheck *authcheck.AuthCheck
-	Tracer     trace.Tracer
-	OpenTrace  *syncx.AtomicBool //链路追踪
+	Tracer    *tracex.Tracex
 }
 
 func NewServerContext(c config.Config) (*ServerContext, error) {
 	//初始化日志
 	sc := &ServerContext{}
 	sc.StartTime = time.Now()
-	sc.OpenTrace = syncx.NewAtomicBool()
+	sc.Tracer = tracex.NewTrace(c.App.Name)
 	sc.Config = c
 
 	if lg, err := logx.NewLogx(c.Log); err != nil {
@@ -68,14 +65,19 @@ func NewServerContext(c config.Config) (*ServerContext, error) {
 		lg.Msg("casbin初始化完毕")
 	}
 
-    //追踪
-    if c.Trace.Enable {
-        sc.OpenTrace.Set(true)
-        sc.Tracer = otel.Tracer(sc.Config.App.Name)
-    }
+	//追踪启动
+	if c.Trace.Enable {
+		sc.Tracer.SetEnable(true)
+	} else {
+		sc.Tracer.SetEnable(false)
+	}
 
-    //指标采集
-    metric.SetEnable(true)
+	//指标采集启动
+	if c.Prom.Enable {
+		metric.SetEnable(true)
+	} else {
+		metric.SetEnable(false)
+	}
 
 	return sc, nil
 }

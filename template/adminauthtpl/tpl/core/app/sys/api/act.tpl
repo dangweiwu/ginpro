@@ -42,9 +42,9 @@ func (this *SysAct) Do() error {
 	case "trace":
 		if this.sc.Config.Trace.Enable {
 			if form.Act == "0" {
-				this.sc.OpenTrace.Set(false)
+				this.sc.Tracer.SetEnable(false)
 			} else if form.Act == "1" {
-				this.sc.OpenTrace.Set(true)
+				this.sc.Tracer.SetEnable(true)
 			} else {
 				return errors.New("未知指令")
 			}

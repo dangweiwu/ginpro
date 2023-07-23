@@ -11,6 +11,7 @@ import (
 	"{{.Host}}/pkg/metric"
 	"{{.Host}}/pkg/yamconfig"
     "go.opentelemetry.io/contrib/instrumentation/github.com/gin-gonic/gin/otelgin"
+    "github.com/prometheus/client_golang/prometheus/promhttp"
     "{{.Module}}/internal/pkg/tel"
     "go.uber.org/zap"
 )
@@ -50,7 +51,7 @@ func (this *RunServe) Execute(args []string) error {
 	//engine := gin.Default()
 
 	//启动promagent
-	metric.StartAgent(engine, "/metrics", sc.Config.Prom.UserName, sc.Config.Prom.Password)
+	engine.GET("/metrics", gin.BasicAuth(gin.Accounts{c.Prom.UserName: c.Prom.Password}), gin.WrapH(promhttp.Handler()))
 	apiserver.RegMiddler(engine,
 		apiserver.WithStatic("/view", c.Api.ViewDir),
 		apiserver.WithMiddle(middler.RegMiddler(sc)...),

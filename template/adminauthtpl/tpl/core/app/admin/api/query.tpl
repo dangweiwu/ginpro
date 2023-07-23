@@ -3,12 +3,10 @@ package api
 import (
 	"{{.Module}}/internal/app/admin/adminmodel"
 	"{{.Module}}/internal/ctx"
-    "{{.Module}}/internal/pkg/tracex"
 	"{{.Module}}/internal/router/irouter"
 	"github.com/gin-gonic/gin"
 	"{{.Host}}/api/hd"
 	"{{.Host}}/api/query"
-    "go.opentelemetry.io/otel/trace"
 )
 
 type AdminQuery struct {
@@ -51,23 +49,17 @@ var QueryRule = map[string]string{
 }
 
 func (this *AdminQuery) Query() (interface{}, error) {
-	var span trace.Span
-	traceOk := this.sc.OpenTrace.IsTrue()
-	if traceOk {
-		span = tracex.Start(this.ctx, this.sc.Tracer, "queryDb")
-		defer span.End()
-	}
+	span := this.sc.Tracer.GinStart(this.ctx, "dbstart")
+	defer span.End()
 	po := &adminmodel.AdminVo{}
 	pos := []adminmodel.AdminVo{}
 	q := query.NewQuery(this.ctx, this.sc.Db, QueryRule, po, &pos)
 	/*
-	q.SetWhere(func(db *gorm.DB) (r *gorm.DB) {
-		db = db.Preload("RolePo")
-		return q.Where(db)
-	})
+		q.SetWhere(func(db *gorm.DB) (r *gorm.DB) {
+			db = db.Preload("RolePo")
+			return q.Where(db)
+		})
 	*/
-	if traceOk {
-		span.AddEvent("dbstart")
-	}
+	span.AddEvent("dbstart")
 	return q.Do()
 }

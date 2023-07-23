@@ -6,8 +6,8 @@ import (
 	"{{.Module}}/internal/router/irouter"
 	"github.com/gin-gonic/gin"
 	"{{.Host}}/api/hd"
-	"time"
 	"{{.Host}}/pkg/metric"
+	"time"
 )
 
 type SysQuery struct {
@@ -29,7 +29,7 @@ func (this *SysQuery) Do() error {
 	vo := &sysmodel.SysVo{}
 	vo.StartTime = this.sc.StartTime.String()
 	vo.RunTime = time.Now().Sub(this.sc.StartTime).String()
-	if this.sc.OpenTrace.IsTrue() {
+	if this.sc.Tracer.IsEnable() {
 		vo.OpenTrace = "1"
 	} else {
 		vo.OpenTrace = "0"
