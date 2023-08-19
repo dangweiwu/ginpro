@@ -41,21 +41,21 @@ func NewLogx(cfg LogxConfig) (*Logx, error) {
 	return a, nil
 }
 
-//解析器
+// 解析器
 func (this *Logx) setEncode() zapcore.Encoder {
 	encoderConfig := zapcore.EncoderConfig{
-		TimeKey:       "time",
-		LevelKey:      "level",
-		NameKey:       "logger",
-		CallerKey:     "linenum",
-		MessageKey:    "msg",
-		StacktraceKey: "stacktrace",
-		LineEnding:    zapcore.DefaultLineEnding,
-		EncodeLevel:   zapcore.LowercaseLevelEncoder, // 小写编码器
-		// EncodeLevel: zapcore.LowercaseColorLevelEncoder, // 小写编码器
+		TimeKey:        "time",  //日志时间的key
+		LevelKey:       "level", //日志level的key
+		NameKey:        "logger",
+		CallerKey:      "linenum", //日志产生的文件及其行数的key
+		MessageKey:     "msg",     //日志内容的key
+		StacktraceKey:  "stacktrace",
+		FunctionKey:    "func",                         // 日志函数的key
+		LineEnding:     zapcore.DefaultLineEnding,      //回车换行
+		EncodeLevel:    zapcore.LowercaseLevelEncoder,  // 小写编码器 info debug not Info Debug
 		EncodeTime:     zapcore.ISO8601TimeEncoder,     // ISO8601 UTC 时间格式
 		EncodeDuration: zapcore.SecondsDurationEncoder, //
-		EncodeCaller:   zapcore.FullCallerEncoder,      // 全路径编码器
+		EncodeCaller:   zapcore.FullCallerEncoder,      // 全路径编码器 包名、文件名、行号
 		EncodeName:     zapcore.FullNameEncoder,
 	}
 	if this.cfg.HasTimestamp {
@@ -72,7 +72,7 @@ func (this *Logx) setEncode() zapcore.Encoder {
 	}
 }
 
-//输出
+// 输出
 func (this *Logx) setWriteSynce() (write zapcore.WriteSyncer) {
 	var hook lumberjack.Logger
 	if this.cfg.OutType == FILE || this.cfg.OutType == ALL {
@@ -97,7 +97,7 @@ func (this *Logx) setWriteSynce() (write zapcore.WriteSyncer) {
 	return
 }
 
-//类型
+// 类型
 func (this *Logx) setLevel() (level zapcore.Level) {
 	switch this.cfg.Level {
 	case "info":
