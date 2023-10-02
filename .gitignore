@@ -4,5 +4,3 @@ _gencodeback
 *.exe
 .vscode
 .idea
-go.mod
-go.sum
