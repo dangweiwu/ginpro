@@ -3,7 +3,7 @@ package option
 import (
 	"errors"
 	"fmt"
-	"github.com/dangweiwu/template/htmlapi"
+	"github.com/dangweiwu/ginpro/template/htmlapi"
 )
 
 type ApiHtml struct {

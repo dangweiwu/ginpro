@@ -3,7 +3,7 @@ package option
 import (
 	"errors"
 	"fmt"
-	"github.com/dangweiwu/template/servertpl"
+	"github.com/dangweiwu/ginpro/template/servertpl"
 )
 
 // 生成 server

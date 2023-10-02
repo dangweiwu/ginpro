@@ -2,9 +2,9 @@ package initmysqlfake
 
 import (
 	"gorm.io/gorm"
-	"github.com/dangweiwu/pkg/mysqlx"
-	"github.com/dangweiwu/pkg/mysqlx/mysqlfake"
-	"github.com/dangweiwu/pkg/mysqlx/mysqlxconfig"
+	"github.com/dangweiwu/ginpro/pkg/mysqlx"
+	"github.com/dangweiwu/ginpro/pkg/mysqlx/mysqlfake"
+	"github.com/dangweiwu/ginpro/pkg/mysqlx/mysqlxconfig"
 )
 
 func InitFakeDb(host, dbName string, logpath string, loglevel int) (func() error, *gorm.DB) {

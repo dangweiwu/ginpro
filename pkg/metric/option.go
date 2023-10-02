@@ -1,6 +1,6 @@
 package metric
 
-import "github.com/dangweiwu/pkg/syncx"
+import "github.com/dangweiwu/ginpro/pkg/syncx"
 
 // A VectorOpts is a general configuration.
 var (

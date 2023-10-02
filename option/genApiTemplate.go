@@ -3,7 +3,7 @@ package option
 import (
 	"errors"
 	"fmt"
-	"github.com/dangweiwu/template/apitpl"
+	"github.com/dangweiwu/ginpro/template/apitpl"
 )
 
 //生成api模板 包括增删查改

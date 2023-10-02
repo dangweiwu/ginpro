@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/go-redis/redis/v8"
-	"github.com/dangweiwu/pkg/redisx/redisconfig"
+	"github.com/dangweiwu/ginpro/pkg/redisx/redisconfig"
 	"sync"
 )
 

@@ -3,7 +3,7 @@ package mysqlx
 import (
 	"github.com/stretchr/testify/assert"
 	"gorm.io/gorm"
-	"github.com/dangweiwu/pkg/mysqlx/initmysqlfake"
+	"github.com/dangweiwu/ginpro/pkg/mysqlx/initmysqlfake"
 	"log"
 	"testing"
 )

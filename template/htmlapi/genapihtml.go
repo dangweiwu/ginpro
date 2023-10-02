@@ -2,7 +2,7 @@ package htmlapi
 
 import (
 	_ "embed"
-	"github.com/dangweiwu/template/gencode"
+	"github.com/dangweiwu/ginpro/template/gencode"
 	"os"
 	"strings"
 )

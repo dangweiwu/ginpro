@@ -3,7 +3,7 @@ package option
 import (
 	"errors"
 	"fmt"
-	"github.com/dangweiwu/template/adminauthtpl"
+	"github.com/dangweiwu/ginpro/template/adminauthtpl"
 )
 
 type AdminAuthServer struct {

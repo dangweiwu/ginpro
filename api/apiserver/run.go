@@ -3,7 +3,7 @@ package apiserver
 import (
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
-	"github.com/dangweiwu/api/apiserver/apiconfig"
+	"github.com/dangweiwu/ginpro/api/apiserver/apiconfig"
 	"os"
 	"os/signal"
 	"syscall"

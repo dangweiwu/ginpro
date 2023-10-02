@@ -2,8 +2,8 @@ package apitpl
 
 import (
 	_ "embed"
-	"github.com/dangweiwu/pkg/utils"
-	"github.com/dangweiwu/template/gencode"
+	"github.com/dangweiwu/ginpro/pkg/utils"
+	"github.com/dangweiwu/ginpro/template/gencode"
 	"os"
 	"path"
 )

@@ -1,6 +1,6 @@
 package adminmodel
 
-import "github.com/dangweiwu/pkg/dbtype"
+import "github.com/dangweiwu/ginpro/pkg/dbtype"
 
 // @update
 type AdminUpdateForm struct {

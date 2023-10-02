@@ -4,7 +4,7 @@ import (
 	"archive/tar"
 	"bytes"
 	"embed"
-	"github.com/dangweiwu/pkg/utils"
+	"github.com/dangweiwu/ginpro/pkg/utils"
 	"io"
 	"os"
 	"path/filepath"

@@ -3,7 +3,7 @@ package option
 import (
 	"errors"
 	"fmt"
-	"github.com/dangweiwu/template/admintpl"
+	"github.com/dangweiwu/ginpro/template/admintpl"
 )
 
 //生成admin server

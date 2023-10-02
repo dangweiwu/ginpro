@@ -1,7 +1,7 @@
 package adminmodel
 
 import (
-	"github.com/dangweiwu/pkg/dbtype"
+	"github.com/dangweiwu/ginpro/pkg/dbtype"
 )
 
 type AdminPo struct {

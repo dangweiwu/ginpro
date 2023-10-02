@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/dangweiwu/pkg/utils"
+	"github.com/dangweiwu/ginpro/pkg/utils"
 	"io/ioutil"
 	"os"
 	"reflect"

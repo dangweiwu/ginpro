@@ -2,7 +2,7 @@ package main
 
 import (
 	"github.com/jessevdk/go-flags"
-	"github.com/dangweiwu/option"
+	"github.com/dangweiwu/ginpro/option"
 )
 
 func main() {

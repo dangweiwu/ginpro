@@ -2,7 +2,7 @@ package middler
 
 import (
 	"{{.Module}}/internal/ctx"
-	"github.com/dangweiwu/api/hd"
+	"github.com/dangweiwu/ginpro/api/hd"
 	"errors"
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v4"

@@ -3,7 +3,7 @@ package option
 import (
 	"errors"
 	"fmt"
-	"github.com/dangweiwu/template/htmladmin"
+	"github.com/dangweiwu/ginpro/template/htmladmin"
 )
 
 type FrontHtml struct {

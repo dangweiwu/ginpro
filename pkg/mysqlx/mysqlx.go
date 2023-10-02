@@ -5,7 +5,7 @@ import (
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
-	"github.com/dangweiwu/pkg/mysqlx/mysqlxconfig"
+	"github.com/dangweiwu/ginpro/pkg/mysqlx/mysqlxconfig"
 	"io"
 	"log"
 	"os"
