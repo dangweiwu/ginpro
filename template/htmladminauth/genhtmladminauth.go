@@ -2,7 +2,7 @@ package htmladminauth
 
 import (
 	"embed"
-	"gs/pkg/utils"
+	"github.com/dangweiwu/pkg/utils"
 )
 
 //go:embed tpl/* tpl/.*

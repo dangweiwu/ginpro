@@ -1,7 +1,7 @@
 package adminauthtpl
 
 import (
-	"gs/template/gencode"
+	"github.com/dangweiwu/template/gencode"
 	"os"
 	"path"
 )

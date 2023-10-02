@@ -4,7 +4,7 @@ import (
 	"context"
 	"github.com/alicebob/miniredis/v2"
 	"github.com/stretchr/testify/assert"
-	"gs/pkg/redisx/redisconfig"
+	"github.com/dangweiwu/pkg/redisx/redisconfig"
 	"testing"
 	"time"
 )

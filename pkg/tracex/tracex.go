@@ -10,7 +10,7 @@ import (
 	semconv "go.opentelemetry.io/otel/semconv/v1.17.0"
 	"go.opentelemetry.io/otel/semconv/v1.17.0/httpconv"
 	"go.opentelemetry.io/otel/trace"
-	"gs/pkg/syncx"
+	"github.com/dangweiwu/pkg/syncx"
 	"net/http"
 )
 

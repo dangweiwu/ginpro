@@ -1,7 +1,7 @@
 package admintpl
 
 import (
-	"gs/template/gencode"
+	"github.com/dangweiwu/template/gencode"
 	"os"
 	"path"
 )

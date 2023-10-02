@@ -2,7 +2,7 @@ package gencode
 
 import (
 	"github.com/pkg/errors"
-	"gs/pkg/utils"
+	"github.com/dangweiwu/pkg/utils"
 	"io/fs"
 	"os"
 	"path"

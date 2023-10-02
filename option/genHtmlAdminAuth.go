@@ -3,7 +3,7 @@ package option
 import (
 	"errors"
 	"fmt"
-	"gs/template/htmladminauth"
+	"github.com/dangweiwu/template/htmladminauth"
 )
 
 type HtmlAdminAuthOpt struct {

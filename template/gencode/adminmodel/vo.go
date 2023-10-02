@@ -1,6 +1,6 @@
 package adminmodel
 
-import "gs/pkg/dbtype"
+import "github.com/dangweiwu/pkg/dbtype"
 
 // @view
 type AdminVo struct {
