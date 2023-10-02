@@ -2,9 +2,7 @@ _apiback/
 _codetemplateback
 _gencodeback
 *.exe
-cmd
 .vscode
-config
 .idea
 go.mod
 go.sum
