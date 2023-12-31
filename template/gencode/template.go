@@ -1,7 +1,7 @@
 package gencode
 
 const (
-	Host = "gs"
+	Host = "github.com/dangweiwu/ginpro"
 )
 
 type ModuleValue struct {
