@@ -3,7 +3,7 @@ package option
 import (
 	"errors"
 	"fmt"
-	"github.com/dangweiwu/ginpro/template/servertpl"
+	"github.com/dangweiwu/ginpro/tmpl/servertpl"
 )
 
 // 生成 server
@@ -22,6 +22,7 @@ func (this *ServerOption) Execute(args []string) error {
 		return errors.New("缺少项目名称")
 	}
 
+	//err := servertpl.GenCode(args[0])
 	err := servertpl.GenCode(args[0])
 	if err != nil {
 		return err
