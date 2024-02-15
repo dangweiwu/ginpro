@@ -4,11 +4,65 @@ import (
 	"archive/zip"
 	"bytes"
 	"embed"
+	"fmt"
 	"io"
+	"io/fs"
 	"os"
 	"path"
 	"path/filepath"
+	"strings"
 )
+
+func ZipFile(zipname string, ignore []string) error {
+	zipFile, err := os.Create(zipname)
+	if err != nil {
+		return err
+	}
+	defer zipFile.Close()
+	archive := zip.NewWriter(zipFile)
+	defer archive.Close()
+
+	filepath.Walk(".", func(pt string, info fs.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+		fmt.Println("[info]", pt, info.Name())
+		for _, v := range ignore {
+
+			n := strings.Index(pt, v)
+			if v == info.Name() || n >= 0 {
+				return nil
+			}
+		}
+		header, err := zip.FileInfoHeader(info)
+		if err != nil {
+			return err
+		}
+		header.Name = pt
+		if info.IsDir() {
+			header.Name += "/"
+		} else {
+			header.Method = zip.Deflate
+		}
+		writer, err := archive.CreateHeader(header)
+		if err != nil {
+			return err
+		}
+		if !info.IsDir() {
+			file, err := os.Open(pt)
+			if err != nil {
+				return err
+			}
+			defer file.Close()
+			_, err = io.Copy(writer, file)
+			if err != nil {
+				return err
+			}
+		}
+		return nil
+	})
+	return nil
+}
 
 func UnZipEmbedFile(storename string, root string, fs2 embed.FS, handler func(filename string, cont []byte) ([]byte, error)) error {
 
