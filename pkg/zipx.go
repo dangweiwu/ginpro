@@ -11,6 +11,7 @@ import (
 	"path"
 	"path/filepath"
 	"strings"
+	"time"
 )
 
 func ZipFile(zipname string, ignore []string) error {
@@ -67,10 +68,11 @@ func ZipFile(zipname string, ignore []string) error {
 func UnZipEmbedFile(storename string, root string, fs2 embed.FS, handler func(filename string, cont []byte) ([]byte, error)) error {
 
 	embedfile, err := fs2.Open(storename)
-	defer embedfile.Close()
+	time.Sleep(time.Second)
 	if err != nil {
 		return err
 	}
+	defer embedfile.Close()
 
 	tmpFilePath := path.Join(root, storename)
 	defer func() {

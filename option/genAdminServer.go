@@ -3,7 +3,7 @@ package option
 import (
 	"errors"
 	"fmt"
-	"github.com/dangweiwu/ginpro/template/admintpl"
+	"github.com/dangweiwu/ginpro/tmpl/admintpl"
 )
 
 //生成admin server
@@ -29,7 +29,7 @@ func (this *AdminServer) Execute(args []string) error {
 		return errors.New("缺少项目名称")
 	}
 	name := args[0]
-	err := admintpl.GenAdminServerCode(name)
+	err := admintpl.GenCode(name)
 	if err != nil {
 		return err
 	}

@@ -1,4 +1,4 @@
-package servertpl
+package admintpl
 
 import (
 	"embed"
@@ -12,10 +12,10 @@ import (
 )
 
 const (
-	ZIPFILE = "DEMOX.zip"
+	ZIPFILE = "DEMOX_ADMIN.zip"
 )
 
-//go:embed DEMOX.zip
+//go:embed DEMOX_ADMIN.zip
 var projectfile embed.FS
 
 func GenCode(name string) error {
@@ -29,7 +29,7 @@ func GenCode(name string) error {
 		body := string(cont)
 		rt := []byte{}
 		if filepath.Ext(filename) == ".go" {
-			rt = []byte(strings.Replace(body, "DEMOX", name, -1))
+			rt = []byte(strings.Replace(body, "DEMOX_ADMIN", name, -1))
 			rt, err = format.Source([]byte(rt))
 			if err != nil {
 				fmt.Println("[error]:", err)
