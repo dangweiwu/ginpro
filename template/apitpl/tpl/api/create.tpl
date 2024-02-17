@@ -11,19 +11,22 @@ import (
 type {{.ApiName}}Create struct {
 	*hd.Hd
     ctx *gin.Context
-	sc  *ctx.ServerContext
+	appctx  *ctx.AppContext
 }
 
-// @x-group		{"key":"{{.ApiName}}","name":"","order":1,"desc":"","inorder":1}
-//	@summary	创建{{.ApiName}}
-//	@router		/api/{{.RouterUrl}} [post]
-//  @param      Authorization header   string                 true " " extensions(x-name=鉴权,x-value=[TOKEN])
-//	@param		root			body		{{.ModelPackage}}.{{.ModelName}}Form		true	" "
-//	@success	200				{string} string	 "{data:'ok'}"
-func New{{.ApiName}}Create(c *gin.Context,sc *ctx.ServerContext) irouter.IHandler{
-	return &{{.ApiName}}Create{hd.NewHd(c),c, sc}
+
+func New{{.ApiName}}Create(c *gin.Context,appctx *ctx.AppContext) irouter.IHandler{
+	return &{{.ApiName}}Create{hd.NewHd(c),c, appctx}
 }
 
+// Do
+// @api    | {{.ApiName}} | 1 | 创建{{.ApiName}}
+// @path   | /api/{{.RouterUrl}}
+// @method | POST
+// @header |n Authorization |d token |t string |c 鉴权
+// @form   | {{.ModelPackage}}.{{.ModelName}}Form
+// @tbtitle  | 200 Response
+// @tbrow    |n data |e ok |c 成功 |t string
 func (this *{{.ApiName}}Create) Do() error {
     //数据源
 	po := &{{.ModelPackage}}.{{.ModelName}}Form{}
@@ -41,7 +44,7 @@ func (this *{{.ApiName}}Create) Do() error {
 }
 
 func (this *{{.ApiName}}Create) Create(po *{{.ModelPackage}}.{{.ModelName}}Form) error {
-	db := this.sc.Db
+	db := this.appctx.Db
 	//验证是否已创建 或者其他检查
 	//tmpPo := &{{.ModelPackage}}.{{.ModelName}}{}
 	//if r := db.Model(po).Where("name = ?", po.XXX).Take(tmpPo); r.Error == nil {

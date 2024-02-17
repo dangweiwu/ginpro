@@ -6,6 +6,7 @@ import (
 	"{{.Module}}/internal/ctx"
 )
 
+// @group | {{.ApiName}} | 1 | title | desc
 func Route(r *router.Router, sc *ctx.ServerContext) {
 
 	r.{{- .RouterType -}}.GET("/{{- .RouterUrl -}}", router.Do(sc, api.New{{.ApiName}}Query))

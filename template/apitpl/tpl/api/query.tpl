@@ -13,21 +13,24 @@ import (
 type {{.ApiName}}Query struct {
 	*hd.Hd
     ctx *gin.Context
-	sc  *ctx.ServerContext
+	appctx  *ctx.AppContext
 }
 
-func New{{.ApiName}}Query(c *gin.Context,sc *ctx.ServerContext) irouter.IHandler {
-	return &{{.ApiName}}Query{hd.NewHd(c),c, sc}
+func New{{.ApiName}}Query(c *gin.Context,appctx *ctx.AppContext) irouter.IHandler {
+	return &{{.ApiName}}Query{hd.NewHd(c),c, appctx}
 }
 
-// @x-group		{"key":"{{.ApiName}}","inorder":4}
-//	@summary	查询{{.ApiName}}
-//	@router		/api/{{.RouterUrl}} [get]
-//  @param      Authorization header   string                 true " " extensions(x-name=鉴权,x-value=[TOKEN])
-//  @param      limit query    string          false " "  extensions(x-name=分页条数,x-value=10)
-//  @param      current query    string        false " "  extensions(x-name=页码,x-value=1)
-//	@param		[参数变量1]	query		string	false	" "  extensions(x-name=,x-value=)
-//	@success	200		{object}	{{.ModelPackage}}.{{.ModelName}}Vo	" "
+// Do
+// @api 	| {{.ApiName}} | 3 | 查询{{.ApiName}}
+// @path 	| /api/{{.RouterUrl}}
+// @method 	| GET
+// @header 	|n Authorization |d token |e tokenstring |c 鉴权 |t string
+// @query   |n limit   |d 条数 |e 10 |t int
+// @query   |n current |d 页码 |e 1  |t int
+// @query 	|n demo |d demo |e demo | t string
+// @response | query.QueryResult | 200 Response
+// @response | query.Page | Page定义
+// @response | {{.ModelPackage}}.{{.ModelName}}Vo | []Data 定义
 func (this *{{.ApiName}}Query) Do() error {
 
 	data,err := this.Query()
