@@ -14,19 +14,24 @@ import (
 type {{.ApiName}}Del struct {
 	*hd.Hd
     ctx *gin.Context
-	sc  *ctx.ServerContext
+	appctx  *ctx.AppContext
 }
 
-func New{{.ApiName}}Del (c *gin.Context,sc *ctx.ServerContext) irouter.IHandler {
-	return &{{.ApiName}}Del{hd.NewHd(c),c, sc}
+func New{{.ApiName}}Del (c *gin.Context,appctx *ctx.AppContext) irouter.IHandler {
+	return &{{.ApiName}}Del{hd.NewHd(c),c, appctx}
 }
 
-//  @x-group    {"key":"{{.ApiName}}","inorder":3}
-//	@summary	删除{{.ApiName}}
-//	@router		/api/{{.RouterUrl}}/:id [delete]
-//  @param   Authorization header   string                   true " " extensions(x-name=鉴权,x-value=[TOKEN])
-//  @param   id            path     int                      true " "  extensions(x-name=用户ID,x-value=1)
-//  @success	200		{string} string	 "{data:'ok'}"
+// Do
+// @api | {{.ApiName}} | 4 | 删除用户
+// @path | /api/{{.RouterUrl}}/:id
+// @method | DELETE
+// @header 	|n Authorization |d token |e tokenstring |c 鉴权 |t string
+// @urlparam |n id |d  |v required |t int    |e 1
+// @tbtitle  | 200 Response
+// @tbrow    |n data |e ok |c 成功 |t type
+// @response | hd.ErrResponse | 500 RESPONSE
+// @tbtitle  | msg 数据
+// @tbrow    |n msg |e 记录不存在
 func (this *{{.ApiName}}Del) Do() error {
 	var err error
 	id, err := this.GetId()

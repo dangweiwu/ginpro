@@ -13,20 +13,22 @@ import (
 type {{.ApiName}}Update struct {
 	*hd.Hd
     ctx *gin.Context
-	sc  *ctx.ServerContext
+	appctx  *ctx.AppContext
 }
 
-func New{{.ApiName}}Update (c *gin.Context,sc *ctx.ServerContext) irouter.IHandler{
-	return &{{.ApiName}}Update{hd.NewHd(c),c, sc}
+func New{{.ApiName}}Update (c *gin.Context,appctx *ctx.AppContext) irouter.IHandler{
+	return &{{.ApiName}}Update{hd.NewHd(c),c, appctx}
 }
 
-// @x-group		{"key":"{{.ApiName}}","inorder":2}
-// @summary	    修改{{.ApiName}}
-// @router		/api/{{.RouterUrl}}/:id [put]
-// @param   Authorization header   string                   true " " extensions(x-name=鉴权,x-value=[TOKEN])
-// @param   id            path     int                      true " "  extensions(x-name=用户ID,x-value=1)
-// @param		root			body		{{.ModelPackage}}.{{.ModelName}}UpdateForm	true	" "
-// @success	200				{string}	string	"{data:'ok'}"
+// Do
+// @api    | {{.ApiName}} | 2 | 更新 {{.ApiName}}
+// @path 	| /api/{{.RouterUrl}}/:id
+// @method 	| PUT
+// @urlparam |n id |d 用户ID |v required |t int    |e 1
+// @header   |n Authorization |d token  |t string |c 鉴权
+// @form     | {.ModelPackage}}.{{.ModelName}}UpdateForm
+// @tbtitle  | 200 Response
+// @tbrow    |n data |e ok |c 成功 |t string
 func (this *{{.ApiName}}Update) Do() error {
 	var err error
 	id, err := this.GetId()
@@ -48,7 +50,7 @@ func (this *{{.ApiName}}Update) Do() error {
 }
 
 func (this *{{.ApiName}}Update) Update(form *{{.ModelPackage}}.{{.ModelName}}UpdateForm) error {
-    db := this.sc.Db
+    db := this.appctx.Db
 	tmpForm := &{{.ModelPackage}}.{{.ModelName}}UpdateForm{}
 	if r := db.Model(tmpForm).Take(tmpForm); r.Error != nil {
 		if r.Error == gorm.ErrRecordNotFound {

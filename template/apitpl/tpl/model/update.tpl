@@ -4,9 +4,10 @@ import(
 	"{{.Host}}/pkg/dbtype"
 )
 
+
+// @doc | {{.ModelPackage}}.{{.ModelName}}UpdateForm
 type {{.ModelName}}UpdateForm struct {
 	dbtype.BaseForm
-	//Demo     string      +` + "`+gorm:\"size:100;not null;default:'';comment:demo\" binding:\"max=100\"`" + `
 }
 
 func ({{.ModelName}}UpdateForm) TableName() string {
