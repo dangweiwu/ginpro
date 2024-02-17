@@ -3,7 +3,7 @@ package option
 import (
 	"errors"
 	"fmt"
-	"github.com/dangweiwu/ginpro/template/adminauthtpl"
+	"github.com/dangweiwu/ginpro/tmpl/adminauthtpl"
 )
 
 type AdminAuthServer struct {
@@ -27,7 +27,7 @@ func (this *AdminAuthServer) Execute(args []string) error {
 		return errors.New("缺少项目名称")
 	}
 	name := args[0]
-	err := adminauthtpl.GenAdminAuthServerCode(name)
+	err := adminauthtpl.GenCode(name)
 	if err != nil {
 		return err
 	}

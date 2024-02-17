@@ -2,10 +2,10 @@ package mysqlx
 
 import (
 	"fmt"
+	"github.com/dangweiwu/ginpro/pkg/mysqlx/mysqlxconfig"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
-	"github.com/dangweiwu/ginpro/pkg/mysqlx/mysqlxconfig"
 	"io"
 	"log"
 	"os"
