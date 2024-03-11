@@ -14,7 +14,7 @@ import (
 	"time"
 )
 
-func ZipFile(zipname string, ignore []string) error {
+func ZipFile(root, zipname string, ignore []string) error {
 	zipFile, err := os.Create(zipname)
 	if err != nil {
 		return err
@@ -23,7 +23,7 @@ func ZipFile(zipname string, ignore []string) error {
 	archive := zip.NewWriter(zipFile)
 	defer archive.Close()
 
-	filepath.Walk(".", func(pt string, info fs.FileInfo, err error) error {
+	filepath.Walk(root, func(pt string, info fs.FileInfo, err error) error {
 		if err != nil {
 			return err
 		}
