@@ -14,6 +14,9 @@ import (
 	"time"
 )
 
+func toLinux(b string) string {
+	return strings.ReplaceAll(b, "\\", "/")
+}
 func ZipFile(root, zipname string, ignore []string) error {
 	zipFile, err := os.Create(zipname)
 	if err != nil {
@@ -23,11 +26,17 @@ func ZipFile(root, zipname string, ignore []string) error {
 	archive := zip.NewWriter(zipFile)
 	defer archive.Close()
 
-	filepath.Walk(root, func(pt string, info fs.FileInfo, err error) error {
+	if err := os.Chdir(root); err != nil {
+		return err
+	}
+	filepath.Walk(".", func(pt string, info fs.FileInfo, err error) error {
+
 		if err != nil {
 			return err
 		}
-		fmt.Println("[info]", pt, info.Name())
+
+		pt = toLinux(pt)
+
 		for _, v := range ignore {
 
 			n := strings.Index(pt, v)
@@ -39,12 +48,16 @@ func ZipFile(root, zipname string, ignore []string) error {
 		if err != nil {
 			return err
 		}
-		header.Name = pt
+
+		header.Name = strings.TrimPrefix(pt, string(filepath.Separator))
 		if info.IsDir() {
 			header.Name += "/"
 		} else {
 			header.Method = zip.Deflate
 		}
+
+		fmt.Println("[info]:", header.Name)
+		header.Method = zip.Deflate
 		writer, err := archive.CreateHeader(header)
 		if err != nil {
 			return err
