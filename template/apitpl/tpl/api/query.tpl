@@ -46,6 +46,6 @@ func (this *{{.ApiName}}Query) Do() error {
 func (this *{{.ApiName}}Query) Query() (interface{}, error) {
 	vo := &{{.ModelPackage}}.{{.ModelName}}Vo{}
 	vos := []{{.ModelPackage}}.{{.ModelName}}Vo{}
-	q := query.NewQuery(this.ctx, this.sc.Db, {{.ModelPackage}}.QueryRule, vo, &vos)
+	q := query.NewQuery(this.ctx, this.appctx.Db, {{.ModelPackage}}.QueryRule, vo, &vos)
 	return q.Do()
 }

@@ -7,13 +7,13 @@ import (
 )
 
 // @group | {{.ApiName}} | 1 | title | desc
-func Route(r *router.Router, sc *ctx.ServerContext) {
+func Route(r *router.Router, appctx *ctx.AppContex) {
 
-	r.{{- .RouterType -}}.GET("/{{- .RouterUrl -}}", router.Do(sc, api.New{{.ApiName}}Query))
+	r.{{- .RouterType -}}.GET("/{{- .RouterUrl -}}", router.Do(appctx, api.New{{.ApiName}}Query))
 
-	r.{{- .RouterType -}}.POST("/{{- .RouterUrl -}}", router.Do(sc, api.New{{.ApiName}}Create))
+	r.{{- .RouterType -}}.POST("/{{- .RouterUrl -}}", router.Do(appctx, api.New{{.ApiName}}Create))
 
-	r.{{- .RouterType -}}.PUT("/{{- .RouterUrl -}}/:id", router.Do(sc, api.New{{.ApiName}}Update))
+	r.{{- .RouterType -}}.PUT("/{{- .RouterUrl -}}/:id", router.Do(appctx, api.New{{.ApiName}}Update))
 
-	r.{{- .RouterType -}}.DELETE("/{{- .RouterUrl -}}/:id", router.Do(sc, api.New{{.ApiName}}Del))
+	r.{{- .RouterType -}}.DELETE("/{{- .RouterUrl -}}/:id", router.Do(appctx, api.New{{.ApiName}}Del))
 }

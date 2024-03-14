@@ -47,7 +47,7 @@ func (this *{{.ApiName}}Del) Do() error {
 }
 
 func (this *{{.ApiName}}Del) Delete(id int64) error {
-	db := this.sc.Db
+	db := this.appctx.Db
 	po := &{{.ModelPackage}}.{{.ModelName}}Po{}
 	po.ID = id
 	if r := db.Take(po); r.Error != nil {
