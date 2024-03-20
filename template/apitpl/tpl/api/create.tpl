@@ -2,7 +2,7 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
-    "{{.Host}}/api/hd"
+    "{{.Module}}/internal/pkg/api/hd"
     "{{.Module}}/internal/ctx"
     "{{.Module}}/internal/app/{{.ApiPackage}}/{{.ModelPackage}}"
 	"{{.Module}}/internal/router/irouter"	

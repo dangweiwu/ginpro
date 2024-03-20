@@ -2,7 +2,7 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
-    "{{.Host}}/api/hd"
+    "{{.Module}}/internal/pkg/api/hd"
     "{{.Module}}/internal/ctx"
     "{{.Module}}/internal/app/{{.ApiPackage}}/{{.ModelPackage}}"
 	"{{.Module}}/internal/router/irouter"	
@@ -26,7 +26,7 @@ func New{{.ApiName}}Update (c *gin.Context,appctx *ctx.AppContext) irouter.IHand
 // @method 	| PUT
 // @urlparam |n id |d 用户ID |v required |t int    |e 1
 // @header   |n Authorization |d token  |t string |c 鉴权
-// @form     | {.ModelPackage}}.{{.ModelName}}UpdateForm
+// @form     | {{.ModelPackage}}.{{.ModelName}}UpdateForm
 // @tbtitle  | 200 Response
 // @tbrow    |n data |e ok |c 成功 |t string
 func (this *{{.ApiName}}Update) Do() error {

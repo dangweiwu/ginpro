@@ -3,8 +3,8 @@ package api
 import (
     "github.com/gin-gonic/gin"
     "gorm.io/gorm"
-	"{{.Host}}/api/hd"
-	"errors"
+    "errors"
+    "{{.Module}}/internal/pkg/api/hd"
     "{{.Module}}/internal/app/{{.ApiPackage}}/{{.ModelPackage}}"
 	"{{.Module}}/internal/ctx"
 	"{{.Module}}/internal/router/irouter"
