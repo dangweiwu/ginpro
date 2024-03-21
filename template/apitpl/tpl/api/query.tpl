@@ -24,7 +24,7 @@ func New{{.ApiName}}Query(c *gin.Context,appctx *ctx.AppContext) irouter.IHandle
 // @api 	| {{.ApiName}} | 3 | 查询{{.ApiName}}
 // @path 	| /api/{{.RouterUrl}}
 // @method 	| GET
-// @header 	|n Authorization |d token |e tokenstring |c 鉴权 |t string
+// @header 	|n Authorization |d token |c 鉴权 |t string
 // @query   |n limit   |d 条数 |e 10 |t int
 // @query   |n current |d 页码 |e 1  |t int
 // @query 	|n demo |d demo |e demo | t string

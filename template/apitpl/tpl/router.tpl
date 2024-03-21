@@ -7,7 +7,7 @@ import (
 )
 
 // @group | {{.ApiName}} | 1 | title | desc
-func Route(r *router.Router, appctx *ctx.AppContex) {
+func Route(r *router.Router, appctx *ctx.AppContext) {
 
 	r.{{- .RouterType -}}.GET("/{{- .RouterUrl -}}", router.Do(appctx, api.New{{.ApiName}}Query))
 

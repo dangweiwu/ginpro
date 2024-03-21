@@ -7,7 +7,7 @@ import(
 
 // @doc | {{.ModelPackage}}.{{.ModelName}}UpdateForm
 type {{.ModelName}}UpdateForm struct {
-	dbtype.BaseForm
+	dbtype.UpdateForm
 }
 
 func ({{.ModelName}}UpdateForm) TableName() string {

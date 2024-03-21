@@ -6,7 +6,7 @@ import(
 
 type {{.ModelName}}Po struct {
 	dbtype.Base
-	//Demo     string      +` + "`+gorm:\"size:100;not null;default:'';comment:demo\" binding:\"max=100\"`" + `
+	//Demo     string  `gorm:"size:100;not null;default:'';comment:demo" binding:"max=100" doc:"|d name"`
 }
 
 func ({{.ModelName}}Po) TableName() string {

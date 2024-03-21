@@ -25,7 +25,7 @@ func New{{.ApiName}}Del (c *gin.Context,appctx *ctx.AppContext) irouter.IHandler
 // @api | {{.ApiName}} | 4 | 删除用户
 // @path | /api/{{.RouterUrl}}/:id
 // @method | DELETE
-// @header 	|n Authorization |d token |e tokenstring |c 鉴权 |t string
+// @header 	|n Authorization |d token |c 鉴权 |t string
 // @urlparam |n id |d  |v required |t int    |e 1
 // @tbtitle  | 200 Response
 // @tbrow    |n data |e ok |c 成功 |t type
